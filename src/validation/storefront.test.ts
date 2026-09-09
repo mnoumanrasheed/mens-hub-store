@@ -1,0 +1,3 @@
+import { describe, expect, it } from "vitest";
+import { parseStorefrontFilters, storefrontFiltersSchema } from "@/validation/storefront";
+describe("storefront query validation", () => { it("normalizes bounded shareable filters", () => { expect(parseStorefrontFilters({ q: "  shirt ", sale: "1", page: "2", sort: "price-asc" })).toMatchObject({ q: "shirt", sale: "1", page: 2, sort: "price-asc" }); }); it("rejects an inverted price range", () => { expect(storefrontFiltersSchema.safeParse({ minPrice: "5000", maxPrice: "1000" }).success).toBe(false); }); it("falls back safely for unknown values", () => { expect(parseStorefrontFilters({ sort: "drop-table", availability: "unknown", page: "-4" })).toMatchObject({ sort: "newest", availability: "", page: 1 }); }); });

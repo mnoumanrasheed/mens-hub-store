@@ -1,0 +1,1 @@
+export default function AdminLoading() { return <div className="admin-page animate-pulse"><div className="mb-6 h-9 w-56 rounded bg-admin-line" /><div className="grid gap-4">{[1, 2, 3].map((item) => <div key={item} className="h-32 rounded-lg bg-admin-line" />)}</div></div>; }

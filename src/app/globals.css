@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+
+  --mh-canvas: #0b0b0c;
+  --mh-surface: #141416;
+  --mh-surface-raised: #1b1b1e;
+  --mh-ivory: #f5f2ea;
+  --mh-muted: #aaa69d;
+  --mh-subtle: #8c8982;
+  --mh-line: #302f32;
+  --mh-gold: #d2ad45;
+  --mh-gold-strong: #c9a227;
+  --mh-gold-ink: #171306;
+  --mh-critical: #c44848;
+  --mh-critical-surface: #2a1113;
+  --mh-focus: #efd16d;
+  --mh-admin-bg: #f3f3ef;
+  --mh-admin-soft: #f7f7f4;
+  --mh-admin-ink: #171719;
+  --mh-admin-muted: #666661;
+  --mh-admin-line: #d9d9d2;
+  --mh-admin-accent: #9a7513;
+
+  --mh-radius-sm: 0.25rem;
+  --mh-radius-md: 0.5rem;
+  --mh-radius-lg: 0.875rem;
+  --mh-shadow-soft: 0 1.5rem 4rem rgb(0 0 0 / 0.28);
+  --mh-section-space: clamp(4rem, 8vw, 8rem);
+  --mh-container-gutter: clamp(1rem, 3vw, 2rem);
+  --mh-motion-fast: 160ms;
+  --mh-motion-base: 240ms;
+  --mh-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@theme inline {
+  --color-canvas: var(--mh-canvas);
+  --color-surface: var(--mh-surface);
+  --color-surface-raised: var(--mh-surface-raised);
+  --color-ivory: var(--mh-ivory);
+  --color-muted: var(--mh-muted);
+  --color-subtle: var(--mh-subtle);
+  --color-line: var(--mh-line);
+  --color-gold: var(--mh-gold);
+  --color-gold-strong: var(--mh-gold-strong);
+  --color-gold-ink: var(--mh-gold-ink);
+  --color-critical: var(--mh-critical);
+  --color-critical-surface: var(--mh-critical-surface);
+  --color-focus: var(--mh-focus);
+  --color-admin-bg: var(--mh-admin-bg);
+  --color-admin-soft: var(--mh-admin-soft);
+  --color-admin-ink: var(--mh-admin-ink);
+  --color-admin-muted: var(--mh-admin-muted);
+  --color-admin-line: var(--mh-admin-line);
+  --color-admin-accent: var(--mh-admin-accent);
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-cormorant);
+  --radius-sm: var(--mh-radius-sm);
+  --radius-md: var(--mh-radius-md);
+  --radius-lg: var(--mh-radius-lg);
+}
+
+@layer components {
+  .store-section { padding-block: clamp(4.5rem, 8vw, 8rem); }
+  .store-eyebrow { margin-bottom: 0.65rem; color: var(--mh-gold); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
+  .store-section-title { max-width: 18ch; color: var(--mh-ivory); font-family: var(--font-cormorant), Georgia, serif; font-size: clamp(2.35rem, 5vw, 4.75rem); font-weight: 600; line-height: 0.95; letter-spacing: -0.035em; }
+  .store-nav-link { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.25rem; padding-inline: 0.72rem; color: var(--mh-ivory); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.095em; text-transform: uppercase; transition: color var(--mh-motion-fast); }
+  .store-nav-link:hover { color: var(--mh-gold); }
+  .store-icon-button { display: inline-grid; min-height: 2.75rem; min-width: 2.75rem; place-items: center; color: var(--mh-ivory); transition: color var(--mh-motion-fast), background-color var(--mh-motion-fast); }
+  .store-icon-button:hover { color: var(--mh-gold); background: rgb(255 255 255 / 0.045); }
+  .store-cta-primary, .store-cta-secondary { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: 0.5rem; padding-inline: 1.35rem; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; transition: background-color var(--mh-motion-base), border-color var(--mh-motion-base), color var(--mh-motion-base), transform var(--mh-motion-fast); }
+  .store-cta-primary { border: 1px solid var(--mh-gold); background: var(--mh-gold); color: var(--mh-gold-ink); }
+  .store-cta-primary:hover { border-color: var(--mh-gold-strong); background: var(--mh-gold-strong); }
+  .store-cta-secondary { border: 1px solid rgb(245 242 234 / 0.35); color: var(--mh-ivory); }
+  .store-cta-secondary:hover { border-color: var(--mh-gold); color: var(--mh-gold); }
+  .product-badge { display: inline-flex; min-height: 1.5rem; align-items: center; padding-inline: 0.5rem; font-size: 0.58rem; font-weight: 850; letter-spacing: 0.13em; text-transform: uppercase; }
+  .store-filter-input { min-height: 2.75rem; width: 100%; border: 1px solid var(--mh-line); background: var(--mh-canvas); padding-inline: 0.75rem; color: var(--mh-ivory); font-size: 0.875rem; }
+  .footer-title { color: var(--mh-ivory); font-size: 0.67rem; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; }
+  .footer-link { display: inline-flex; min-height: 2.75rem; align-items: center; color: var(--mh-muted); font-size: 0.82rem; transition: color var(--mh-motion-fast); }
+  .footer-link:hover { color: var(--mh-gold); }
+  .bg-ivory .store-section-title { color: #161617; }
+  .bg-ivory .store-eyebrow { color: #76580c; }
+  .bg-ivory header .text-muted { color: #615e57; }
+
+  .admin-page {
+    width: min(100% - 2rem, 88rem);
+    margin-inline: auto;
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .admin-panel {
+    border: 1px solid var(--mh-admin-line);
+    border-radius: 0.625rem;
+    background: white;
+    padding: clamp(1rem, 2vw, 1.5rem);
+    color: var(--mh-admin-ink);
+  }
+
+  .admin-section-title { font-size: 1.05rem; font-weight: 750; color: var(--mh-admin-ink); }
+  .admin-help { margin-top: 0.2rem; font-size: 0.8rem; color: var(--mh-admin-muted); }
+  .admin-input { min-height: 2.75rem; width: 100%; border: 1px solid var(--mh-admin-line); border-radius: 0.375rem; background: white; padding-inline: 0.75rem; color: var(--mh-admin-ink); }
+  .admin-label { display: grid; gap: 0.375rem; color: var(--mh-admin-ink); font-size: 0.8rem; font-weight: 700; }
+  .admin-button, .admin-button-secondary, .admin-action, .admin-nav-link { display: inline-flex; min-height: 2.75rem; align-items: center; justify-content: center; gap: 0.4rem; border-radius: 0.375rem; padding-inline: 0.9rem; font-size: 0.78rem; font-weight: 750; transition: 160ms ease; }
+  .admin-button { border: 1px solid #171719; background: #171719; color: #fff; }
+  .admin-button:hover { background: #343438; }
+  .admin-button-secondary, .admin-action { border: 1px solid var(--mh-admin-line); background: white; color: var(--mh-admin-ink); }
+  .admin-button-secondary:hover, .admin-action:hover, .admin-nav-link:hover { border-color: var(--mh-admin-accent); color: #73570d; }
+  .admin-action { min-height: 2rem; padding-inline: 0.65rem; font-size: 0.7rem; }
+  .admin-nav-link { color: var(--mh-admin-muted); }
+}
+
+* {
+  border-color: var(--mh-line);
+}
+
+html {
+  background: var(--mh-canvas);
+  scroll-behavior: smooth;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  background: var(--mh-canvas);
+  color: var(--mh-ivory);
+  font-family: var(--font-manrope), Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+.hero-light {
+  background: linear-gradient(112deg, transparent 25%, rgb(210 173 69 / 0.055) 48%, transparent 68%);
+  background-size: 220% 100%;
+  animation: hero-light-shift 14s ease-in-out infinite alternate;
+}
+
+@keyframes hero-light-shift {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+.hero-enter { animation: hero-enter 700ms var(--mh-ease-out) both; }
+.hero-image-enter { animation: hero-image-enter 900ms var(--mh-ease-out) both; }
+.hero-card-enter { animation: hero-card-enter 700ms var(--mh-ease-out) both; }
+
+@keyframes hero-enter { from { opacity: 0; transform: translateY(1.25rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes hero-image-enter { from { opacity: 0; transform: translateY(1.5rem) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes hero-card-enter { from { opacity: 0; transform: translateX(1rem); } to { opacity: 1; transform: translateX(0); } }
+
+@media (hover: hover) {
+  .store-cta-primary:hover, .store-cta-secondary:hover { transform: translateY(-1px); }
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--mh-gold) 34%, transparent);
+  color: var(--mh-ivory);
+}
+
+:focus-visible {
+  outline: 2px solid var(--mh-focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

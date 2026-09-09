@@ -1,0 +1,2 @@
+"use client";
+export default function AdminError({ reset }: { error: Error & { digest?: string }; reset: () => void }) { return <div className="admin-page"><div className="admin-panel py-14 text-center"><h1 className="text-2xl font-bold text-admin-ink">This admin view could not be loaded</h1><p className="mt-2 text-sm text-admin-muted">Check the database connection and try again.</p><button className="admin-button mt-5" onClick={reset}>Try again</button></div></div>; }

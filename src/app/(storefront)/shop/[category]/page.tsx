@@ -1,0 +1,8 @@
+import { notFound } from "next/navigation";
+import { CollectionPage } from "@/components/storefront/collection-page";
+import { getStorefrontCollection } from "@/data/storefront";
+import { parseStorefrontFilters } from "@/validation/storefront";
+import type { Metadata } from "next";
+import { getCategorySeo } from "@/data/storefront";
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> { const { category: slug } = await params; const data = await getCategorySeo(slug); if (!data) return { title: "Category not found", robots: { index: false, follow: false } }; const description = data.category.description || `Shop ${data.category.name} at Men's Hub.`; const image = data.category.bannerImageUrl || data.category.imageUrl; const url = `/shop/${data.category.slug}`; return { title: data.category.name, description, alternates: { canonical: url }, openGraph: { title: data.category.name, description, url, type: "website", images: image ? [{ url: image, alt: data.category.name }] : undefined } }; }
+export default async function CategoryPage({ params, searchParams }: { params: Promise<{ category: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) { const { category } = await params; const filters = parseStorefrontFilters(await searchParams); const data = await getStorefrontCollection({ categorySlug: category, filters }); if (!data?.category) notFound(); const action = `/shop/${data.category.slug}`; return <CollectionPage eyebrow="Shop by category" title={data.category.name} description={data.category.description} data={data} filters={filters} action={action} routeCategory={data.category.slug} />; }

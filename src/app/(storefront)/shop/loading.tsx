@@ -1,0 +1,2 @@
+import { Container } from "@/components/storefront/container";
+export default function ShopLoading() { return <main className="py-20"><Container size="wide"><div className="h-16 w-64 animate-pulse bg-surface" /><div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">{Array.from({ length: 8 }, (_, index) => <div key={index} className="aspect-[4/5] animate-pulse bg-surface" />)}</div></Container></main>; }
