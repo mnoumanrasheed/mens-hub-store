@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 
 import { cn } from "@/lib/cn";
@@ -27,7 +28,11 @@ export const metadata: Metadata = {
   applicationName: "Men’s Hub",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
   return (
     <html lang="en" className="h-full bg-canvas">
       <body
