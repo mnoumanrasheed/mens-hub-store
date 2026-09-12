@@ -25,7 +25,7 @@ export function StorefrontShell({ announcement = null, brandName, categories, ch
         Skip to content
       </a>
       <AnnouncementBar announcement={announcement} />
-      <StoreHeader brandName={brandName} categories={categories} />
+      <StoreHeader brandName={brandName} categories={categories} whatsapp={settings.whatsapp} />
       <div id="main-content" className="flex-1">
         {children}
       </div>

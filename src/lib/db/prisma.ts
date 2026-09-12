@@ -11,9 +11,22 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient(): PrismaClient {
   const { DATABASE_URL } = databaseEnvSchema.parse(process.env);
-  const adapter = new PrismaPg({ connectionString: DATABASE_URL });
+  const adapter = new PrismaPg({ connectionString: withVerifiedSsl(DATABASE_URL) });
 
   return new PrismaClient({ adapter });
+}
+
+function withVerifiedSsl(connectionString: string) {
+  try {
+    const url = new URL(connectionString);
+    if (url.protocol === "postgresql:" || url.protocol === "postgres:") {
+      url.searchParams.set("sslmode", "verify-full");
+      return url.toString();
+    }
+  } catch {
+    // Preserve existing validation behavior for malformed URLs.
+  }
+  return connectionString;
 }
 
 export function getPrismaClient(): PrismaClient {

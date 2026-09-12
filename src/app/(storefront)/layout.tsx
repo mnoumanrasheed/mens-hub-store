@@ -9,7 +9,18 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getPublicSiteSettings();
-  return { metadataBase: getSiteUrl(), title: { default: settings.websiteTitle, template: `%s | ${settings.brandName}` }, description: settings.metaDescription || settings.tagline, applicationName: settings.brandName, openGraph: settings.ogImageUrl ? { images: [settings.ogImageUrl] } : undefined };
+  return {
+    metadataBase: getSiteUrl(),
+    title: { default: settings.websiteTitle, template: `%s | ${settings.brandName}` },
+    description: settings.metaDescription || settings.tagline,
+    applicationName: settings.brandName,
+    icons: {
+      icon: [{ url: "/favicon.png", type: "image/png" }],
+      shortcut: [{ url: "/favicon.png", type: "image/png" }],
+      apple: [{ url: "/logo.png", type: "image/png" }],
+    },
+    openGraph: settings.ogImageUrl ? { images: [settings.ogImageUrl] } : undefined,
+  };
 }
 
 type StorefrontLayoutProps = Readonly<{
