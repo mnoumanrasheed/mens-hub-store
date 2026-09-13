@@ -1,5 +1,4 @@
 import { Container } from "@/components/storefront/container";
-import { LoadingIndicator } from "@/components/ui/loading-indicator";
 
 export default function ShopLoading() {
   return (
@@ -11,7 +10,6 @@ export default function ShopLoading() {
             <div className="mt-5 h-14 w-full max-w-lg loading-shimmer sm:h-16" />
             <div className="mt-4 h-4 w-full max-w-2xl loading-shimmer" />
           </div>
-          <LoadingIndicator label="Refining the edit" className="hidden lg:flex" />
         </div>
         <div className="mt-10 grid grid-cols-1 gap-6 min-[430px]:grid-cols-2 min-[430px]:gap-4 sm:mt-14 sm:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }, (_, index) => (

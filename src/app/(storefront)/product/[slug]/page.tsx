@@ -42,7 +42,7 @@ export default async function ProductPage({ params }: Props) {
       : "Available now";
 
   return (
-    <main className="pb-24 pt-8 sm:pb-32 sm:pt-12">
+    <main className="atelier-product-page pb-24 pt-8 sm:pb-32 sm:pt-12">
       <Container size="wide">
         <nav aria-label="Breadcrumb" className="mb-7 flex flex-wrap items-center gap-2 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-subtle sm:mb-9">
           <Link className="transition-colors hover:text-gold" href="/shop">Collections</Link>

@@ -24,7 +24,7 @@ function WishlistItem({ product }: { product: CommerceProduct }) {
   }
 
   return (
-    <article className="grid gap-4 border border-line bg-surface p-3 min-[430px]:p-4 sm:grid-cols-[8rem_minmax(0,1fr)]">
+    <article className="atelier-wishlist-card grid gap-4 border border-line bg-surface p-3 min-[430px]:p-4 sm:grid-cols-[8rem_minmax(0,1fr)]">
       <Link href={`/product/${product.slug}`} className="relative aspect-[4/5] overflow-hidden bg-surface-raised">
         <StoreImage src={product.imageUrl} alt={product.name} fill sizes="(max-width: 639px) 100vw, 128px" className="object-cover" />
       </Link>
@@ -54,7 +54,7 @@ function WishlistItem({ product }: { product: CommerceProduct }) {
 
 export function WishlistView() {
   const products = useWishlist();
-  if (!products.length) return <div className="border border-line bg-surface px-5 py-14 text-center sm:px-6 sm:py-16"><Heart className="mx-auto text-gold" /><h1 className="mt-5 font-display text-4xl text-ivory">Your Wishlist</h1><p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">Save pieces with the heart icon. Your wishlist stays on this device—no account needed.</p><Link href="/shop" className="store-cta-primary mt-7 w-full min-[390px]:w-auto">Explore collection</Link></div>;
+  if (!products.length) return <div className="atelier-empty border border-line bg-surface px-5 py-14 text-center sm:px-6 sm:py-16"><Heart className="mx-auto text-gold" /><h1 className="mt-5 font-display text-4xl text-ivory">Your Wishlist</h1><p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">Save pieces with the heart icon. Your wishlist stays on this device—no account needed.</p><Link href="/shop" className="store-cta-primary mt-7 w-full min-[390px]:w-auto">Explore collection</Link></div>;
 
-  return <><div className="mb-8 sm:mb-9"><p className="store-eyebrow">Saved on this device</p><h1 className="font-display text-4xl text-ivory sm:text-5xl">Your Wishlist</h1><p className="mt-2 text-sm leading-6 text-muted">Choose any required options, then add or move an item to your cart.</p></div><div className="grid gap-4 lg:grid-cols-2">{products.map((product) => <WishlistItem key={product.id} product={product} />)}</div><Link href="/cart" className="store-cta-secondary mt-8 w-full min-[390px]:w-auto"><ShoppingBag size={17} /> View cart</Link></>;
+  return <><div className="atelier-bag-heading mb-8 sm:mb-9"><p className="store-eyebrow">Saved on this device</p><h1 className="font-display text-4xl text-ivory sm:text-5xl">Your Wishlist</h1><p className="mt-2 text-sm leading-6 text-muted">Choose any required options, then add or move an item to your cart.</p></div><div className="grid gap-4 lg:grid-cols-2">{products.map((product) => <WishlistItem key={product.id} product={product} />)}</div><Link href="/cart" className="store-cta-secondary mt-8 w-full min-[390px]:w-auto"><ShoppingBag size={17} /> View cart</Link></>;
 }

@@ -89,15 +89,20 @@
   .bg-ivory .store-section-title { color: #161617; }
   .bg-ivory .store-eyebrow { color: #76580c; }
   .bg-ivory header .text-muted { color: #615e57; }
-  .premium-loader { display: inline-flex; min-width: min(100%, 18rem); flex-direction: column; align-items: center; color: var(--mh-ivory); }
+  .initial-storefront-loader { position: fixed; inset: 0; z-index: 200; display: grid; min-height: 100svh; place-items: center; overflow: hidden; background: #080809; }
+  .initial-storefront-loader::before { position: absolute; inset: 0; content: ""; background: radial-gradient(circle at 50% 42%, rgb(210 173 69 / .08), transparent 34%); pointer-events: none; }
+  .premium-loader { display: flex; min-height: min(100%, 24rem); min-width: min(100%, 20rem); flex-direction: column; align-items: center; justify-content: center; color: var(--mh-ivory); }
+  .premium-loader-stage { position: relative; display: grid; width: min(100%, 25rem); place-items: center; }
   .premium-loader-mark { position: relative; display: grid; width: min(21rem, 82vw); aspect-ratio: 1448 / 1086; place-items: center; }
-  .premium-loader-orbit { position: absolute; inset: -0.7rem; border: 1px solid rgb(210 173 69 / 0.24); border-left-color: transparent; border-right-color: transparent; animation: premium-loader-orbit 2.8s linear infinite; }
-  .premium-loader-frame { position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 1448 / 1086; overflow: hidden; background: transparent; filter: drop-shadow(0 1.5rem 2.5rem rgb(0 0 0 / 0.42)); animation: premium-loader-mark 2.2s var(--mh-ease-out) infinite; }
-  .premium-loader-sweep { position: absolute; z-index: 2; top: -35%; bottom: -35%; left: -60%; width: 36%; background: rgb(255 244 189 / 0.82); filter: blur(0.45rem); transform: rotate(22deg); animation: premium-loader-sweep 2.4s var(--mh-ease-out) infinite; }
-  .premium-loader-copy { margin-top: 1.25rem; display: grid; justify-items: center; gap: 0.3rem; text-align: center; }
-  .premium-loader-brand { font-family: var(--font-cormorant), Georgia, serif; font-size: clamp(1.75rem, 6vw, 2.35rem); font-weight: 650; line-height: 0.95; }
+  .premium-loader-frame { position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 1448 / 1086; overflow: hidden; background: transparent; filter: drop-shadow(0 1.5rem 2.5rem rgb(0 0 0 / 0.42)); }
+  .premium-loader-rule { position: absolute; top: 50%; z-index: 0; height: 1px; width: 16%; background: linear-gradient(90deg, transparent, rgb(210 173 69 / 0.55)); }
+  .premium-loader-rule-left { right: calc(100% - 1rem); }
+  .premium-loader-rule-right { left: calc(100% - 1rem); transform: rotate(180deg); }
+  .premium-loader-sweep { position: absolute; z-index: 2; top: -35%; bottom: -35%; left: -60%; width: 25%; background: rgb(255 244 189 / 0.8); filter: blur(0.55rem); transform: rotate(22deg); animation: premium-loader-sweep 2.8s var(--mh-ease-out) infinite; }
+  .premium-loader-copy { margin-top: 1.5rem; display: grid; justify-items: center; gap: 0.45rem; text-align: center; }
   .premium-loader-label { color: var(--mh-gold); font-size: 0.62rem; font-weight: 850; letter-spacing: 0.2em; text-transform: uppercase; }
-  .premium-loader-track { position: relative; margin-top: 1.2rem; height: 1px; width: min(100%, 13rem); overflow: hidden; background: rgb(245 242 234 / 0.16); }
+  .premium-loader-caption { color: var(--mh-subtle); font-size: 0.68rem; letter-spacing: 0.04em; }
+  .premium-loader-track { position: relative; margin-top: 1.35rem; height: 1px; width: min(100%, 15rem); overflow: hidden; background: rgb(245 242 234 / 0.14); transform-origin: center; }
   .premium-loader-progress { position: absolute; inset-block: 0; width: 42%; background: linear-gradient(90deg, transparent, var(--mh-gold), transparent); animation: premium-loader-progress 1.65s var(--mh-ease-out) infinite; }
   .loading-shimmer { position: relative; overflow: hidden; background: linear-gradient(90deg, rgb(245 242 234 / 0.055), rgb(245 242 234 / 0.105), rgb(245 242 234 / 0.055)); }
   .loading-shimmer::after { position: absolute; inset: 0; content: ""; background: linear-gradient(105deg, transparent 20%, rgb(210 173 69 / 0.16) 48%, transparent 72%); transform: translateX(-100%); animation: loading-shimmer 1.8s var(--mh-ease-out) infinite; }
@@ -183,7 +188,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .store-page-enter { animation: none; }
-  .premium-loader-orbit, .premium-loader-frame, .premium-loader-sweep, .premium-loader-progress, .loading-shimmer::after { animation: none; }
+  .premium-loader-frame, .premium-loader-sweep, .premium-loader-progress, .loading-shimmer::after { animation: none; }
 }
 
 button,

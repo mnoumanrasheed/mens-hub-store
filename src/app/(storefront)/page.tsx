@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
-  ArrowUpRight,
   Camera,
   Check,
   Gem,
@@ -55,11 +54,16 @@ export default async function HomePage() {
         primaryLink={hero.fields.primaryCtaLink || "/shop"}
         secondaryLabel={hero.fields.secondaryCtaLabel || "Explore Categories"}
         secondaryLink={hero.fields.secondaryCtaLink || "/#categories"}
-        mainImage={hero.imageUrl ? { url: hero.imageUrl, alt: "Men’s Hub collection" } : heroCandidates[0]}
+        mainImage={hero.imageUrl ? { url: hero.imageUrl, alt: "Men’s Hub collection" } : undefined}
         secondaryImages={heroCandidates.slice(hero.imageUrl ? 0 : 1, hero.imageUrl ? 2 : 3)}
       />
 
-      <CategoryShowcase categories={data.categories} content={block("shop-by-category")} />
+      <nav className="atelier-service-strip" aria-label="Shopping services">
+        <Link href="/shop"><Gem />Considered collections</Link>
+        <Link href="/shipping-policy"><Truck />Delivery guidance</Link>
+        <Link href="/return-exchange-policy"><RefreshCcw />Exchange support</Link>
+        <Link href="/how-to-order"><MessageCircle />Personal ordering</Link>
+      </nav>
 
       <CollectionSection
         eyebrow="Latest edit"
@@ -70,14 +74,11 @@ export default async function HomePage() {
         empty="New arrivals will appear here when they are published."
       />
 
-      <PremiumCollectionsSection
-        categories={data.categories}
-        featured={data.featuredProducts}
-        sale={data.saleProducts}
-        featuredContent={block("featured")}
-        saleContent={block("sale")}
-      />
+      <CategoryShowcase categories={data.categories} content={block("shop-by-category")} />
 
+      <SaleSection products={data.saleProducts} content={block("sale")} />
+
+      <BrandStorySection categories={data.categories} />
       <WhySection content={block("why-mens-hub")} />
       <TrustSection content={block("visit-store")} settings={data.settings} />
       <FashionShowcase categories={data.categories} instagramUrl={data.settings.instagramUrl} />
@@ -97,7 +98,7 @@ function SectionHeader({
   href?: string;
 }) {
   return (
-    <header className="mb-9 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+    <header className="atelier-section-heading mb-9 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <p className="store-eyebrow">{eyebrow}</p>
         <h2 className="store-section-title">{heading}</h2>
@@ -132,7 +133,7 @@ function CollectionSection({
   empty: string;
 }) {
   return (
-    <section className="store-section border-b border-line bg-canvas">
+    <section className="store-section premium-promise-section border-b border-line bg-canvas">
       <Container size="wide">
         <ScrollReveal>
           <SectionHeader
@@ -154,98 +155,25 @@ function CollectionSection({
   );
 }
 
-function PremiumCollectionsSection({
-  categories,
-  featured,
-  sale,
-  featuredContent,
-  saleContent,
-}: {
-  categories: Category[];
-  featured: StorefrontProduct[];
-  sale: StorefrontProduct[];
-  featuredContent: CmsBlockValue;
-  saleContent: CmsBlockValue;
-}) {
-  const editorial = [...categories]
-    .sort((a, b) => Number(b.slug === "accessories") - Number(a.slug === "accessories"))
-    .filter((category) => category.bannerImageUrl || category.imageUrl)
-    .slice(0, 2);
+function SaleSection({ products, content }: { products: StorefrontProduct[]; content: CmsBlockValue }) {
+  if (!products.length) return null;
 
   return (
     <section className="store-section overflow-hidden border-b border-line bg-[#0e0e10]">
       <Container size="wide">
         <ScrollReveal>
           <SectionHeader
-            eyebrow="The house edit"
-            heading={featuredContent.fields.heading || "Premium Collections"}
-            description={featuredContent.fields.description || "Considered pieces selected for a modern, confident wardrobe."}
-            href={featured.length ? "/shop?sort=featured" : "/shop"}
+            eyebrow="Private selection"
+            heading={content.fields.heading || "Limited Offers"}
+            description={content.fields.description || "A limited selection of distinguished pieces, available for a considered time."}
+            href="/sale"
           />
-
-          {featured.length ? (
-            <div className="grid grid-cols-1 gap-x-3 gap-y-10 min-[430px]:grid-cols-2 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4">
-              {featured.slice(0, 8).map((product) => <ProductCard key={product.id} product={product} />)}
-            </div>
-          ) : editorial.length ? (
-            <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-              {editorial.map((category, index) => (
-                <EditorialCollection key={category.id} category={category} index={index} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState text="Our premium edit is being prepared." />
-          )}
-
-          {sale.length ? (
-            <div className="mt-16 border-t border-white/10 pt-12 sm:mt-24 sm:pt-16">
-              <SectionHeader
-                eyebrow="Private selection"
-                heading={saleContent.fields.heading || "Limited Offers"}
-                description={saleContent.fields.description || "A limited selection of distinguished pieces, available for a considered time."}
-                href="/sale"
-              />
-              <div className="grid grid-cols-1 gap-x-3 gap-y-10 min-[430px]:grid-cols-2 sm:grid-cols-4 sm:gap-x-5">
-                {sale.slice(0, 4).map((product) => <ProductCard key={product.id} product={product} />)}
-              </div>
-            </div>
-          ) : null}
+          <div className="grid grid-cols-1 gap-x-3 gap-y-10 min-[430px]:grid-cols-2 sm:grid-cols-4 sm:gap-x-5">
+            {products.map((product) => <ProductCard key={product.id} product={product} />)}
+          </div>
         </ScrollReveal>
       </Container>
     </section>
-  );
-}
-
-function EditorialCollection({ category, index }: { category: Category; index: number }) {
-  const image = category.bannerImageUrl || category.imageUrl;
-  return (
-    <article className="group store-editorial-frame relative min-h-[31rem] sm:min-h-[38rem]">
-      <Link className="absolute inset-0" href={`/shop/${category.slug}`}>
-        {image ? (
-          <StoreImage
-            src={image}
-            alt={`${category.name} premium collection`}
-            fill
-            quality={84}
-            sizes="(max-width: 639px) 100vw, 50vw"
-            className="object-cover transition duration-[1200ms] ease-[var(--mh-ease-out)] motion-safe:group-hover:scale-[1.04]"
-          />
-        ) : null}
-        <span className="absolute inset-0 bg-[linear-gradient(0deg,rgba(7,7,8,.9)_0%,rgba(7,7,8,.12)_70%)]" aria-hidden="true" />
-        <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 sm:p-8">
-          <span>
-            <span className="store-eyebrow block">Edit {String(index + 1).padStart(2, "0")}</span>
-            <span className="block font-display text-4xl font-semibold text-ivory sm:text-5xl">{category.name}</span>
-            <span className="mt-3 block max-w-md text-sm leading-6 text-white/70">
-              {category.description || "Signature pieces chosen for lasting style."}
-            </span>
-          </span>
-          <span className="grid size-11 shrink-0 place-items-center border border-white/30 text-white transition-colors group-hover:border-gold group-hover:bg-gold group-hover:text-gold-ink">
-            <ArrowUpRight size={17} />
-          </span>
-        </span>
-      </Link>
-    </article>
   );
 }
 
@@ -262,37 +190,66 @@ function EmptyState({ text }: { text: string }) {
   );
 }
 
-function WhySection({ content }: { content: CmsBlockValue }) {
-  const defaults = [
-    "Curated menswear",
-    "Modern designs",
-    "Complete men’s fashion range",
-    "Convenient WhatsApp ordering",
-    "Physical store concept",
-  ];
-  const icons = [Gem, Sparkles, Shirt, MessageCircle, Layers3];
-  const points = defaults.map((fallback, index) => content.fields[`point${index + 1}`] || fallback).filter(Boolean);
+function BrandStorySection({ categories }: { categories: Category[] }) {
+  const category = categories.find((item) => item.bannerImageUrl || item.imageUrl);
+  const image = category?.bannerImageUrl || category?.imageUrl || "/images/atelier-campaign.webp";
 
   return (
-    <section className="store-section border-b border-black/10 bg-ivory text-[#161617]">
+    <section className="atelier-story story-manifesto overflow-hidden border-b border-line bg-canvas" aria-labelledby="brand-story-title">
+      <span className="story-manifesto-word" aria-hidden="true">INTENTION</span>
+      <div className="story-manifesto-shell">
+        <div className="story-manifesto-meta" aria-hidden="true"><span>Men&apos;s Hub / The house</span><span>Modern menswear / 01</span></div>
+        <div className="story-manifesto-grid">
+          <ScrollReveal className="story-manifesto-copy">
+            <p className="store-eyebrow">A point of view</p>
+            <h2 id="brand-story-title"><span>More than</span><span>clothing.</span><em>A statement of confidence.</em></h2>
+            <div className="story-manifesto-note">
+              <span className="story-manifesto-note-index">01</span>
+              <p>We believe the modern gentleman dresses with intention. Each piece is selected to move through the day with quiet confidence and lasting ease.</p>
+            </div>
+            <Link href="/about" className="story-manifesto-link">Discover our story <span aria-hidden="true">&#8599;</span></Link>
+          </ScrollReveal>
+          <ScrollReveal className="story-manifesto-visual" delay={0.08}>
+            <StoreImage src={image} alt="Men's Hub fashion story" fill sizes="(max-width: 767px) 100vw, 48vw" className="story-manifesto-image" />
+            <span className="story-manifesto-shade" aria-hidden="true" />
+            <span className="story-manifesto-caption">Selected with purpose</span>
+            <span className="story-manifesto-seal" aria-hidden="true">MH<small>Style made for men</small></span>
+          </ScrollReveal>
+        </div>
+        <div className="story-manifesto-rail">
+          <span><b>01</b> Thoughtful curation</span><span><b>02</b> Quiet confidence</span><span><b>03</b> Lasting style</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+function WhySection({ content }: { content: CmsBlockValue }) {
+  const principles = [
+    { icon: Gem, title: content.fields.point1 || "Curated menswear", text: "A focused edit chosen for quality, relevance and lasting appeal." },
+    { icon: Sparkles, title: content.fields.point2 || "Modern designs", text: "Contemporary silhouettes shaped for confident everyday dressing." },
+    { icon: Shirt, title: content.fields.point3 || "Complete men's fashion range", text: "Clothing, footwear and finishing details considered as one wardrobe." },
+    { icon: MessageCircle, title: content.fields.point4 || "Convenient WhatsApp ordering", text: "Direct, personal assistance from first question to order confirmation." },
+    { icon: Layers3, title: content.fields.point5 || "Physical store concept", text: "A real destination where service and personal style come together." },
+  ];
+
+  return (
+    <section className="atelier-principles premium-why-section store-section border-b border-black/10 bg-ivory text-canvas">
       <Container size="wide">
-        <ScrollReveal>
-          <SectionHeader
-            eyebrow="Our point of view"
-            heading={content.fields.heading || "Why Men’s Hub"}
-            description={content.fields.description}
-          />
-          <div className="grid gap-px overflow-hidden border border-black/10 bg-black/10 sm:grid-cols-2 lg:grid-cols-5">
-            {points.map((point, index) => {
-              const Icon = icons[index] ?? Gem;
-              return (
-                <div key={point} className="bg-ivory p-6 transition-colors duration-300 hover:bg-[#ece7dc] sm:p-7">
-                  <Icon size={22} strokeWidth={1.5} className="text-[#8b6912]" />
-                  <p className="mt-8 font-display text-xl font-semibold leading-tight">{point}</p>
-                  <span className="mt-4 block h-px w-8 bg-[#b68d22]" />
-                </div>
-              );
-            })}
+        <ScrollReveal className="premium-why-editorial">
+          <header className="premium-why-intro">
+            <p className="store-eyebrow">01 / The Men&apos;s Hub difference</p>
+            <h2>{content.fields.heading || "Why Men's Hub"}</h2>
+            <p>{content.fields.description || "A considered destination for men who value strong style, thoughtful choice and service that feels personal."}</p>
+            <span className="premium-why-monogram" aria-hidden="true">WHY</span>
+          </header>
+          <div className="premium-why-principles">
+            {principles.map(({ icon: Icon, title, text }, index) => (
+              <article key={title} className="premium-why-row">
+                <span className="premium-why-number">{String(index + 1).padStart(2, "0")}</span>
+                <div className="premium-why-row-copy"><h3>{title}</h3><p>{text}</p></div>
+                <span className="premium-why-row-icon"><Icon size={19} strokeWidth={1.35} /></span>
+              </article>
+            ))}
           </div>
         </ScrollReveal>
       </Container>
@@ -315,25 +272,22 @@ function TrustSection({
   ];
 
   return (
-    <section className="store-section border-b border-line bg-canvas">
+    <section className="store-section premium-promise-section border-b border-line bg-canvas">
       <Container size="wide">
         <ScrollReveal>
-          <SectionHeader
-            eyebrow="The Men’s Hub promise"
-            heading="Confidence in every order"
-            description="Premium service should feel as considered as the clothes themselves."
-          />
-          <div className="grid border border-line bg-line gap-px sm:grid-cols-2 lg:grid-cols-4">
+          <div className="premium-promise-heading"><div><p className="store-eyebrow">The Men&apos;s Hub promise / 02</p><h2 className="store-section-title">Confidence in every order.</h2></div><p>Premium service should feel as considered as the clothes themselves.</p></div>
+          <div className="premium-promise-grid">
             {assurances.map(({ icon: Icon, title, text }) => (
-              <article key={title} className="bg-[#101011] p-6 sm:p-8">
-                <Icon className="text-gold" size={23} strokeWidth={1.45} />
-                <h3 className="mt-8 font-display text-2xl font-semibold text-ivory">{title}</h3>
-                <p className="mt-3 text-sm leading-7 text-muted">{text}</p>
+              <article key={title} className="premium-promise-card">
+                <div className="premium-promise-icon"><Icon size={21} strokeWidth={1.35} /></div>
+                <h3>{title}</h3>
+                <p>{text}</p>
+                <span className="premium-promise-arrow" aria-hidden="true">&#8599;</span>
               </article>
             ))}
           </div>
 
-          <div className="mt-10 grid gap-8 border-y border-line py-9 sm:mt-14 sm:py-12 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="premium-concierge mt-10 grid gap-8 border-y border-line py-9 sm:mt-14 sm:py-12 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <p className="store-eyebrow">Personal service</p>
               <h3 className="font-display text-3xl font-semibold text-ivory sm:text-4xl">
@@ -368,7 +322,7 @@ function FashionShowcase({ categories, instagramUrl }: { categories: Category[];
   if (!images.length) return null;
 
   return (
-    <section className="store-section overflow-hidden bg-[#09090a]">
+    <section id="lookbook" className="store-section scroll-mt-16 overflow-hidden bg-[#09090a]">
       <Container size="wide">
         <ScrollReveal>
           <SectionHeader
@@ -393,7 +347,6 @@ function FashionShowcase({ categories, instagramUrl }: { categories: Category[];
                       src={image}
                       alt={`${category.name} fashion edit`}
                       fill
-                      quality={82}
                       sizes="(max-width: 639px) 50vw, (max-width: 1023px) 25vw, 34vw"
                       className="object-cover transition duration-[1000ms] ease-[var(--mh-ease-out)] motion-safe:group-hover:scale-[1.05]"
                     />

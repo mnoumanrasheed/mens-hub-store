@@ -35,7 +35,7 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
 
   if (!lines.length) {
     return (
-      <div className="border border-line bg-surface px-5 py-14 text-center sm:px-6 sm:py-16">
+      <div className="atelier-empty border border-line bg-surface px-5 py-14 text-center sm:px-6 sm:py-16">
         <ShoppingBag className="mx-auto text-gold" />
         <h1 className="mt-5 font-display text-4xl text-ivory">Your Cart</h1>
         <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">Your cart is currently empty.</p>
@@ -46,7 +46,7 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
 
   return (
     <>
-      <div className="mb-8 sm:mb-9">
+      <div className="atelier-bag-heading mb-8 sm:mb-9">
         <p className="store-eyebrow">Your selection</p>
         <h1 className="font-display text-4xl text-ivory sm:text-5xl">Shopping Cart</h1>
         <p className="mt-2 text-sm leading-6 text-muted">Saved on this device. No account is required.</p>
@@ -55,7 +55,7 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
         <div className="grid gap-4">
           {lines.map((line) => (
-            <article key={line.lineId} className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 border border-line bg-surface p-3 min-[390px]:grid-cols-[6.5rem_minmax(0,1fr)] min-[390px]:gap-4 sm:grid-cols-[8rem_minmax(0,1fr)_auto] sm:p-4">
+            <article key={line.lineId} className="atelier-cart-line grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 border border-line bg-surface p-3 min-[390px]:grid-cols-[6.5rem_minmax(0,1fr)] min-[390px]:gap-4 sm:grid-cols-[8rem_minmax(0,1fr)_auto] sm:p-4">
               <Link href={`/product/${line.slug}`} className="relative aspect-[4/5] overflow-hidden bg-surface-raised">
                 <StoreImage src={line.imageUrl} alt={line.name} fill sizes="128px" className="object-cover" />
               </Link>
@@ -88,7 +88,7 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
           ))}
         </div>
 
-        <aside className="border border-line bg-surface p-5 sm:p-6 lg:sticky lg:top-24">
+        <aside className="atelier-cart-summary border border-line bg-surface p-5 sm:p-6 lg:sticky lg:top-24">
           <p className="store-eyebrow">Order summary</p>
           <dl className="grid gap-4 text-sm">
             <div className="flex items-center justify-between gap-4"><dt className="text-muted">Products Total</dt><dd className="font-bold text-ivory">{currency.format(total)}</dd></div>

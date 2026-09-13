@@ -20,10 +20,13 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.11.0",
+    "gsap": "^3.15.0",
     "jose": "^6.2.12",
     "lucide-react": "^1.42.0",
     "motion": "^13.2.0",
@@ -33,14 +36,17 @@
     "react-dom": "19.2.8",
     "react-icons": "^5.7.0",
     "server-only": "^0.0.1",
+    "three": "^0.186.0",
     "zod": "^4.5.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24.13.3",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
     "dotenv": "^17.4.2",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.3.4",

@@ -1,0 +1,56 @@
+[
+  {
+    "path": "/shop",
+    "heroCount": 1,
+    "title": "Shop",
+    "atmosphere": 1,
+    "logo": 1,
+    "motionNodes": 3,
+    "overflow": 0
+  },
+  {
+    "path": "/shop",
+    "heroCount": 1,
+    "title": "Shop",
+    "atmosphere": 1,
+    "logo": 1,
+    "motionNodes": 3,
+    "overflow": 0
+  },
+  {
+    "path": "/new-arrivals",
+    "heroCount": 1,
+    "title": "New Arrivals",
+    "atmosphere": 1,
+    "logo": 1,
+    "motionNodes": 3,
+    "overflow": 0
+  },
+  {
+    "path": "/sale",
+    "heroCount": 1,
+    "title": "Sale",
+    "atmosphere": 1,
+    "logo": 1,
+    "motionNodes": 3,
+    "overflow": 0
+  },
+  {
+    "path": "/about",
+    "heroCount": 1,
+    "title": "Style Madefor Men",
+    "atmosphere": 1,
+    "logo": 1,
+    "motionNodes": 3,
+    "overflow": 0
+  },
+  {
+    "path": "/contact",
+    "heroCount": 1,
+    "title": "Let's talk.",
+    "atmosphere": 1,
+    "logo": 1,
+    "motionNodes": 3,
+    "overflow": 0
+  }
+]

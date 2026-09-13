@@ -1,0 +1,36 @@
+import { chromium, expect } from '@playwright/test';
+(async()=>{
+ const browser=await chromium.launch({channel:'chrome',headless:true});
+ const page=await browser.newPage({viewport:{width:390,height:844}});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://localhost:3000/',{waitUntil:'networkidle',timeout:120000});
+ await page.getByRole('button',{name:'Search',exact:true}).click();
+ await page.getByRole('combobox').fill('shirt');
+ await page.getByRole('combobox').press('Enter');
+ await page.waitForURL('**/shop?q=shirt',{timeout:60000}); await page.waitForLoadState('networkidle');
+ console.log('Search submitted:',page.url());
+ await page.getByRole('button',{name:'Filters',exact:true}).click();
+ console.log('Mobile filter visible:',await page.locator('#mobile-product-filters').isVisible());
+ await page.keyboard.press('Escape');
+ await page.screenshot({path:'artifacts/shop-mobile.png'});
+ console.log('Mobile collection overflow:',await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
+ const product={id:'visual-review-only',slug:'visual-review-only',name:'Oxford Cotton Shirt',sku:'REVIEW-01',imageUrl:'/seed-media/01-Shirts/shirt-01.jpg',price:'4500',availableStock:5,sizes:['S','M','L'],colors:['Blue'],productUrl:'/product/visual-review-only'};
+ await page.evaluate(p=>{localStorage.setItem('mens-hub:cart:v1',JSON.stringify([{...p,lineId:JSON.stringify([p.id,'M','Blue']),quantity:1,selectedSize:'M',selectedColor:'Blue'}]));localStorage.setItem('mens-hub:wishlist:v2',JSON.stringify([p]));},product);
+ await page.goto('http://localhost:3000/cart',{waitUntil:'networkidle'});
+ await page.getByRole('button',{name:'Increase Oxford Cotton Shirt quantity'}).click();
+ await expect(page.getByRole('link',{name:'Cart, 2 items',exact:true})).toBeVisible();
+ await page.screenshot({path:'artifacts/cart-populated-mobile.png',fullPage:true});
+ console.log('Cart quantity and header count updated.');
+ await page.setViewportSize({width:1440,height:1000}); await page.screenshot({path:'artifacts/cart-populated-desktop.png'});
+ await page.goto('http://localhost:3000/wishlist',{waitUntil:'networkidle'});
+ await page.getByRole('button',{name:'Add to cart',exact:true}).click();
+ await expect(page.getByRole('status')).toHaveText('Added to cart.');
+ await page.screenshot({path:'artifacts/wishlist-populated-desktop.png'});
+ console.log('Wishlist add to cart works.');
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await page.goto('http://localhost:3000/',{waitUntil:'networkidle'});
+ console.log('Reduced motion canvas:',await page.locator('.atelier-scene canvas').count());
+ console.log('Browser errors:',errors);
+ await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});
+

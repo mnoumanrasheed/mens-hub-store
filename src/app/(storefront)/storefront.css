@@ -1,0 +1,763 @@
+@import "@fontsource/cormorant-garamond/latin-400.css";
+@import "@fontsource/cormorant-garamond/latin-400-italic.css";
+@import "@fontsource/cormorant-garamond/latin-500.css";
+@import "@fontsource/cormorant-garamond/latin-600.css";
+@import "@fontsource/manrope/latin-400.css";
+@import "@fontsource/manrope/latin-500.css";
+@import "@fontsource/manrope/latin-600.css";
+@import "@fontsource/manrope/latin-700.css";
+
+/* Every design rule is scoped to the customer storefront. */
+.atelier-store {
+  --font-manrope: "Manrope", Arial, sans-serif;
+  --font-cormorant: "Cormorant Garamond", Georgia, serif;
+  --mh-container-gutter: clamp(1.25rem, 4.4vw, 5rem);
+  --mh-section-space: clamp(4rem, 7vw, 7rem);
+  font-family: var(--font-manrope);
+  background: var(--mh-canvas);
+}
+.atelier-store .font-display { font-family: var(--font-cormorant); font-weight: 400; }
+.atelier-store .font-sans { font-family: var(--font-manrope); }
+.atelier-store .store-section { padding-block: var(--mh-section-space); }
+.atelier-store .store-eyebrow { font-size: .6rem; font-weight: 600; letter-spacing: .24em; margin-bottom: 1rem; }
+.atelier-store .store-section-title { font-size: clamp(2.7rem, 5vw, 5rem); font-weight: 400; letter-spacing: -.045em; line-height: 1.02; }
+.atelier-store .store-cta-primary, .atelier-store .store-cta-secondary { min-height: 3.25rem; padding-inline: 1.5rem; font-size: .62rem; font-weight: 700; letter-spacing: .14em; gap: 1rem; border-radius: 0; }
+.atelier-store .store-cta-primary { background: var(--mh-gold); box-shadow: none; }
+.atelier-store .store-cta-primary:hover { background: var(--mh-ivory); border-color: var(--mh-ivory); }
+.atelier-store .store-cta-secondary { border-color: var(--mh-line); }
+.atelier-store .store-cta-secondary:hover { border-color: var(--mh-gold); }
+.atelier-store button:not(:disabled), .atelier-store summary { cursor: pointer; }
+.atelier-store button:disabled { cursor: not-allowed; }
+.atelier-store .store-filter-input { min-height: 3rem; font-family: var(--font-manrope); font-size: .78rem; background: transparent; transition: border-color .2s; }
+.atelier-store .store-filter-input:hover, .atelier-store .store-filter-input:focus { border-color: var(--mh-gold); }
+.atelier-store .store-filter-input option { background: var(--mh-canvas); }
+.atelier-store .store-announcement { font-size: .58rem; font-weight: 600; letter-spacing: .15em; padding: .65rem 1rem; }
+.atelier-store .atelier-header { height: 5.5rem; }
+.atelier-store .atelier-header-inner { gap: 1.25rem; }
+.atelier-store .atelier-brand-mark { width: 3.5rem; height: 3.4rem; box-shadow: none; }
+.atelier-store .atelier-brand-word { display: flex; flex-direction: column; gap: .3rem; font-family: var(--font-cormorant); font-size: 1.3rem; letter-spacing: .14em; font-weight: 600; }
+.atelier-store .atelier-brand-word small { font-family: var(--font-manrope); font-size: .43rem; letter-spacing: .27em; font-weight: 500; color: var(--mh-muted); }
+.atelier-store .store-nav-link { padding-inline: .6rem; font-size: .57rem; letter-spacing: .1em; font-weight: 600; }
+.atelier-store .atelier-order-link { padding-inline: .8rem; font-size: .55rem; }
+.atelier-store .header-count { position: absolute; top: 1px; right: 0; min-width: 1rem; height: 1rem; padding-inline: 3px; display: grid; place-items: center; background: var(--mh-gold); color: var(--mh-gold-ink); border-radius: 50%; font-size: .55rem; font-weight: 700; }
+.atelier-store .campaign-hero { position: relative; isolation: isolate; min-height: min(58rem, 100svh); margin-top: -5.5rem; overflow: hidden; background: var(--mh-canvas); display: flex; flex-direction: column; justify-content: center; padding: 10rem var(--mh-container-gutter) 12rem; }
+.atelier-store .campaign-photo { position: absolute; z-index: -4; inset: -5% 0; }
+.atelier-store .campaign-photo img { object-position: 65% 35%; }
+.atelier-store .campaign-shade { position: absolute; z-index: -3; inset: 0; background: linear-gradient(90deg, rgb(11 11 12 / .88), rgb(11 11 12 / .5) 35%, transparent 72%), linear-gradient(0deg, var(--mh-canvas), transparent 35%, transparent 75%, rgb(11 11 12 / .45)); }
+.atelier-store .atelier-scene { position: absolute; inset: 0; pointer-events: none; z-index: -1; opacity: .7; }
+.atelier-store .atelier-scene canvas { display: block; width: 100%; height: 100%; }
+.atelier-store .campaign-topline { position: absolute; top: 7.5rem; inset-inline: var(--mh-container-gutter); display: flex; justify-content: space-between; color: var(--mh-muted); font-size: .53rem; font-weight: 500; letter-spacing: .23em; text-transform: uppercase; }
+.atelier-store .campaign-content { position: relative; max-width: 60rem; z-index: 1; }
+.atelier-store .campaign-content > .store-eyebrow { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+.atelier-store .campaign-dash { width: 2.4rem; height: 1px; background: var(--mh-gold); }
+.atelier-store .campaign-title { font-family: var(--font-cormorant); font-size: clamp(4.5rem, 8.8vw, 9.2rem); font-weight: 400; letter-spacing: -.055em; line-height: .96; }
+.atelier-store .campaign-line { display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.06em; }
+.atelier-store .campaign-line > span { display: block; }
+.atelier-store .campaign-title-italic { color: var(--mh-gold); font-style: italic; }
+.atelier-store .campaign-description { max-width: 25rem; margin-top: 2rem; color: var(--mh-ivory); opacity: .75; font-size: .8rem; line-height: 1.95; }
+.atelier-store .campaign-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.75rem; margin-top: 2rem; }
+.atelier-store .campaign-text-link { display: inline-flex; align-items: center; gap: .7rem; min-height: 3rem; font-size: .58rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; border-bottom: 1px solid rgb(245 242 234 / .4); transition: color .2s; }
+.atelier-store .campaign-text-link:hover { color: var(--mh-gold); }
+.atelier-store .campaign-watermark { pointer-events: none; position: absolute; z-index: -2; bottom: -.05em; left: 20%; white-space: nowrap; font-family: var(--font-cormorant); font-size: clamp(9rem, 23vw, 25rem); line-height: .8; letter-spacing: -.04em; color: rgb(245 242 234 / .055); }
+.atelier-store .campaign-bottomline { position: absolute; bottom: 2rem; inset-inline: var(--mh-container-gutter); display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; border-top: 1px solid rgb(245 242 234 / .16); padding-top: 1.5rem; }
+.atelier-store .campaign-scroll { display: flex; align-items: center; gap: 1rem; font-size: .53rem; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; }
+.atelier-store .campaign-scroll-icon { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid rgb(245 242 234 / .25); border-radius: 50%; transition: background .3s, color .3s; }
+.atelier-store .campaign-scroll:hover .campaign-scroll-icon { background: var(--mh-gold); color: var(--mh-gold-ink); }
+.atelier-store .campaign-caption { font-family: var(--font-cormorant); font-size: 1.15rem; line-height: 1.3; }
+.atelier-store .campaign-caption > span { color: var(--mh-muted); }
+.atelier-store .campaign-index { display: flex; gap: 1rem; align-items: center; font-size: .5rem; letter-spacing: .16em; }
+.atelier-store .campaign-index b { color: var(--mh-gold); font-size: .75rem; }
+.atelier-store .campaign-index > span { width: 3.5rem; height: 1px; background: var(--mh-gold); }
+.atelier-store .atelier-service-strip { display: grid; grid-template-columns: repeat(4, 1fr); padding: 1.5rem var(--mh-container-gutter); border-bottom: 1px solid var(--mh-line); background: var(--mh-canvas); }
+.atelier-store .atelier-service-strip > a { display: flex; align-items: center; justify-content: center; gap: .8rem; min-height: 2.5rem; border-right: 1px solid var(--mh-line); font-size: .56rem; font-weight: 600; letter-spacing: .13em; text-transform: uppercase; }
+.atelier-store .atelier-service-strip > a:last-child { border-right: 0; }
+.atelier-store .atelier-service-strip svg { color: var(--mh-gold); width: 1rem; stroke-width: 1.4; }
+.atelier-store .atelier-service-strip > a:hover { color: var(--mh-gold); }
+.atelier-store .atelier-section-heading { border-bottom: 1px solid var(--mh-line); padding-bottom: 1.75rem; }
+.atelier-store .atelier-section-heading > a { font-size: .6rem; font-weight: 600; }
+.atelier-store .atelier-categories { background: var(--mh-surface); }
+.atelier-store .category-editorials { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+.atelier-store .category-editorial { position: relative; min-width: 0; }
+.atelier-store .category-editorial:nth-child(2) { margin-top: 3rem; }
+.atelier-store .category-editorial-image { position: relative; display: block; aspect-ratio: 3/4; overflow: hidden; background: var(--mh-surface-raised); }
+.atelier-store .category-editorial-image img { transition: transform 1s var(--mh-ease-out), filter 1s; }
+.atelier-store .category-editorial:hover img { transform: scale(1.045); }
+.atelier-store .category-number { position: absolute; top: 1rem; left: 1rem; padding: .45rem .6rem; color: var(--mh-ivory); background: rgb(11 11 12 / .7); font-size: .6rem; letter-spacing: .14em; }
+.atelier-store .category-copy { display: flex; gap: 1rem; justify-content: space-between; padding-top: 1.25rem; }
+.atelier-store .category-copy h3 { font-family: var(--font-cormorant); font-size: clamp(1.8rem, 3vw, 2.75rem); line-height: 1; }
+.atelier-store .category-copy p { margin-top: .75rem; max-width: 26rem; font-size: .73rem; line-height: 1.8; color: var(--mh-muted); }
+.atelier-store .category-arrow { flex-shrink: 0; display: grid; place-items: center; height: 2.75rem; width: 2.75rem; border: 1px solid var(--mh-line); border-radius: 50%; color: var(--mh-gold); transition: background .3s, color .3s; }
+.atelier-store a:hover .category-arrow { background: var(--mh-gold); color: var(--mh-gold-ink); }
+.atelier-store .category-directory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 3rem; margin-top: 3.5rem; border-top: 1px solid var(--mh-line); }
+.atelier-store .category-directory-item { display: flex; align-items: center; gap: 1.25rem; min-width: 0; border-bottom: 1px solid var(--mh-line); padding: 1rem 0; }
+.atelier-store .category-directory-image { position: relative; width: 4rem; height: 4.75rem; flex-shrink: 0; overflow: hidden; }
+.atelier-store .category-directory-item h3 { font-family: var(--font-cormorant); font-size: 1.75rem; }
+.atelier-store .category-directory-item p { font-size: .7rem; line-height: 1.7; color: var(--mh-muted); }
+.atelier-store .category-directory-item .category-arrow { margin-left: auto; }
+.atelier-store .atelier-product { position: relative; }
+.atelier-store .atelier-product-visual { border: 1px solid var(--mh-line); }
+.atelier-store .atelier-product-details { border: 0; border-bottom: 1px solid var(--mh-line); background: transparent; padding: 1.2rem 0 .5rem; }
+.atelier-store .atelier-product:hover .atelier-product-details { background: transparent; }
+.atelier-store .atelier-product-details > p:first-child { font-size: .5rem; letter-spacing: .17em; color: var(--mh-muted); font-weight: 500; }
+.atelier-store .atelier-product-title { font-size: clamp(1.35rem, 2vw, 1.8rem); min-height: 0; font-weight: 500; line-height: 1.15; }
+.atelier-store .atelier-product-order { font-size: .53rem; font-weight: 600; margin-top: 1.1rem; }
+.atelier-store .product-badge { font-size: .5rem; font-weight: 600; padding-inline: .45rem; min-height: 1.5rem; }
+.atelier-store .atelier-product-options { margin-top: .7rem; color: var(--mh-muted); font-size: .6rem; line-height: 1.7; }
+.atelier-store .atelier-story { margin: var(--mh-section-space) var(--mh-container-gutter); border: 1px solid var(--mh-line); }
+.atelier-store .atelier-story h2 { font-size: clamp(3.2rem, 5.5vw, 6.2rem); font-weight: 400; line-height: .95; max-width: 12ch; }
+.atelier-store .atelier-principles { background: var(--mh-ivory); color: var(--mh-canvas); }
+.atelier-store .atelier-principles .store-section-title { color: var(--mh-canvas); }
+.atelier-store .atelier-principles .store-eyebrow { color: var(--mh-gold-ink); }
+.atelier-store .atelier-principles .atelier-section-heading { border-color: rgb(11 11 12 / .2); }
+.atelier-store .atelier-principles .principle-card { background: var(--mh-ivory); padding-block: 2rem; }
+.atelier-store .atelier-principles .principle-card svg { color: var(--mh-gold-ink); }
+.atelier-store .atelier-principles .principle-card p { font-weight: 500; font-size: 1.65rem; }
+.atelier-store .atelier-principles .principle-card > span { background: var(--mh-gold); }
+.atelier-store .atelier-collection-header { position: relative; overflow: hidden; padding: clamp(2rem, 4vw, 4rem); margin-bottom: 2.5rem; border: 1px solid var(--mh-line); background: var(--mh-surface); }
+.atelier-store .atelier-collection-header::after { content: "THE EDIT"; position: absolute; bottom: -.2em; right: 1rem; font-family: var(--font-cormorant); font-size: clamp(6rem, 14vw, 13rem); line-height: 1; color: rgb(245 242 234 / .025); pointer-events: none; }
+.atelier-store .atelier-collection-header h1 { font-weight: 400; font-size: clamp(3.5rem, 7vw, 7.5rem); max-width: 16ch; }
+.atelier-store .collection-breadcrumb { display: flex; align-items: center; gap: .8rem; margin-bottom: 2rem; color: var(--mh-muted); font-size: .57rem; letter-spacing: .14em; text-transform: uppercase; }
+.atelier-store .collection-breadcrumb a:hover { color: var(--mh-gold); }
+.atelier-store .collection-category-nav { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .75rem; margin-bottom: 2rem; scrollbar-width: thin; }
+.atelier-store .collection-category-nav a { white-space: nowrap; padding: .75rem 1rem; border: 1px solid var(--mh-line); color: var(--mh-muted); font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; }
+.atelier-store .collection-category-nav a:hover, .atelier-store .collection-category-nav a[aria-current] { color: var(--mh-gold-ink); background: var(--mh-gold); border-color: var(--mh-gold); }
+.atelier-store .atelier-filter-form { background: transparent; border: 0; border-top: 1px solid var(--mh-gold); padding: 1.5rem 0; }
+.atelier-store .atelier-filter-form > p { margin-bottom: 1.5rem; }
+.atelier-store .atelier-product-page h1 { font-weight: 400; line-height: .96; max-width: 15ch; }
+.atelier-store .atelier-gallery { padding: .75rem; background: var(--mh-surface); }
+.atelier-store .atelier-gallery-visual { min-height: 0; }
+.atelier-store .atelier-gallery-note { display: flex; align-items: center; justify-content: space-between; padding: 1rem .25rem .25rem; font-size: .55rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mh-muted); }
+.atelier-store .atelier-purchase { border: 1px solid var(--mh-line); padding: clamp(1.25rem, 2.5vw, 2.25rem); background: var(--mh-surface); margin-top: 2rem; }
+.atelier-store .atelier-bag-heading { padding-bottom: 2rem; border-bottom: 1px solid var(--mh-line); }
+.atelier-store .atelier-bag-heading h1 { font-size: clamp(3.5rem, 7vw, 6.5rem); line-height: 1; }
+.atelier-store .atelier-cart-line { background: transparent; border-inline: 0; padding: 1.5rem 0; }
+.atelier-store .atelier-cart-summary { border-top: 2px solid var(--mh-gold); padding: 2rem; }
+.atelier-store .atelier-empty { position: relative; overflow: hidden; padding: clamp(4rem, 10vw, 8rem) 1.5rem; background: radial-gradient(ellipse at top, rgb(210 173 69 / .065), transparent 70%), var(--mh-surface); }
+.atelier-store .atelier-empty > svg { width: 2.5rem; height: 2.5rem; stroke-width: 1; }
+.atelier-store .atelier-empty h1 { font-size: clamp(3.5rem, 7vw, 5.5rem); }
+.atelier-store .atelier-empty::before { content: "YOUR PERSONAL EDIT"; display: block; font-size: .55rem; letter-spacing: .24em; color: var(--mh-muted); margin-bottom: 2rem; }
+.atelier-store .atelier-wishlist-card { padding: 1.5rem; border-top: 1px solid var(--mh-gold); }
+.atelier-store .atelier-policy-layout { display: grid; grid-template-columns: 13rem minmax(0, 1fr); gap: 4rem; margin-top: 3rem; }
+.atelier-store .atelier-care-nav { align-self: start; position: sticky; top: 7rem; }
+.atelier-store .atelier-care-nav a { display: flex; min-height: 2.8rem; align-items: center; border-bottom: 1px solid var(--mh-line); color: var(--mh-muted); font-size: .7rem; }
+.atelier-store .atelier-care-nav a:hover, .atelier-store .atelier-care-nav a[aria-current] { color: var(--mh-gold); }
+.atelier-store .atelier-policy-text { margin: 0; padding: clamp(1.5rem, 4vw, 3.5rem); border-top-color: var(--mh-gold); }
+.atelier-store .atelier-policy-header h1, .atelier-store .atelier-about-header h1 { font-weight: 400; line-height: 1; max-width: 18ch; }
+.atelier-store .atelier-about-header { padding: 3rem 0; }
+.atelier-store .atelier-about-photo { position: relative; height: clamp(16rem, 40vw, 32rem); margin-top: 3rem; overflow: hidden; }
+.atelier-store .atelier-about-photo img { object-position: center 30%; }
+.atelier-store .atelier-contact { border-top: 1px solid var(--mh-gold); }
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .atelier-store .atelier-order-link { display: none; }
+  .atelier-store .atelier-header-inner { gap: .75rem; }
+  .atelier-store .store-nav-link { padding-inline: .45rem; font-size: .52rem; }
+}
+@media (max-width: 1023px) {
+  .atelier-store .atelier-header { height: 4.75rem; }
+  .atelier-store .campaign-hero { margin-top: -4.75rem; min-height: 52rem; padding-top: 12rem; }
+  .atelier-store .campaign-topline { top: 6.75rem; }
+  .atelier-store .campaign-title { font-size: clamp(4.5rem, 10vw, 7rem); }
+  .atelier-store .campaign-caption { display: none; }
+  .atelier-store .atelier-mobile-menu { height: calc(100svh - 4.75rem); }
+}
+@media (max-width: 639px) {
+  .atelier-store .atelier-brand-word { font-size: 1.05rem; }
+  .atelier-store .atelier-brand-word small { font-size: .35rem; }
+  .atelier-store .atelier-brand-mark { display: flex; width: 2rem; height: 2.5rem; }
+  .atelier-store .atelier-header-inner { padding-inline: .75rem; }
+  .atelier-store .campaign-hero { min-height: 49rem; padding-top: 19rem; padding-bottom: 8rem; justify-content: flex-end; }
+  .atelier-store .campaign-photo { inset: 0 0 10%; }
+  .atelier-store .campaign-photo img { object-position: 68% top; }
+  .atelier-store .campaign-shade { background: linear-gradient(0deg, var(--mh-canvas) 5%, rgb(11 11 12 / .92) 30%, rgb(11 11 12 / .2) 70%, rgb(11 11 12 / .3)); }
+  .atelier-store .campaign-topline { font-size: .45rem; top: 6rem; }
+  .atelier-store .campaign-topline > span:last-child { display: none; }
+  .atelier-store .campaign-content > .store-eyebrow { margin-bottom: 1rem; font-size: .5rem; }
+  .atelier-store .campaign-title { font-size: clamp(3.4rem, 11.3vw, 5rem); }
+  .atelier-store .campaign-description { margin-top: 1.25rem; font-size: .75rem; max-width: 21rem; }
+  .atelier-store .campaign-actions { gap: .6rem 1rem; margin-top: 1.5rem; }
+  .atelier-store .campaign-actions .store-cta-primary { padding-inline: 1rem; font-size: .55rem; }
+  .atelier-store .campaign-text-link { font-size: .5rem; }
+  .atelier-store .campaign-bottomline { bottom: 1.5rem; padding-top: 1rem; }
+  .atelier-store .campaign-index { font-size: .43rem; gap: .5rem; }
+  .atelier-store .campaign-index > span { width: 1.5rem; }
+  .atelier-store .campaign-scroll { font-size: .45rem; gap: .65rem; }
+  .atelier-store .campaign-scroll-icon { width: 2.25rem; height: 2.25rem; }
+  .atelier-store .atelier-service-strip { grid-template-columns: repeat(2, 1fr); padding-block: .75rem; gap: .25rem; }
+  .atelier-store .atelier-service-strip > a { font-size: .46rem; gap: .5rem; }
+  .atelier-store .atelier-service-strip > a:nth-child(2) { border-right: 0; }
+  .atelier-store .category-editorials { grid-template-columns: 1fr; gap: 2rem; }
+  .atelier-store .category-editorial:nth-child(2) { margin-top: 0; }
+  .atelier-store .category-editorial-image { aspect-ratio: 4/4.5; }
+  .atelier-store .category-directory { grid-template-columns: 1fr; margin-top: 2rem; }
+  .atelier-store .category-directory-item h3 { font-size: 1.5rem; }
+  .atelier-store .atelier-story { margin-inline: 0; border-inline: 0; }
+  .atelier-store .atelier-collection-header { padding: 1.5rem; }
+  .atelier-store .atelier-policy-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .atelier-store .atelier-care-nav { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+  .atelier-store .atelier-care-nav > p { grid-column: 1 / -1; }
+  .atelier-store .atelier-product-order { font-size: .48rem; gap: .25rem; }
+  .atelier-store .atelier-product-order svg { width: .8rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-store .atelier-scene { display: none; }
+  .atelier-store .campaign-photo, .atelier-store .campaign-watermark { transform: none !important; }
+}
+
+
+.atelier-store .product-zoom { position: fixed; inset: 0; width: 100vw; max-width: 100vw; height: 100svh; max-height: 100svh; border: 0; padding: 2rem; background: rgb(11 11 12 / .96); color: var(--mh-ivory); }
+.atelier-store .product-zoom::backdrop { background: rgb(11 11 12 / .85); backdrop-filter: blur(12px); }
+.atelier-store .product-zoom[open] { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.atelier-store .product-zoom-inner { position: relative; width: min(100%, 70rem); height: calc(100% - 3rem); }
+.atelier-store .atelier-purchase .peer:focus-visible + span { outline: 2px solid var(--mh-focus); outline-offset: 3px; }
+
+/* Storefront footer: editorial invitation, full directory, and brand signature. */
+.atelier-store .signature-footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-top: 1px solid var(--mh-line);
+  background: radial-gradient(ellipse at 50% 100%, rgb(210 173 69 / .065), transparent 55%), var(--mh-canvas);
+}
+.atelier-store .signature-footer::before {
+  position: absolute; top: 0; left: 20%; right: 20%; height: 1px; content: "";
+  background: linear-gradient(90deg, transparent, var(--mh-gold), transparent);
+}
+.atelier-store .signature-footer-inner { max-width: 90rem; padding-inline: var(--mh-container-gutter); margin-inline: auto; }
+.atelier-store .signature-footer-invitation { padding-block: clamp(2.5rem, 5vw, 5rem); }
+.atelier-store .signature-footer-kicker { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: clamp(2.5rem, 5vw, 5rem); }
+.atelier-store .signature-footer-kicker > span { height: 1px; width: 3rem; background: var(--mh-gold); opacity: .5; }
+.atelier-store .signature-footer-kicker p { color: var(--mh-gold); font-size: .56rem; letter-spacing: .23em; text-transform: uppercase; text-align: center; }
+.atelier-store .signature-footer-invitation-grid { display: grid; grid-template-columns: 1.4fr 1fr; align-items: end; gap: 4rem; }
+.atelier-store .signature-footer-overline { margin-bottom: 1.4rem; color: var(--mh-muted); font-size: .57rem; letter-spacing: .19em; text-transform: uppercase; }
+.atelier-store .signature-footer-invitation h2 { font-family: var(--font-cormorant); font-weight: 400; font-size: clamp(3.2rem, 5.7vw, 6.1rem); line-height: .97; letter-spacing: -.04em; }
+.atelier-store .signature-footer-invitation h2 em { color: var(--mh-gold); }
+.atelier-store .signature-footer-concierge { width: 100%; max-width: 23rem; justify-self: end; padding-bottom: .3rem; }
+.atelier-store .signature-footer-concierge > p:first-child { color: var(--mh-muted); font-size: .79rem; line-height: 1.9; }
+.atelier-store .signature-footer-cta { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; gap: 1.5rem; margin-top: 1.6rem; padding: .8rem 1.2rem; border: 1px solid var(--mh-gold); background: var(--mh-gold); color: var(--mh-gold-ink); transition: background .3s, border-color .3s; }
+.atelier-store .signature-footer-cta > span { display: flex; align-items: center; gap: .75rem; font-size: .6rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.atelier-store .signature-footer-cta > svg { transition: transform .3s; flex-shrink: 0; }
+.atelier-store .signature-footer-cta:hover { background: var(--mh-ivory); border-color: var(--mh-ivory); }
+.atelier-store .signature-footer-cta:hover > svg { transform: translate(2px, -2px); }
+.atelier-store .signature-footer-note { margin-top: .8rem; color: var(--mh-subtle); font-size: .6rem; letter-spacing: .015em; }
+.atelier-store .signature-footer-directory { display: grid; grid-template-columns: 1.15fr 1.15fr .85fr 1fr; gap: clamp(1.5rem, 3vw, 3rem); border-block: 1px solid var(--mh-line); padding-block: clamp(2.5rem, 4vw, 4rem); }
+.atelier-store .signature-footer-directory > * { min-width: 0; }
+.atelier-store .signature-footer-house { padding-right: 1.5rem; border-right: 1px solid var(--mh-line); }
+.atelier-store .signature-footer-brand { display: flex; align-items: center; gap: .65rem; }
+.atelier-store .signature-footer-logo { width: 3.4rem; height: 3.8rem; object-fit: contain; flex-shrink: 0; }
+.atelier-store .signature-footer-brand > span { font-family: var(--font-cormorant); font-size: 1.55rem; line-height: 1.1; letter-spacing: .055em; }
+.atelier-store .signature-footer-brand small { display: block; margin-top: .7rem; font-family: var(--font-manrope); font-size: .43rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mh-muted); }
+.atelier-store .signature-footer-description { margin-top: 1.5rem; max-width: 28ch; font-size: .73rem; line-height: 1.95; color: var(--mh-muted); }
+.atelier-store .signature-footer-proprietors { margin-top: 1.35rem; color: var(--mh-gold); font-size: .55rem; letter-spacing: .1em; line-height: 1.8; text-transform: uppercase; }
+.atelier-store .signature-footer-socials { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+.atelier-store .signature-footer-socials a { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border: 1px solid var(--mh-line); border-radius: 50%; color: var(--mh-muted); transition: color .3s, border-color .3s, background .3s, transform .3s; }
+.atelier-store .signature-footer-socials a:hover { color: var(--mh-gold-ink); border-color: var(--mh-gold); background: var(--mh-gold); transform: translateY(-3px); }
+.atelier-store .signature-footer-column h3 { display: flex; align-items: center; gap: .65rem; margin-bottom: 1.35rem; color: var(--mh-ivory); font-size: .61rem; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; }
+.atelier-store .signature-footer-column h3 > span { color: var(--mh-gold); font-size: .5rem; letter-spacing: .08em; }
+.atelier-store .signature-footer-column nav { display: grid; align-content: start; }
+.atelier-store .signature-footer-wardrobe nav { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1rem; }
+.atelier-store .signature-footer-column nav a { display: flex; align-items: center; min-height: 2.45rem; width: fit-content; color: var(--mh-muted); font-size: .72rem; line-height: 1.55; text-decoration: underline; text-decoration-color: transparent; text-underline-offset: .35rem; transition: color .25s, text-decoration-color .25s; }
+.atelier-store .signature-footer-column nav a:hover { color: var(--mh-ivory); text-decoration-color: var(--mh-gold); }
+.atelier-store .signature-footer-contact-link { display: flex; align-items: start; gap: .8rem; margin-bottom: 1.3rem; color: var(--mh-ivory); font-size: .72rem; line-height: 1.6; transition: color .25s; }
+.atelier-store .signature-footer-contact-link > svg { flex-shrink: 0; margin-top: .15rem; color: var(--mh-gold); }
+.atelier-store .signature-footer-contact-link > span { min-width: 0; overflow-wrap: anywhere; }
+.atelier-store .signature-footer-contact-link small { display: block; margin-bottom: .4rem; color: var(--mh-subtle); font-size: .5rem; letter-spacing: .14em; text-transform: uppercase; }
+.atelier-store .signature-footer-contact-link:hover { color: var(--mh-gold); }
+.atelier-store .signature-footer-order { display: inline-flex; align-items: center; gap: .8rem; min-height: 2.75rem; border-bottom: 1px solid rgb(210 173 69 / .4); color: var(--mh-gold); font-size: .63rem; }
+.atelier-store .signature-footer-order:hover { color: var(--mh-ivory); }
+.atelier-store .signature-footer-contact-note { margin-top: 1.5rem; color: var(--mh-muted); font-family: var(--font-cormorant); font-size: 1.4rem; font-style: italic; line-height: 1.2; }
+.atelier-store .signature-footer-seal { display: flex; justify-content: center; align-items: center; gap: 1rem; padding-top: 2.75rem; color: var(--mh-gold); }
+.atelier-store .signature-footer-seal span { width: 2.5rem; height: 1px; background: var(--mh-gold); opacity: .4; }
+.atelier-store .signature-footer-signature { padding-block: 1.1rem .6rem; font-family: var(--font-cormorant); font-weight: 400; font-size: clamp(3.8rem, 14vw, 14rem); line-height: .9; letter-spacing: -.035em; text-align: center; color: var(--mh-gold); overflow-wrap: anywhere; }
+.atelier-store .signature-footer-tagline { padding-block: 1rem 2.75rem; text-align: center; color: var(--mh-muted); font-size: .53rem; letter-spacing: .35em; text-transform: uppercase; }
+.atelier-store .signature-footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding-block: 1.5rem 2rem; border-top: 1px solid var(--mh-line); color: var(--mh-subtle); font-size: .6rem; line-height: 1.7; }
+.atelier-store .signature-footer-bottom nav { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; }
+.atelier-store .signature-footer-bottom nav a { display: inline-flex; align-items: center; min-height: 2.75rem; transition: color .25s; }
+.atelier-store .signature-footer-bottom nav a:hover { color: var(--mh-gold); }
+.atelier-store .signature-footer-bottom nav > span { color: var(--mh-gold); }
+.atelier-store .signature-footer-payment { display: flex; align-items: center; gap: .7rem; padding-right: 1.5rem; }
+.atelier-store .signature-footer-payment svg { flex-shrink: 0; color: var(--mh-gold); }
+@media (max-width: 1100px) {
+  .atelier-store .signature-footer-directory { grid-template-columns: 1fr 1fr; gap: 2.5rem 3rem; }
+  .atelier-store .signature-footer-house { border-right: 0; padding-right: 0; }
+  .atelier-store .signature-footer-bottom { flex-wrap: wrap; }
+}
+@media (max-width: 639px) {
+  .atelier-store .signature-footer-kicker { gap: .75rem; }
+  .atelier-store .signature-footer-kicker > span { width: 1.25rem; flex-shrink: 0; }
+  .atelier-store .signature-footer-kicker p { font-size: .49rem; letter-spacing: .15em; }
+  .atelier-store .signature-footer-invitation-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .atelier-store .signature-footer-invitation h2 { font-size: clamp(2.8rem, 10.8vw, 4.2rem); }
+  .atelier-store .signature-footer-concierge { max-width: none; justify-self: start; }
+  .atelier-store .signature-footer-overline { font-size: .49rem; letter-spacing: .14em; }
+  .atelier-store .signature-footer-directory { grid-template-columns: 1fr 1fr; gap: 2.5rem 1.5rem; }
+  .atelier-store .signature-footer-house { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto; column-gap: 1rem; padding-bottom: 2rem; border-bottom: 1px solid var(--mh-line); }
+  .atelier-store .signature-footer-brand, .atelier-store .signature-footer-description, .atelier-store .signature-footer-proprietors { grid-column: 1; }
+  .atelier-store .signature-footer-description { max-width: 32ch; margin-top: 1rem; }
+  .atelier-store .signature-footer-socials { grid-column: 2; grid-row: 1 / 4; flex-direction: column; margin-top: 0; align-items: end; }
+  .atelier-store .signature-footer-column h3 { font-size: .53rem; gap: .5rem; letter-spacing: .13em; margin-bottom: 1rem; }
+  .atelier-store .signature-footer-wardrobe nav { grid-template-columns: 1fr; }
+  .atelier-store .signature-footer-column nav a { min-height: 2.75rem; font-size: .72rem; }
+  .atelier-store .signature-footer-contact { grid-column: 1 / -1; border-top: 1px solid var(--mh-line); padding-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
+  .atelier-store .signature-footer-contact h3 { grid-column: 1 / -1; margin-bottom: 1.5rem; }
+  .atelier-store .signature-footer-contact-link { font-size: .68rem; gap: .55rem; }
+  .atelier-store .signature-footer-contact-note { margin-top: .5rem; font-size: 1.2rem; justify-self: end; }
+  .atelier-store .signature-footer-order { width: fit-content; font-size: .6rem; }
+  .atelier-store .signature-footer-seal { padding-top: 2rem; }
+  .atelier-store .signature-footer-tagline { padding-bottom: 2rem; }
+  .atelier-store .signature-footer-bottom { flex-direction: column; align-items: flex-start; gap: .5rem; padding-bottom: 5.5rem; }
+  .atelier-store .signature-footer-payment { margin-top: .5rem; font-size: .6rem; }
+}
+
+/* Premium navigation: centered house mark with a dedicated collection rail. */
+.atelier-store .signature-navbar { height: 8rem; background: rgb(11 11 12 / .9); border-color: rgb(245 242 234 / .12); backdrop-filter: blur(20px); }
+.atelier-store .signature-navbar-inner { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.5rem; height: 5.2rem; position: static; }
+.atelier-store .signature-nav-brand { margin: 0; justify-self: center; gap: .75rem; }
+.atelier-store .signature-nav-brand .atelier-brand-mark { width: 3.5rem; height: 4rem; }
+.atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1.85rem; letter-spacing: .11em; text-align: center; gap: .45rem; font-weight: 500; }
+.atelier-store .signature-nav-brand .atelier-brand-word small { font-size: .46rem; letter-spacing: .25em; }
+.atelier-store .signature-nav-service { display: flex; align-items: center; gap: .85rem; justify-self: start; color: var(--mh-muted); transition: color .25s; }
+.atelier-store .signature-nav-service-icon { display: grid; place-items: center; width: 2.65rem; height: 2.65rem; border: 1px solid var(--mh-line); border-radius: 50%; color: var(--mh-gold); transition: border-color .25s; }
+.atelier-store .signature-nav-service > span:last-child { font-family: var(--font-cormorant); font-size: 1.2rem; font-style: italic; line-height: 1.2; }
+.atelier-store .signature-nav-service small { display: block; margin-top: .4rem; font-family: var(--font-manrope); font-size: .48rem; font-style: normal; text-transform: uppercase; letter-spacing: .12em; }
+.atelier-store .signature-nav-service:hover { color: var(--mh-ivory); }
+.atelier-store .signature-nav-service:hover .signature-nav-service-icon { border-color: var(--mh-gold); }
+.atelier-store .signature-nav-links { position: absolute; inset-inline: 0; bottom: 0; height: 2.8rem; display: flex; justify-content: center; gap: 1.75rem; border-top: 1px solid rgb(245 242 234 / .07); }
+.atelier-store .signature-nav-links .store-nav-link { padding-inline: .8rem; font-size: .6rem; font-weight: 500; letter-spacing: .18em; gap: .55rem; }
+.atelier-store .signature-nav-links .store-nav-link::after { bottom: .55rem; inset-inline: .8rem; }
+.atelier-store .signature-nav-links > a:last-child { color: var(--mh-muted); }
+.atelier-store .signature-nav-tools { gap: .6rem; }
+.atelier-store .signature-nav-tools .store-icon-button { border-radius: 50%; width: 2.65rem; height: 2.65rem; min-width: 2.65rem; min-height: 2.65rem; }
+.atelier-store .signature-nav-tools > a:last-child { border: 1px solid var(--mh-line); margin-left: .45rem; }
+.atelier-store .signature-nav-tools .header-count { top: -3px; right: -3px; font-size: .52rem; }
+.atelier-store .signature-category-panel { position: absolute; top: 100%; left: 50%; width: min(50rem, calc(100vw - 3rem)); display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; padding: 2rem; border: 1px solid var(--mh-line); border-top: 1px solid var(--mh-gold); background: var(--mh-canvas); box-shadow: 0 2rem 4rem rgb(0 0 0 / .45); visibility: hidden; opacity: 0; transform: translate(-38%, .75rem); transition: opacity .25s, transform .35s var(--mh-ease-out), visibility .25s; }
+.atelier-store .signature-category-panel-open { visibility: visible; opacity: 1; transform: translate(-38%, 0); }
+.atelier-store .signature-category-intro { padding-right: 1.5rem; border-right: 1px solid var(--mh-line); }
+.atelier-store .signature-category-intro .store-eyebrow { font-size: .5rem; }
+.atelier-store .signature-category-intro h2 { font-family: var(--font-cormorant); font-size: 3rem; line-height: 1; }
+.atelier-store .signature-category-intro em { color: var(--mh-gold); }
+.atelier-store .signature-category-intro > a { display: flex; align-items: center; gap: .75rem; min-height: 2.75rem; margin-top: 1.5rem; color: var(--mh-muted); font-size: .6rem; }
+.atelier-store .signature-category-intro > a:hover { color: var(--mh-gold); }
+.atelier-store .signature-category-list { display: grid; grid-template-columns: 1fr 1fr; align-content: start; column-gap: 1.5rem; max-height: min(26rem, 65vh); overflow-y: auto; }
+.atelier-store .signature-category-list a { display: flex; align-items: center; gap: .6rem; min-height: 3rem; padding-block: .5rem; border-bottom: 1px solid var(--mh-line); font-size: .75rem; color: var(--mh-muted); transition: color .25s; }
+.atelier-store .signature-category-list a:hover { color: var(--mh-ivory); }
+.atelier-store .signature-category-number { color: var(--mh-gold); font-size: .5rem; }
+.atelier-store .signature-category-arrow { margin-left: auto; color: var(--mh-gold); }
+.atelier-store .signature-mobile-eyebrow { padding-block: .4rem 1.5rem; border-bottom: 1px solid var(--mh-line); color: var(--mh-gold); font-size: .58rem; letter-spacing: .18em; text-transform: uppercase; }
+.atelier-store .signature-mobile-panel { background: var(--mh-canvas); }
+.atelier-store .signature-search-panel { border-top-color: var(--mh-gold); background: var(--mh-canvas); }
+.atelier-store .campaign-hero { margin-top: -8rem; padding-top: 12.5rem; }
+.atelier-store .campaign-topline { top: 10rem; }
+@media (max-width: 1023px) {
+  .atelier-store .signature-navbar { height: 4.75rem; }
+  .atelier-store .signature-navbar-inner { height: 100%; grid-template-columns: 1fr auto 1fr; gap: .5rem; }
+  .atelier-store .signature-nav-service, .atelier-store .signature-nav-links { display: none; }
+  .atelier-store .signature-navbar-inner > button { justify-self: start; border: 1px solid var(--mh-line); border-radius: 50%; }
+  .atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1.4rem; letter-spacing: .07em; }
+  .atelier-store .signature-nav-brand .atelier-brand-mark { width: 2.75rem; height: 3rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word small { font-size: .37rem; }
+  .atelier-store .signature-mobile-backdrop { overflow: hidden; }
+  .atelier-store .campaign-hero { margin-top: -4.75rem; padding-top: 12rem; }
+  .atelier-store .campaign-topline { top: 6.75rem; }
+}
+@media (max-width: 639px) {
+  .atelier-store .signature-navbar-inner { padding-inline: 1rem; }
+  .atelier-store .signature-nav-brand { gap: .35rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-mark { width: 1.8rem; height: 2.5rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1.1rem; gap: .35rem; letter-spacing: .045em; }
+  .atelier-store .signature-nav-brand .atelier-brand-word small { font-size: .32rem; letter-spacing: .12em; }
+  .atelier-store .signature-nav-tools { gap: 0; }
+  .atelier-store .signature-nav-tools .store-icon-button { width: 2.5rem; min-width: 2.5rem; }
+  .atelier-store .signature-nav-tools > a:last-child { margin-left: 0; border-color: transparent; }
+  .atelier-store .campaign-hero { padding-top: 19rem; }
+  .atelier-store .campaign-topline { top: 6rem; }
+}
+
+
+/* Editorial upgrades for the brand principles and service promise. */
+.atelier-store .premium-why-heading, .atelier-store .premium-promise-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 30rem); gap: 3rem; align-items: end; padding-bottom: 2rem; border-bottom: 1px solid rgb(11 11 12 / .2); }
+.atelier-store .premium-why-heading > p, .atelier-store .premium-promise-heading > p { max-width: 26rem; justify-self: end; color: rgb(22 22 23 / .62); font-size: .82rem; line-height: 1.9; }
+.atelier-store .premium-why-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; margin-top: 1.5rem; border: 1px solid rgb(11 11 12 / .14); background: rgb(11 11 12 / .14); }
+.atelier-store .premium-why-section .principle-card { min-height: 17rem; padding: 1.5rem; background: var(--mh-ivory); transition: background .35s, transform .35s; }
+.atelier-store .premium-why-section .principle-card:hover { background: #ece7dc; transform: translateY(-3px); }
+.atelier-store .premium-why-card-top { display: flex; justify-content: space-between; color: var(--mh-gold-ink); }
+.atelier-store .premium-why-card-top > span { font-size: .57rem; letter-spacing: .16em; }
+.atelier-store .premium-why-card-top svg { opacity: .7; }
+.atelier-store .premium-why-section .principle-card > p { max-width: 9ch; margin-top: 4rem; font-family: var(--font-cormorant); font-size: 1.8rem; font-weight: 500; line-height: .95; }
+.atelier-store .premium-why-card-rule { display: block; width: 2rem; height: 1px; margin-top: 1.5rem; background: var(--mh-gold); }
+.atelier-store .premium-why-card-caption { display: block; margin-top: .75rem; color: rgb(22 22 23 / .52); font-size: .5rem; letter-spacing: .1em; text-transform: uppercase; }
+.atelier-store .premium-promise-heading { border-color: var(--mh-line); }
+.atelier-store .premium-promise-heading > p { color: var(--mh-muted); }
+.atelier-store .premium-promise-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.atelier-store .premium-promise-card { position: relative; min-height: 16rem; padding: 1.5rem; border: 1px solid var(--mh-line); background: linear-gradient(145deg, rgb(255 255 255 / .035), transparent 60%); transition: background .35s, border-color .35s, transform .35s; }
+.atelier-store .premium-promise-card:hover { border-color: var(--mh-gold); background: linear-gradient(145deg, rgb(210 173 69 / .1), transparent 65%); transform: translateY(-4px); }
+.atelier-store .premium-promise-icon { display: grid; width: 2.75rem; height: 2.75rem; place-items: center; border: 1px solid rgb(210 173 69 / .45); border-radius: 50%; color: var(--mh-gold); }
+.atelier-store .premium-promise-card h3 { margin-top: 3.2rem; font-family: var(--font-cormorant); font-size: 1.8rem; font-weight: 500; line-height: .98; color: var(--mh-ivory); }
+.atelier-store .premium-promise-card p { margin-top: .8rem; max-width: 25ch; color: var(--mh-muted); font-size: .72rem; line-height: 1.8; }
+.atelier-store .premium-promise-arrow { position: absolute; right: 1.5rem; top: 1.7rem; color: var(--mh-gold); font-size: 1.2rem; opacity: .7; }
+.atelier-store .premium-concierge { border-color: var(--mh-gold); }
+@media (max-width: 900px) { .atelier-store .premium-why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .atelier-store .premium-promise-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .atelier-store .premium-why-heading, .atelier-store .premium-promise-heading { grid-template-columns: 1fr; gap: 1rem; } .atelier-store .premium-why-heading > p, .atelier-store .premium-promise-heading > p { justify-self: start; } .atelier-store .premium-why-grid, .atelier-store .premium-promise-grid { grid-template-columns: 1fr; } .atelier-store .premium-why-section .principle-card { min-height: 13rem; } .atelier-store .premium-why-section .principle-card > p { margin-top: 2.5rem; } }
+
+
+/* Refined house navigation and editorial Why Men’s Hub. */
+@media (min-width: 1024px) {
+  .atelier-store .signature-navbar { height: 6.25rem; }
+  .atelier-store .signature-navbar-inner { display: grid; grid-template-columns: minmax(13rem, 1fr) auto minmax(13rem, 1fr); gap: 2rem; height: 100%; }
+  .atelier-store .signature-nav-brand { grid-column: 1; justify-self: start; gap: .7rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-mark { width: 3rem; height: 3.4rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1.55rem; text-align: left; }
+  .atelier-store .signature-nav-links { position: static; grid-column: 2; height: 100%; align-items: stretch; gap: .45rem; border: 0; }
+  .atelier-store .signature-nav-links .store-nav-link { padding-inline: .8rem; font-size: .56rem; letter-spacing: .16em; }
+  .atelier-store .signature-nav-links .store-nav-link::after { bottom: 1.65rem; }
+  .atelier-store .signature-nav-tools { grid-column: 3; justify-self: end; }
+  .atelier-store .signature-nav-service { margin-right: 1rem; padding-right: 1.4rem; border-right: 1px solid var(--mh-line); }
+  .atelier-store .signature-nav-service > span:first-child { font-family: var(--font-cormorant); font-size: 1rem; font-style: italic; line-height: 1.05; text-align: right; }
+  .atelier-store .signature-nav-service small { margin-top: .3rem; font-size: .42rem; letter-spacing: .15em; }
+  .atelier-store .signature-nav-service-icon { width: 2.5rem; height: 2.5rem; }
+  .atelier-store .signature-category-panel { top: calc(100% - .25rem); }
+  .atelier-store .campaign-hero { margin-top: -6.25rem; padding-top: 11rem; }
+  .atelier-store .campaign-topline { top: 8.25rem; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .atelier-store .signature-navbar-inner { grid-template-columns: minmax(11rem, 1fr) auto minmax(8rem, 1fr); gap: 1rem; }
+  .atelier-store .signature-nav-service { display: none; }
+  .atelier-store .signature-nav-links { gap: 0; }
+  .atelier-store .signature-nav-links .store-nav-link { padding-inline: .55rem; font-size: .51rem; }
+}
+.atelier-store .premium-why-editorial { display: grid; grid-template-columns: minmax(18rem, .82fr) minmax(0, 1.18fr); gap: clamp(3rem, 8vw, 9rem); }
+.atelier-store .premium-why-intro { position: relative; min-height: 38rem; padding: 1rem clamp(2rem, 5vw, 5rem) 3rem 0; border-right: 1px solid rgb(11 11 12 / .18); }
+.atelier-store .premium-why-intro h2 { max-width: 7ch; font-family: var(--font-cormorant); font-size: clamp(5rem, 8vw, 9rem); font-weight: 500; line-height: .76; letter-spacing: -.055em; }
+.atelier-store .premium-why-intro > p:last-of-type { max-width: 27rem; margin-top: 2.5rem; color: rgb(22 22 23 / .62); font-size: .8rem; line-height: 1.9; }
+.atelier-store .premium-why-monogram { position: absolute; left: -.04em; bottom: -.08em; color: rgb(11 11 12 / .035); font-family: var(--font-cormorant); font-size: clamp(9rem, 16vw, 18rem); font-weight: 600; line-height: .7; letter-spacing: -.08em; pointer-events: none; }
+.atelier-store .premium-why-principles { border-top: 1px solid rgb(11 11 12 / .2); }
+.atelier-store .premium-why-row { position: relative; display: grid; grid-template-columns: 3rem minmax(0, 1fr) 3rem; gap: clamp(1rem, 2vw, 2rem); align-items: center; min-height: 8rem; padding: 1.25rem 0; border-bottom: 1px solid rgb(11 11 12 / .2); transition: padding .4s var(--mh-ease-out), background .35s; }
+.atelier-store .premium-why-row:hover { padding-inline: 1.1rem; background: rgb(182 141 34 / .07); }
+.atelier-store .premium-why-number { align-self: start; padding-top: .3rem; color: var(--mh-gold-ink); font-size: .5rem; font-weight: 700; letter-spacing: .15em; }
+.atelier-store .premium-why-row-copy { display: grid; grid-template-columns: minmax(9rem, .8fr) minmax(12rem, 1.2fr); gap: 1.5rem; align-items: center; }
+.atelier-store .premium-why-row h3 { max-width: 12ch; font-family: var(--font-cormorant); font-size: clamp(1.65rem, 2.5vw, 2.5rem); font-weight: 500; line-height: .95; }
+.atelier-store .premium-why-row p { max-width: 29rem; color: rgb(22 22 23 / .58); font-size: .7rem; line-height: 1.8; }
+.atelier-store .premium-why-row-icon { display: grid; width: 2.8rem; height: 2.8rem; place-items: center; border: 1px solid rgb(11 11 12 / .2); border-radius: 50%; color: var(--mh-gold-ink); transition: color .3s, background .3s, border-color .3s; }
+.atelier-store .premium-why-row:hover .premium-why-row-icon { border-color: var(--mh-gold-ink); background: var(--mh-gold); color: var(--mh-canvas); }
+@media (max-width: 900px) {
+  .atelier-store .premium-why-editorial { grid-template-columns: 1fr; gap: 3rem; }
+  .atelier-store .premium-why-intro { min-height: auto; padding: 0 0 3rem; border-right: 0; border-bottom: 1px solid rgb(11 11 12 / .2); }
+  .atelier-store .premium-why-intro h2 { font-size: clamp(4.5rem, 14vw, 7rem); }
+  .atelier-store .premium-why-monogram { right: 0; left: auto; }
+}
+@media (max-width: 639px) {
+  .atelier-store .premium-why-row { grid-template-columns: 2rem minmax(0, 1fr) 2.6rem; min-height: 9.5rem; gap: .65rem; }
+  .atelier-store .premium-why-row-copy { display: block; }
+  .atelier-store .premium-why-row h3 { font-size: 1.8rem; }
+  .atelier-store .premium-why-row p { margin-top: .65rem; font-size: .66rem; }
+  .atelier-store .premium-why-row-icon { width: 2.4rem; height: 2.4rem; }
+}
+
+
+/* Final luxury navigation frame. */
+.atelier-store .signature-navbar { background: transparent !important; border: 0 !important; box-shadow: none !important; backdrop-filter: none !important; }
+@media (min-width: 1024px) {
+  .atelier-store .signature-navbar { height: 7rem; padding: .75rem 1rem; }
+  .atelier-store .signature-navbar-inner { width: min(100%, 92rem); height: 5.5rem; padding-inline: clamp(1.25rem, 2vw, 2rem); border: 1px solid rgb(245 242 234 / .14); background: rgb(8 8 9 / .88); box-shadow: 0 1.5rem 5rem rgb(0 0 0 / .28); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); }
+  .atelier-store .signature-nav-brand { padding-right: 1.75rem; border-right: 1px solid rgb(245 242 234 / .11); }
+  .atelier-store .signature-nav-brand .atelier-brand-mark { width: 2.7rem; height: 3.1rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1.45rem; letter-spacing: .12em; }
+  .atelier-store .signature-nav-links { gap: .2rem; }
+  .atelier-store .signature-nav-links .store-nav-link { position: relative; padding-inline: .85rem; letter-spacing: .17em; }
+  .atelier-store .signature-nav-links .store-nav-link::after { right: .85rem; bottom: 1.35rem; left: .85rem; height: 1px; }
+  .atelier-store .signature-nav-tools { padding-left: 1.25rem; border-left: 1px solid rgb(245 242 234 / .11); }
+  .atelier-store .signature-nav-tools .store-icon-button { background: transparent; border-color: transparent; }
+  .atelier-store .signature-nav-tools .store-icon-button:hover { border-color: rgb(210 173 69 / .55); background: rgb(210 173 69 / .08); }
+  .atelier-store .signature-nav-tools > a:last-child { border-color: rgb(245 242 234 / .16); }
+  .atelier-store .signature-category-panel { top: calc(100% + 1.15rem); border: 1px solid rgb(245 242 234 / .14); border-top: 2px solid var(--mh-gold); background: rgb(8 8 9 / .98); }
+  .atelier-store .campaign-hero { margin-top: -7rem; padding-top: 11.75rem; }
+  .atelier-store .campaign-topline { top: 9rem; }
+}
+@media (max-width: 1023px) {
+  .atelier-store .signature-navbar { height: 5rem; padding: .5rem .65rem; }
+  .atelier-store .signature-navbar-inner { height: 4rem; padding-inline: .65rem; border: 1px solid rgb(245 242 234 / .13); background: rgb(8 8 9 / .9); box-shadow: 0 1rem 3rem rgb(0 0 0 / .24); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+  .atelier-store .signature-navbar-inner > button { width: 2.6rem; height: 2.6rem; min-width: 2.6rem; border-color: rgb(245 242 234 / .13); }
+  .atelier-store .signature-nav-tools .store-icon-button { width: 2.55rem; min-width: 2.55rem; }
+  .atelier-store .signature-mobile-backdrop { top: calc(100% - .5rem); height: calc(100svh - 4.5rem); }
+}
+@media (max-width: 639px) {
+  .atelier-store .signature-nav-brand .atelier-brand-mark { width: 1.65rem; height: 2.1rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word small { letter-spacing: .1em; }
+}
+
+/* Editorial brand manifesto. */
+.atelier-store .story-manifesto { position: relative; isolation: isolate; margin: var(--mh-section-space) 0; border-inline: 0; background: #09090a; }
+.atelier-store .story-manifesto-shell { position: relative; z-index: 1; max-width: 90rem; margin-inline: auto; padding-inline: var(--mh-container-gutter); }
+.atelier-store .story-manifesto-meta { display: flex; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid var(--mh-line); color: var(--mh-muted); font-size: .5rem; font-weight: 600; letter-spacing: .17em; text-transform: uppercase; }
+.atelier-store .story-manifesto-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(24rem, .75fr); gap: clamp(3rem, 8vw, 9rem); align-items: center; min-height: 45rem; padding-block: clamp(4rem, 7vw, 7rem); }
+.atelier-store .story-manifesto-copy { position: relative; z-index: 2; }
+.atelier-store .story-manifesto-copy h2 { max-width: 10ch; font-family: var(--font-cormorant); font-size: clamp(4.2rem, 7.3vw, 7.8rem); font-weight: 400; line-height: .78; letter-spacing: -.055em; }
+.atelier-store .story-manifesto-copy h2 > span, .atelier-store .story-manifesto-copy h2 > em { display: block; }
+.atelier-store .story-manifesto-copy h2 > span:nth-child(2) { margin-left: clamp(1rem, 4vw, 4rem); }
+.atelier-store .story-manifesto-copy h2 > em { width: 12ch; margin-top: .18em; margin-left: clamp(2rem, 8vw, 8rem); color: var(--mh-gold); font-size: .62em; font-weight: 400; line-height: .9; }
+.atelier-store .story-manifesto-note { display: grid; grid-template-columns: 2.5rem minmax(0, 27rem); gap: 1.25rem; margin-top: clamp(2.5rem, 5vw, 4.5rem); margin-left: clamp(0rem, 8vw, 8rem); }
+.atelier-store .story-manifesto-note-index { padding-top: .2rem; border-top: 1px solid var(--mh-gold); color: var(--mh-gold); font-size: .5rem; letter-spacing: .15em; }
+.atelier-store .story-manifesto-note p { color: var(--mh-muted); font-size: .78rem; line-height: 1.9; }
+.atelier-store .story-manifesto-link { display: inline-flex; align-items: center; gap: 1.25rem; min-height: 3.25rem; margin-top: 2rem; margin-left: clamp(3.75rem, calc(8vw + 3.75rem), 11.75rem); border-bottom: 1px solid rgb(245 242 234 / .32); font-size: .55rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; transition: color .25s, border-color .25s; }
+.atelier-store .story-manifesto-link:hover { color: var(--mh-gold); border-color: var(--mh-gold); }
+.atelier-store .story-manifesto-link span { color: var(--mh-gold); font-size: 1rem; }
+.atelier-store .story-manifesto-visual { position: relative; min-height: 35rem; align-self: stretch; overflow: hidden; border: 1px solid var(--mh-line); }
+.atelier-store .story-manifesto-image { object-fit: cover; object-position: center 30%; filter: grayscale(.12) contrast(1.04); transition: transform 1.4s var(--mh-ease-out), filter 1.4s; }
+.atelier-store .story-manifesto-visual:hover .story-manifesto-image { transform: scale(1.035); filter: grayscale(0) contrast(1.02); }
+.atelier-store .story-manifesto-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgb(5 5 5 / .7)); }
+.atelier-store .story-manifesto-caption { position: absolute; right: 1.5rem; top: 1.5rem; color: rgb(255 255 255 / .72); font-size: .48rem; letter-spacing: .2em; text-transform: uppercase; writing-mode: vertical-rl; }
+.atelier-store .story-manifesto-seal { position: absolute; left: 1.5rem; bottom: 1.5rem; display: flex; align-items: flex-end; gap: 1rem; color: var(--mh-gold); font-family: var(--font-cormorant); font-size: 3rem; font-style: italic; line-height: .75; }
+.atelier-store .story-manifesto-seal small { padding-left: 1rem; border-left: 1px solid rgb(255 255 255 / .25); color: rgb(255 255 255 / .72); font-family: var(--font-manrope); font-size: .45rem; font-style: normal; letter-spacing: .15em; text-transform: uppercase; }
+.atelier-store .story-manifesto-rail { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--mh-line); }
+.atelier-store .story-manifesto-rail > span { display: flex; align-items: center; gap: 1rem; min-height: 4rem; border-right: 1px solid var(--mh-line); color: var(--mh-muted); font-size: .52rem; letter-spacing: .14em; text-transform: uppercase; }
+.atelier-store .story-manifesto-rail > span:last-child { justify-content: flex-end; border-right: 0; }
+.atelier-store .story-manifesto-rail > span:nth-child(2) { justify-content: center; }
+.atelier-store .story-manifesto-rail b { color: var(--mh-gold); font-weight: 600; }
+.atelier-store .story-manifesto-word { position: absolute; left: -.03em; bottom: .05em; color: rgb(245 242 234 / .018); font-family: var(--font-cormorant); font-size: clamp(9rem, 20vw, 20rem); letter-spacing: -.06em; line-height: .7; pointer-events: none; }
+@media (max-width: 900px) {
+  .atelier-store .story-manifesto-grid { grid-template-columns: minmax(0, 1fr) minmax(18rem, .7fr); gap: 2.5rem; }
+  .atelier-store .story-manifesto-copy h2 { font-size: clamp(3.7rem, 8vw, 5.5rem); }
+  .atelier-store .story-manifesto-copy h2 > em { margin-left: 2rem; }
+  .atelier-store .story-manifesto-note { margin-left: 0; }
+  .atelier-store .story-manifesto-link { margin-left: 3.75rem; }
+}
+@media (max-width: 767px) {
+  .atelier-store .story-manifesto-grid { grid-template-columns: 1fr; gap: 3rem; min-height: 0; padding-block: 4rem; }
+  .atelier-store .story-manifesto-copy h2 { font-size: clamp(3.65rem, 15vw, 5.6rem); }
+  .atelier-store .story-manifesto-copy h2 > span:nth-child(2) { margin-left: 1rem; }
+  .atelier-store .story-manifesto-copy h2 > em { width: 10ch; margin-left: 1.5rem; font-size: .58em; }
+  .atelier-store .story-manifesto-note { margin-top: 2.5rem; }
+  .atelier-store .story-manifesto-visual { min-height: 32rem; }
+  .atelier-store .story-manifesto-rail { grid-template-columns: 1fr; padding-block: .75rem; }
+  .atelier-store .story-manifesto-rail > span, .atelier-store .story-manifesto-rail > span:nth-child(2), .atelier-store .story-manifesto-rail > span:last-child { justify-content: flex-start; min-height: 2.7rem; border-right: 0; }
+}
+@media (max-width: 420px) {
+  .atelier-store .story-manifesto-meta > span:last-child { display: none; }
+  .atelier-store .story-manifesto-note { grid-template-columns: 2rem 1fr; gap: .85rem; }
+  .atelier-store .story-manifesto-link { margin-left: 2.85rem; }
+  .atelier-store .story-manifesto-visual { min-height: 26rem; }
+}
+
+/* Keep the campaign portrait's face clear of the overlaid navigation. */
+@media (min-width: 1024px) {
+  .atelier-store .campaign-photo { inset: 3.5rem 0 -3.5rem; }
+  .atelier-store .campaign-photo img { object-position: 65% 28%; }
+}
+
+/* More legible navigation typography. */
+@media (min-width: 1360px) {
+  .atelier-store .signature-nav-links .store-nav-link { font-size: .76rem; font-weight: 650; }
+  .atelier-store .signature-nav-service > span:first-child { font-size: 1.08rem; }
+  .atelier-store .signature-nav-service small { font-size: .5rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word small { font-size: .5rem; }
+}
+@media (min-width: 1024px) and (max-width: 1359px) {
+  .atelier-store .signature-nav-links .store-nav-link { font-size: .68rem; font-weight: 650; letter-spacing: .12em; }
+}
+@media (max-width: 639px) {
+  .atelier-store .signature-nav-brand .atelier-brand-word { font-size: 1.08rem; }
+  .atelier-store .signature-nav-brand .atelier-brand-word small { font-size: .35rem; }
+}
+
+/* Minimal editorial footer. */
+.atelier-store .minimal-footer { position: relative; overflow: hidden; border-top: 1px solid var(--mh-line); background: #080809; color: var(--mh-ivory); }
+.atelier-store .minimal-footer::before { content: ""; position: absolute; top: -18rem; right: -10rem; width: 42rem; height: 42rem; border-radius: 50%; background: radial-gradient(circle, rgb(210 173 69 / .055), transparent 68%); pointer-events: none; }
+.atelier-store .minimal-footer-inner { position: relative; z-index: 1; width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: var(--mh-container-gutter); }
+.atelier-store .minimal-footer-cta { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(19rem, .65fr); gap: clamp(3rem, 9vw, 9rem); align-items: end; padding-block: clamp(4.5rem, 8vw, 8rem); }
+.atelier-store .minimal-footer-eyebrow { margin-bottom: 1.25rem; color: var(--mh-gold); font-size: .58rem; font-weight: 650; letter-spacing: .24em; text-transform: uppercase; }
+.atelier-store .minimal-footer-heading-mask { overflow: hidden; }
+.atelier-store .minimal-footer-cta h2 { max-width: 10ch; font-family: var(--font-cormorant); font-size: clamp(3.7rem, 7vw, 7.4rem); font-weight: 400; line-height: .88; letter-spacing: -.045em; }
+.atelier-store .minimal-footer-cta h2 em { color: var(--mh-gold); font-weight: 400; }
+.atelier-store .minimal-footer-cta-side > div:first-child p { max-width: 24rem; color: var(--mh-muted); font-size: .86rem; line-height: 1.85; }
+.atelier-store .minimal-footer-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem; }
+.atelier-store .minimal-footer-primary, .atelier-store .minimal-footer-secondary { display: inline-flex; min-height: 3.25rem; align-items: center; justify-content: center; gap: .65rem; padding-inline: 1.2rem; font-size: .58rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; transition: color .3s, background .3s, border-color .3s; }
+.atelier-store .minimal-footer-primary { border: 1px solid var(--mh-gold); background: var(--mh-gold); color: var(--mh-gold-ink); }
+.atelier-store .minimal-footer-primary:hover { border-color: var(--mh-ivory); background: var(--mh-ivory); }
+.atelier-store .minimal-footer-secondary { border: 1px solid var(--mh-line); color: var(--mh-ivory); }
+.atelier-store .minimal-footer-secondary:hover { border-color: var(--mh-gold); color: var(--mh-gold); }
+.atelier-store .minimal-footer-primary svg, .atelier-store .minimal-footer-secondary svg:last-child { transition: transform .35s var(--mh-ease-out); }
+.atelier-store .minimal-footer-primary:hover svg, .atelier-store .minimal-footer-secondary:hover svg:last-child { transform: translate(5px, -1px); }
+.atelier-store .minimal-footer-marquee { position: relative; z-index: 1; overflow: hidden; border-block: 1px solid var(--mh-line); padding-block: 1.15rem; color: rgb(210 173 69 / .5); font-family: var(--font-cormorant); font-size: clamp(1rem, 1.8vw, 1.55rem); font-style: italic; letter-spacing: .08em; white-space: nowrap; }
+.atelier-store .minimal-footer-marquee > div { display: flex; width: max-content; animation: minimal-footer-marquee 42s linear infinite; }
+.atelier-store .minimal-footer-marquee span { display: block; padding-right: .65em; }
+@keyframes minimal-footer-marquee { to { transform: translateX(-50%); } }
+.atelier-store .minimal-footer-directory { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(10rem, .7fr) minmax(15rem, .85fr); gap: clamp(3rem, 8vw, 8rem); padding-block: clamp(3.5rem, 6vw, 6rem); }
+.atelier-store .minimal-footer-brand { max-width: 32rem; }
+.atelier-store .minimal-footer-brand-lockup { display: inline-flex; align-items: center; gap: .85rem; }
+.atelier-store .minimal-footer-logo { width: 3.25rem; height: 3.5rem; object-fit: contain; filter: drop-shadow(0 .8rem 1.5rem rgb(0 0 0 / .25)); }
+.atelier-store .minimal-footer-brand-lockup > span { font-family: var(--font-cormorant); font-size: 1.65rem; letter-spacing: .07em; }
+.atelier-store .minimal-footer-brand-lockup small { display: block; margin-top: .5rem; color: var(--mh-gold); font-family: var(--font-manrope); font-size: .46rem; letter-spacing: .18em; text-transform: uppercase; }
+.atelier-store .minimal-footer-brand > p { max-width: 37ch; margin-top: 1.5rem; color: var(--mh-muted); font-size: .78rem; line-height: 1.9; }
+.atelier-store .minimal-footer-proprietors { display: block; margin-top: 1.1rem; color: var(--mh-subtle); font-size: .5rem; letter-spacing: .12em; text-transform: uppercase; }
+.atelier-store .minimal-footer-column h3 { margin-bottom: 1.2rem; color: var(--mh-gold); font-size: .56rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+.atelier-store .minimal-footer-column nav { display: grid; grid-template-columns: 1fr; }
+.atelier-store .minimal-footer-column nav a { position: relative; display: flex; width: fit-content; min-height: 2.35rem; align-items: center; color: var(--mh-muted); font-size: .76rem; transition: color .25s; }
+.atelier-store .minimal-footer-column nav a::after, .atelier-store .minimal-footer-bottom nav a::after { content: ""; position: absolute; right: 0; bottom: .45rem; left: 0; height: 1px; background: var(--mh-gold); transform: scaleX(0); transform-origin: right; transition: transform .35s var(--mh-ease-out); }
+.atelier-store .minimal-footer-column nav a:hover, .atelier-store .minimal-footer-bottom nav a:hover { color: var(--mh-ivory); }
+.atelier-store .minimal-footer-column nav a:hover::after, .atelier-store .minimal-footer-bottom nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+.atelier-store .minimal-footer-support nav { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.5rem; }
+.atelier-store .minimal-footer-contact { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--mh-line); }
+.atelier-store .minimal-footer-contact a { display: inline-flex; align-items: center; gap: .55rem; color: var(--mh-muted); font-size: .65rem; transition: color .25s; }
+.atelier-store .minimal-footer-contact a:hover { color: var(--mh-gold); }
+.atelier-store .minimal-footer-contact svg { flex-shrink: 0; color: var(--mh-gold); }
+.atelier-store .minimal-footer-contact span { overflow-wrap: anywhere; }
+.atelier-store .minimal-footer-bottom { display: flex; min-height: 5rem; align-items: center; justify-content: space-between; gap: 2rem; border-top: 1px solid var(--mh-line); color: var(--mh-subtle); font-size: .58rem; }
+.atelier-store .minimal-footer-bottom > div:first-child { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; }
+.atelier-store .minimal-footer-bottom nav { display: flex; gap: 1.2rem; }
+.atelier-store .minimal-footer-bottom nav a { position: relative; display: inline-flex; min-height: 2.75rem; align-items: center; }
+.atelier-store .minimal-footer-socials { display: flex; gap: .45rem; }
+.atelier-store .minimal-footer-socials a { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border: 1px solid var(--mh-line); border-radius: 50%; color: var(--mh-muted); transition: color .25s, border-color .25s, background .25s; }
+.atelier-store .minimal-footer-socials a:hover { border-color: var(--mh-gold); background: rgb(210 173 69 / .08); color: var(--mh-gold); }
+@media (max-width: 900px) {
+  .atelier-store .minimal-footer-cta { grid-template-columns: 1fr; gap: 2rem; }
+  .atelier-store .minimal-footer-cta-side { display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem; align-items: end; }
+  .atelier-store .minimal-footer-actions { margin-top: 0; justify-content: flex-end; }
+  .atelier-store .minimal-footer-directory { grid-template-columns: 1.15fr .7fr 1fr; gap: 2.5rem; }
+  .atelier-store .minimal-footer-support nav { grid-template-columns: 1fr; }
+}
+@media (max-width: 639px) {
+  .atelier-store .minimal-footer::before { width: 25rem; height: 25rem; }
+  .atelier-store .minimal-footer-cta { padding-block: 4.5rem; }
+  .atelier-store .minimal-footer-cta h2 { font-size: clamp(3.2rem, 14vw, 4.6rem); }
+  .atelier-store .minimal-footer-cta-side { display: block; }
+  .atelier-store .minimal-footer-actions { flex-direction: column; margin-top: 1.5rem; }
+  .atelier-store .minimal-footer-primary, .atelier-store .minimal-footer-secondary { width: 100%; }
+  .atelier-store .minimal-footer-marquee { padding-block: .9rem; font-size: 1rem; }
+  .atelier-store .minimal-footer-directory { grid-template-columns: 1fr; gap: 2.75rem; padding-block: 3.5rem; }
+  .atelier-store .minimal-footer-brand { grid-column: auto; padding-bottom: 2.5rem; border-bottom: 1px solid var(--mh-line); }
+  .atelier-store .minimal-footer-support nav { grid-template-columns: 1fr; }
+  .atelier-store .minimal-footer-contact { grid-column: 1 / -1; }
+  .atelier-store .minimal-footer-bottom { align-items: flex-start; flex-direction: column; gap: 1rem; padding-block: 1.5rem 5.5rem; }
+  .atelier-store .minimal-footer-socials { order: -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-store .minimal-footer-marquee > div { animation: none; transform: none; }
+  .atelier-store .minimal-footer-primary svg, .atelier-store .minimal-footer-secondary svg { transition: none; }
+}
+
+/* Visit location panel. */
+.atelier-store .atelier-location { position: relative; background: #0a0a0b; }
+.atelier-store .atelier-location::before { position: absolute; right: -7rem; top: -7rem; width: 24rem; height: 24rem; border-radius: 50%; background: radial-gradient(circle, rgb(210 173 69 / .09), transparent 68%); content: ""; pointer-events: none; }
+.atelier-store .atelier-location-copy { position: relative; z-index: 1; padding: clamp(2rem, 5vw, 4.25rem); }
+.atelier-store .atelier-location-copy h2 { max-width: 13ch; margin-top: 1rem; color: var(--mh-ivory); font-family: var(--font-cormorant); font-size: clamp(2.5rem, 4.2vw, 4.5rem); font-weight: 500; line-height: .9; letter-spacing: -.04em; }
+.atelier-store .atelier-location-copy > p:last-child { max-width: 33rem; margin-top: 1.35rem; color: var(--mh-muted); font-size: .82rem; line-height: 1.9; }
+.atelier-store .atelier-location-action { position: relative; z-index: 1; display: flex; min-height: 15rem; align-items: center; gap: 1rem; border-top: 1px solid var(--mh-line); padding: clamp(2rem, 4vw, 3.5rem); color: var(--mh-ivory); transition: background .35s, color .35s; }
+.atelier-store .atelier-location-action::before { position: absolute; inset: 0; background: linear-gradient(135deg, rgb(210 173 69 / .12), transparent 60%); content: ""; opacity: 0; transition: opacity .35s; }
+.atelier-store .atelier-location-action:hover { background: rgb(210 173 69 / .06); color: var(--mh-gold); }
+.atelier-store .atelier-location-action:hover::before { opacity: 1; }
+.atelier-store .atelier-location-action > * { position: relative; z-index: 1; }
+.atelier-store .atelier-location-pin { display: grid; width: 3.25rem; height: 3.25rem; flex: 0 0 auto; place-items: center; border: 1px solid rgb(210 173 69 / .55); border-radius: 50%; color: var(--mh-gold); }
+.atelier-store .atelier-location-action span:nth-child(2) { display: grid; gap: .5rem; font-family: var(--font-cormorant); font-size: 1.65rem; line-height: .9; }
+.atelier-store .atelier-location-action small { color: var(--mh-muted); font-family: var(--font-manrope); font-size: .52rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+.atelier-store .atelier-location-action > svg { margin-left: auto; transition: transform .35s var(--mh-ease-out); }
+.atelier-store .atelier-location-action:hover > svg { transform: translate(5px, -3px); }
+@media (min-width: 1024px) { .atelier-store .atelier-location-action { min-height: 100%; border-left: 1px solid var(--mh-line); border-top: 0; } }
+@media (max-width: 639px) { .atelier-store .atelier-location-copy { padding: 2rem 1.5rem; } .atelier-store .atelier-location-action { min-height: 11rem; padding: 1.5rem; } }
+/* Contact concierge experience. */
+.atelier-store .signature-nav-links .store-nav-link-active { color: var(--mh-gold); }
+.atelier-store .contact-concierge { overflow: hidden; background: #09090a; color: var(--mh-ivory); }
+.atelier-store .contact-concierge-shell { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: var(--mh-container-gutter); }
+.atelier-store .contact-concierge-hero { position: relative; min-height: min(42rem, calc(100svh - 7rem)); display: flex; align-items: center; border-bottom: 1px solid var(--mh-line); background: radial-gradient(circle at 78% 28%, rgb(210 173 69 / .09), transparent 28%); }
+.atelier-store .contact-concierge-hero::after { position: absolute; right: -0.03em; bottom: -.1em; color: rgb(245 242 234 / .025); content: "SERVICE"; font-family: var(--font-cormorant); font-size: clamp(9rem, 22vw, 22rem); line-height: .7; pointer-events: none; }
+.atelier-store .contact-concierge-hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(19rem, .8fr); gap: clamp(3rem, 10vw, 11rem); align-items: end; padding-block: clamp(5rem, 10vw, 9rem); }
+.atelier-store .contact-concierge-eyebrow { margin-bottom: 1.35rem; color: var(--mh-gold); font-size: .58rem; font-weight: 700; letter-spacing: .23em; text-transform: uppercase; }
+.atelier-store .contact-concierge-title-mask { overflow: hidden; }
+.atelier-store .contact-concierge-hero h1 { font-family: var(--font-cormorant); font-size: clamp(5.3rem, 10vw, 10rem); font-weight: 400; letter-spacing: -.065em; line-height: .76; }
+.atelier-store .contact-concierge-hero h1 em, .atelier-store .contact-concierge-section-heading em, .atelier-store .contact-brand-statement em { color: var(--mh-gold); font-weight: 400; }
+.atelier-store .contact-concierge-hero-copy { max-width: 28rem; padding-bottom: .35rem; }
+.atelier-store .contact-concierge-hero-copy > p:first-child { color: var(--mh-muted); font-size: .9rem; line-height: 1.95; }
+.atelier-store .contact-concierge-highlight { margin-top: 1.75rem; color: var(--mh-ivory); font-family: var(--font-cormorant); font-size: 1.6rem; font-style: italic; line-height: 1; }
+.atelier-store .contact-concierge-primary { display: inline-flex; min-height: 3.4rem; align-items: center; gap: .8rem; margin-top: 2rem; border: 1px solid var(--mh-gold); background: var(--mh-gold); padding-inline: 1.3rem; color: var(--mh-gold-ink); font-size: .58rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; transition: border-color .3s, background .3s, color .3s; }
+.atelier-store .contact-concierge-primary:hover { border-color: var(--mh-ivory); background: var(--mh-ivory); }
+.atelier-store .contact-concierge-primary svg, .atelier-store .contact-method-action svg, .atelier-store .contact-location-action > svg { transition: transform .35s var(--mh-ease-out); }
+.atelier-store .contact-concierge-primary:hover svg, .atelier-store .contact-method:hover .contact-method-action svg, .atelier-store .contact-location-action:hover > svg { transform: translate(5px, -3px); }
+.atelier-store .contact-concierge-section { padding-block: clamp(4.5rem, 8vw, 8rem); }
+.atelier-store .contact-concierge-section-heading { padding-bottom: clamp(2rem, 4vw, 3.5rem); border-bottom: 1px solid var(--mh-line); }
+.atelier-store .contact-concierge-section-heading h2, .atelier-store .contact-brand-statement h2, .atelier-store .contact-final-cta h2 { font-family: var(--font-cormorant); font-size: clamp(3.4rem, 6vw, 6.5rem); font-weight: 400; letter-spacing: -.05em; line-height: .84; }
+.atelier-store .contact-method-list { border-bottom: 1px solid var(--mh-line); }
+.atelier-store .contact-method { position: relative; display: grid; grid-template-columns: 3.25rem 3.5rem minmax(0, 1fr) auto; gap: 1rem; align-items: center; min-height: 10.5rem; border-top: 1px solid var(--mh-line); color: var(--mh-muted); transition: background .35s, color .3s; }
+.atelier-store .contact-method::before { position: absolute; inset-inline: 0; bottom: -1px; height: 1px; background: var(--mh-gold); content: ""; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--mh-ease-out); }
+.atelier-store .contact-method:hover { background: rgb(210 173 69 / .045); color: var(--mh-ivory); }
+.atelier-store .contact-method:hover::before { transform: scaleX(1); transform-origin: left; }
+.atelier-store .contact-method-index { color: var(--mh-gold); font-size: .58rem; letter-spacing: .13em; }
+.atelier-store .contact-method-icon { display: grid; width: 2.7rem; height: 2.7rem; place-items: center; border: 1px solid rgb(210 173 69 / .45); border-radius: 50%; color: var(--mh-gold); }
+.atelier-store .contact-method-copy { display: grid; gap: .55rem; }
+.atelier-store .contact-method-copy small { color: var(--mh-gold); font-size: .52rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+.atelier-store .contact-method-copy strong { color: var(--mh-ivory); font-family: var(--font-cormorant); font-size: clamp(1.7rem, 3vw, 2.6rem); font-weight: 400; line-height: .9; }
+.atelier-store .contact-method-copy > span { max-width: 38rem; font-size: .76rem; line-height: 1.75; }
+.atelier-store .contact-method-action { display: inline-flex; align-items: center; gap: .65rem; color: var(--mh-ivory); font-size: .55rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.atelier-store .contact-concierge-assistance { background: #f2efe7; color: #161617; }
+.atelier-store .contact-concierge-assistance .contact-concierge-eyebrow, .atelier-store .contact-concierge-assistance h2 em { color: #76580c; }
+.atelier-store .contact-concierge-assistance .contact-concierge-section-heading { border-color: rgb(22 22 23 / .2); }
+.atelier-store .contact-service-list { border-bottom: 1px solid rgb(22 22 23 / .2); }
+.atelier-store .contact-service { display: grid; grid-template-columns: 3.25rem minmax(16rem, .9fr) minmax(0, 1.1fr); gap: 1.5rem; align-items: baseline; min-height: 9rem; padding-block: 2rem; border-top: 1px solid rgb(22 22 23 / .2); }
+.atelier-store .contact-service > span { color: #76580c; font-size: .58rem; font-weight: 700; letter-spacing: .14em; }
+.atelier-store .contact-service h3 { font-family: var(--font-cormorant); font-size: clamp(2rem, 3vw, 3rem); font-weight: 400; line-height: .88; }
+.atelier-store .contact-service p { max-width: 28rem; color: rgb(22 22 23 / .63); font-size: .78rem; line-height: 1.85; }
+.atelier-store .contact-brand-statement { padding-block: clamp(5rem, 11vw, 10rem); background: #0b0b0c; }
+.atelier-store .contact-brand-statement > div { max-width: 75rem; }
+.atelier-store .contact-brand-statement h2 { max-width: 13ch; }
+.atelier-store .contact-brand-statement h2 em { display: block; margin-left: clamp(1rem, 7vw, 7rem); font-size: .75em; }
+.atelier-store .contact-brand-statement h2 + p { max-width: 35rem; margin-top: 2.5rem; margin-left: clamp(0rem, 7vw, 7rem); color: var(--mh-muted); font-size: .86rem; line-height: 1.95; }
+.atelier-store .contact-concierge-location { padding-block: 0; border-block: 1px solid var(--mh-line); background: #09090a; }
+.atelier-store .contact-concierge-location-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(19rem, .75fr); }
+.atelier-store .contact-concierge-location-grid > div { padding: clamp(3rem, 6vw, 5.5rem) 0; }
+.atelier-store .contact-concierge-location h2 { max-width: 13ch; font-family: var(--font-cormorant); font-size: clamp(2.8rem, 5vw, 5.5rem); font-weight: 400; line-height: .86; letter-spacing: -.045em; }
+.atelier-store .contact-concierge-location h2 + p { max-width: 31rem; margin-top: 1.35rem; color: var(--mh-muted); font-size: .8rem; line-height: 1.9; }
+.atelier-store .contact-location-action { display: flex; align-items: center; gap: 1rem; min-height: 100%; border-left: 1px solid var(--mh-line); padding: clamp(2rem, 5vw, 4rem); color: var(--mh-ivory); transition: background .35s, color .3s; }
+.atelier-store .contact-location-action:hover { background: rgb(210 173 69 / .06); color: var(--mh-gold); }
+.atelier-store .contact-location-action > span { display: grid; width: 3rem; height: 3rem; flex: 0 0 auto; place-items: center; border: 1px solid rgb(210 173 69 / .5); border-radius: 50%; color: var(--mh-gold); }
+.atelier-store .contact-location-action b { display: grid; gap: .45rem; font-family: var(--font-cormorant); font-size: 1.6rem; font-weight: 400; line-height: .9; }
+.atelier-store .contact-location-action small { color: var(--mh-muted); font-family: var(--font-manrope); font-size: .5rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+.atelier-store .contact-location-action > svg { margin-left: auto; }
+.atelier-store .contact-final-cta { padding-block: clamp(5rem, 9vw, 8rem); text-align: center; background: radial-gradient(circle at 50% 20%, rgb(210 173 69 / .1), transparent 33%), #0b0b0c; }
+.atelier-store .contact-final-cta > div { max-width: 48rem; }
+.atelier-store .contact-final-cta h2 { max-width: none; }
+.atelier-store .contact-final-cta p:not(.contact-concierge-eyebrow) { margin-top: 1.5rem; color: var(--mh-muted); font-size: .84rem; }
+@media (max-width: 1023px) {
+  .atelier-store .contact-concierge-hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .atelier-store .contact-concierge-hero { min-height: 0; }
+  .atelier-store .contact-concierge-location-grid { grid-template-columns: 1fr; }
+  .atelier-store .contact-location-action { min-height: 12rem; border-top: 1px solid var(--mh-line); border-left: 0; }
+}
+@media (max-width: 639px) {
+  .atelier-store .contact-concierge-hero-grid { padding-block: 4rem 4.5rem; }
+  .atelier-store .contact-concierge-hero h1 { font-size: clamp(4.6rem, 23vw, 6.3rem); }
+  .atelier-store .contact-method { grid-template-columns: 2.5rem 3rem minmax(0, 1fr); gap: .75rem; min-height: 0; padding-block: 1.5rem; }
+  .atelier-store .contact-method-action { grid-column: 3; justify-self: start; margin-top: .4rem; }
+  .atelier-store .contact-method-copy strong { font-size: 2rem; }
+  .atelier-store .contact-service { grid-template-columns: 2.5rem 1fr; gap: .9rem; min-height: 0; padding-block: 1.6rem; }
+  .atelier-store .contact-service p { grid-column: 2; }
+  .atelier-store .contact-brand-statement h2 { font-size: clamp(3.3rem, 14vw, 4.7rem); }
+  .atelier-store .contact-brand-statement h2 em, .atelier-store .contact-brand-statement h2 + p { margin-left: 1rem; }
+  .atelier-store .contact-location-action { min-height: 10rem; padding: 1.5rem 0; }
+  .atelier-store .contact-location-action > span { width: 2.8rem; height: 2.8rem; }
+}
+/* Shared live hero atmosphere: only transforms and opacity animate. */
+.atelier-store .store-hero-atmosphere { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; contain: paint; }
+.atelier-store .store-hero-depth { position: absolute; inset: -5%; background: radial-gradient(ellipse at 25% 65%, rgb(210 173 69 / .055), transparent 65%); transform-origin: 30% 65%; }
+.atelier-store .store-hero-ambient { position: absolute; top: -30%; right: -10%; width: min(70vw, 60rem); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgb(210 173 69 / .10), rgb(210 173 69 / .025) 36%, transparent 68%); }
+.atelier-store .store-hero-brand-mark { position: absolute; right: var(--hero-logo-right, -2rem); top: var(--hero-logo-top, auto); bottom: var(--hero-logo-bottom, -5rem); width: clamp(22rem, 42vw, 46rem); aspect-ratio: 1448 / 1086; opacity: .055; }
+.atelier-store .store-hero-light-sweep { position: absolute; top: -10%; bottom: -10%; left: -35%; width: 35%; opacity: 0; background: linear-gradient(105deg, transparent 5%, rgb(210 173 69 / .6) 50%, transparent 95%); }
+.atelier-store .store-hero-divider { position: absolute; right: var(--mh-container-gutter); bottom: clamp(1.2rem, 3vw, 2.5rem); left: var(--mh-container-gutter); height: 1px; background: linear-gradient(90deg, var(--mh-gold), rgb(210 173 69 / .12) 40%, transparent); transform-origin: left; opacity: .68; }
+.atelier-store .store-hero-atmosphere[data-live="true"] > :not(.store-hero-divider), .atelier-store [data-hero-depth][data-live="true"] { will-change: transform; }
+.atelier-store .animated-collection-hero { position: relative; isolation: isolate; min-height: clamp(18rem, 28vw, 27rem); align-content: end; overflow: hidden; border-top: 1px solid var(--mh-gold); border-bottom: 1px solid var(--mh-line); background: #0b0b0c; }
+.atelier-store .animated-collection-hero::after { content: none; }
+.atelier-store .animated-collection-hero-main, .atelier-store .animated-collection-hero-copy { position: relative; z-index: 1; }
+.atelier-store .animated-collection-hero-main .store-eyebrow { color: var(--mh-gold); }
+.atelier-store .animated-collection-title-mask { overflow: hidden; padding-bottom: .15em; margin-bottom: -.15em; }
+.atelier-store .animated-collection-hero-copy { padding-bottom: .5rem; }
+@media (max-width: 767px) {
+  .atelier-store .store-hero-brand-mark { right: var(--hero-logo-right, -5rem); bottom: var(--hero-logo-bottom, -3rem); width: 22rem; opacity: .04; }
+  .atelier-store .store-hero-ambient { top: -12rem; right: -10rem; width: 28rem; }
+}
+@media (max-width: 639px) {
+  .atelier-store .animated-collection-hero { min-height: 18rem; padding: 2rem 1.5rem; }
+  .atelier-store .animated-collection-hero .store-hero-divider { right: 1.5rem; left: 1.5rem; bottom: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atelier-store .store-hero-atmosphere > *, .atelier-store [data-hero-depth], .atelier-store [data-hero-reveal] { transform: none !important; will-change: auto !important; }
+  .atelier-store [data-hero-reveal]:not(.store-hero-divider) { opacity: 1 !important; clip-path: none !important; }
+  .atelier-store .store-hero-light-sweep { opacity: 0 !important; }
+}

@@ -1,3 +1,4 @@
+import "./storefront.css";
 import { StorefrontShell } from "@/components/storefront/storefront-shell";
 import { getActiveAnnouncement, getPublicSiteSettings } from "@/data/cms";
 import { getPublicContentBlock } from "@/data/cms";
@@ -15,8 +16,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: settings.metaDescription || settings.tagline,
     applicationName: settings.brandName,
     icons: {
-      icon: [{ url: "/favicon.png", type: "image/png" }],
-      shortcut: [{ url: "/favicon.png", type: "image/png" }],
+      icon: [{ url: "/favicon.png?v=mens-hub-2", type: "image/png" }],
+      shortcut: [{ url: "/favicon.png?v=mens-hub-2", type: "image/png" }],
       apple: [{ url: "/logo.png", type: "image/png" }],
     },
     openGraph: settings.ogImageUrl ? { images: [settings.ogImageUrl] } : undefined,

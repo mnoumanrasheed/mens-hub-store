@@ -28,8 +28,8 @@ export function ProductCard({ product }: { product: StorefrontProduct }) {
   };
 
   return (
-    <article className="group min-w-0 transition duration-500 ease-[var(--mh-ease-out)] motion-safe:hover:-translate-y-1">
-      <div className="relative aspect-[4/5] overflow-hidden bg-surface-raised shadow-[0_16px_45px_rgb(0_0_0/0)] transition-shadow duration-500 group-hover:shadow-[0_20px_55px_rgb(0_0_0/0.32)]">
+    <article className="atelier-product group min-w-0 transition duration-500 ease-[var(--mh-ease-out)] motion-safe:hover:-translate-y-1">
+      <div className="atelier-product-visual relative aspect-[4/5] overflow-hidden bg-surface-raised shadow-[0_16px_45px_rgb(0_0_0/0)] transition-shadow duration-500 group-hover:shadow-[0_20px_55px_rgb(0_0_0/0.32)]">
         <ProductTrackedLink
           productId={product.id}
           href={href}
@@ -40,7 +40,6 @@ export function ProductCard({ product }: { product: StorefrontProduct }) {
             src={product.imageUrl}
             alt={product.name}
             fill
-            quality={90}
             sizes="(max-width: 429px) 100vw, (max-width: 639px) 50vw, (max-width: 1023px) 33vw, 25vw"
             className="object-cover transition duration-[900ms] ease-[var(--mh-ease-out)] motion-safe:group-hover:scale-[1.045]"
           />
@@ -56,12 +55,12 @@ export function ProductCard({ product }: { product: StorefrontProduct }) {
         <WishlistButton product={wishlistProduct} className="absolute right-3 top-3 sm:right-4 sm:top-4" />
       </div>
 
-      <div className="border-x border-b border-white/[0.08] bg-[#101011] p-4 transition-colors duration-500 group-hover:border-white/15 group-hover:bg-[#121213] sm:p-5">
+      <div className="atelier-product-details border-x border-b border-white/[0.08] bg-[#101011] p-4 transition-colors duration-500 group-hover:border-white/15 group-hover:bg-[#121213] sm:p-5">
         <p className="text-[0.65rem] font-bold uppercase tracking-[0.16em] text-gold">Men’s Hub Collection</p>
         <ProductTrackedLink
           productId={product.id}
           href={href}
-          className="mt-2 block min-h-[2.8rem] font-display text-[1.45rem] font-semibold leading-[1.05] text-ivory transition-colors hover:text-gold sm:text-[1.65rem]"
+          className="atelier-product-title mt-2 block min-h-[2.8rem] font-display text-[1.45rem] font-semibold leading-[1.05] text-ivory transition-colors hover:text-gold sm:text-[1.65rem]"
         >
           {product.name}
         </ProductTrackedLink>
@@ -71,10 +70,11 @@ export function ProductCard({ product }: { product: StorefrontProduct }) {
           {product.isSale ? <span className="text-xs text-subtle line-through">{currency.format(Number(product.originalPrice))}</span> : null}
         </div>
 
+        <p className="atelier-product-options">{product.availableArticles === 0 ? "Out of stock" : product.sizes.length ? product.sizes.map((size) => size.label).join(" / ") : "Available now"}{product.colors.length ? ` · ${product.colors.length} ${product.colors.length === 1 ? "color" : "colors"}` : ""}</p>
         <ProductTrackedLink
           productId={product.id}
           href={href}
-          className="mt-5 flex min-h-12 items-center justify-between border-t border-white/10 pt-4 text-[0.62rem] font-extrabold uppercase tracking-[0.12em] text-ivory transition-colors duration-300 hover:text-gold"
+          className="atelier-product-order mt-5 flex min-h-12 items-center justify-between border-t border-white/10 pt-4 text-[0.62rem] font-extrabold uppercase tracking-[0.12em] text-ivory transition-colors duration-300 hover:text-gold"
           aria-label={`Order ${product.name} on WhatsApp`}
         >
           <span className="flex items-center gap-2"><MessageCircle size={15} strokeWidth={1.7} /> Order on WhatsApp</span>

@@ -54,6 +54,7 @@ function Fields({ filters, categories, sizes, colors, routeCategory }: Omit<Filt
 export function ShopFilters(props: FilterProps) {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
+  const dialog = useRef<HTMLElement>(null);
 
   function close(restoreFocus = false) {
     setOpen(false);
@@ -62,6 +63,7 @@ export function ShopFilters(props: FilterProps) {
 
   useEffect(() => {
     if (!open) return;
+    const focusFrame = requestAnimationFrame(() => dialog.current?.querySelector<HTMLButtonElement>("button")?.focus());
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
@@ -69,6 +71,7 @@ export function ShopFilters(props: FilterProps) {
     };
     document.addEventListener("keydown", onKeyDown);
     return () => {
+      cancelAnimationFrame(focusFrame);
       document.body.style.overflow = previous;
       document.removeEventListener("keydown", onKeyDown);
     };
@@ -81,16 +84,24 @@ export function ShopFilters(props: FilterProps) {
       </button>
 
       <aside className="hidden lg:block">
-        <form action={props.action} className="sticky top-24 border border-line bg-surface p-5"><Fields {...props} /></form>
+        <form action={props.action} className="atelier-filter-form sticky top-24 border border-line bg-surface p-5"><p className="store-eyebrow">Refine your selection</p><Fields {...props} /></form>
       </aside>
 
       <div
-        className={cn("fixed inset-0 z-50 bg-black/70 transition-[opacity,visibility] duration-300 lg:hidden", open ? "visible opacity-100" : "invisible opacity-0")}
+        className={cn("fixed inset-0 z-50 overflow-hidden bg-black/70 transition-[opacity,visibility] duration-300 lg:hidden", open ? "visible opacity-100" : "invisible opacity-0")}
         aria-hidden={!open}
         inert={!open}
         onMouseDown={(event) => { if (event.target === event.currentTarget) close(true); }}
       >
         <section
+          ref={dialog}
+          onKeyDown={(event) => {
+            if (event.key !== "Tab") return;
+            const controls = event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href]');
+            const first = controls[0]; const last = controls[controls.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+            else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+          }}
           id="mobile-product-filters"
           className={cn("ml-auto h-full w-full max-w-sm overflow-y-auto border-l border-line bg-canvas px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-5 shadow-[0_0_70px_rgb(0_0_0/0.55)] transition-transform duration-500 ease-[var(--mh-ease-out)]", open ? "translate-x-0" : "translate-x-full")}
           role="dialog"

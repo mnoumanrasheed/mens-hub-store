@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
   description: "Style Made for Men",
   applicationName: "Men’s Hub",
-  icons: { icon: "/favicon.png", shortcut: "/favicon.png", apple: "/logo.png" },
+  icons: { icon: "/favicon.png?v=mens-hub-2", shortcut: "/favicon.png?v=mens-hub-2", apple: "/logo.png" },
 };
 
 export default function RootLayout({
