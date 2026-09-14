@@ -1,0 +1,84 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(5rem, 9vw, 8.5rem);
+  background: radial-gradient(ellipse at 20% 28%, rgb(133 103 58 / 0.075), transparent 52%), linear-gradient(180deg, #0b0b0c, #10100f 45%, #0b0b0c);
+  color: var(--mh-ivory);
+  border-bottom: 1px solid rgb(245 242 234 / 0.08);
+}
+
+.header { display: grid; gap: 2rem; margin-bottom: clamp(2.75rem, 5vw, 4.5rem); }
+.eyebrow { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.23em; line-height: 1.8; }
+.eyebrow > span { width: 2.5rem; height: 1px; flex-shrink: 0; background: var(--mh-gold); opacity: 0.7; }
+.heading { font-family: var(--font-cormorant); font-size: clamp(2.9rem, 5.6vw, 5.5rem); font-weight: 400; letter-spacing: -0.045em; line-height: 1.02; text-wrap: balance; }
+.heading em { font-weight: 400; }
+.description { max-width: 23rem; color: var(--mh-muted); font-size: 0.8rem; line-height: 1.95; }
+.featured, .secondary { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+.cardShell { min-width: 0; position: relative; }
+.card { position: relative; display: block; width: 100%; height: 100%; min-height: 24rem; aspect-ratio: 4 / 5; isolation: isolate; overflow: hidden; background: #1a1916; }
+.image { position: absolute; inset: 0; }
+.image img { object-position: center; }
+/* Existing seed photographs contain baked-in white/gold frames. Crop those
+   frames in this gallery only; future owner-uploaded images stay unaltered. */
+.seedImage { scale: 1.26; }
+.imageFallback { display: grid; width: 100%; height: 100%; place-items: center; background: radial-gradient(ellipse at 50% 30%, #343027, #151514 75%); font-family: var(--font-cormorant); font-size: 8rem; color: rgb(245 242 234 / 0.12); }
+.gradient, .grading { position: absolute; inset: 0; pointer-events: none; }
+.gradient { background: linear-gradient(0deg, rgb(5 5 5 / 0.92), rgb(5 5 5 / 0.56) 24%, transparent 62%), linear-gradient(180deg, rgb(5 5 5 / 0.65), transparent 30%); }
+.grading { background: #18150f; }
+.innerBorder, .activeBorder { position: absolute; inset: 0.65rem; pointer-events: none; border: 1px solid rgb(245 242 234 / 0.16); }
+.activeBorder { border-color: var(--mh-gold); }
+.number { position: absolute; top: 1.8rem; left: 1.8rem; display: flex; align-items: center; gap: 0.65rem; font-size: 0.55rem; font-weight: 500; letter-spacing: 0.17em; }
+.number > span:first-child { color: var(--mh-gold); font-size: 0.68rem; }
+.copy { position: absolute; bottom: 1.8rem; inset-inline: 1.8rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 0.65rem; }
+.words { min-width: 0; }
+.rule { display: block; width: 2.75rem; height: 1px; margin-bottom: 1.15rem; background: var(--mh-gold); transform-origin: left; }
+.title { font-family: var(--font-cormorant); font-size: clamp(2.25rem, 3vw, 3rem); font-weight: 400; line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
+.microcopy { margin-top: 0.8rem; color: var(--mh-ivory); font-size: 0.65rem; line-height: 1.7; letter-spacing: 0.015em; }
+.arrow { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; flex-shrink: 0; border: 1px solid rgb(210 173 69 / 0.5); border-radius: 50%; color: var(--mh-gold); }
+.arrow > span { display: flex; }
+.card:focus-visible { outline: 2px solid var(--mh-focus); outline-offset: 5px; }
+.secondarySection { margin-top: clamp(3rem, 5vw, 4.5rem); }
+.divider { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.75rem; color: var(--mh-muted); font-size: 0.55rem; letter-spacing: 0.19em; line-height: 1.8; }
+.divider > span { height: 1px; flex: 1; background: linear-gradient(90deg, rgb(210 173 69 / 0.3), rgb(245 242 234 / 0.08)); }
+.collectionCount { display: none; }
+
+@media (min-width: 640px) {
+  .featured, .secondary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lead { grid-column: 1 / -1; }
+  .lead .card { aspect-ratio: 6 / 5; }
+  .lead .title { font-size: clamp(4rem, 6vw, 6rem); }
+  .collectionCount { display: block; }
+}
+
+@media (min-width: 1024px) {
+  .header { grid-template-columns: 7fr 5fr; align-items: end; gap: 3rem; }
+  .header > :last-child { justify-self: end; padding-bottom: 0.3rem; }
+  .featured { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); height: clamp(43rem, 57vw, 51rem); }
+  .featuredCard { grid-column: 8 / -1; }
+  .lead { grid-column: 1 / 8; grid-row: 1 / 3; }
+  .featured .card { aspect-ratio: auto; min-height: 0; }
+  .featured .copy { bottom: 2.25rem; inset-inline: 2.25rem; }
+  .lead .copy { bottom: 3rem; inset-inline: 3rem; }
+  .lead .number { top: 2.5rem; left: 3rem; }
+  .lead .arrow { width: 3.5rem; height: 3.5rem; }
+  .featured .title { font-size: clamp(2.75rem, 4vw, 4rem); }
+  .lead .title { font-size: clamp(4.5rem, 6.5vw, 6.5rem); }
+  .secondary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .secondary .card { min-height: 19rem; }
+  .secondary .copy { inset-inline: 1.4rem; bottom: 1.75rem; }
+  .secondary .number { top: 1.5rem; left: 1.4rem; gap: 0.45rem; font-size: 0.48rem; }
+  .secondary .title { font-size: clamp(1.85rem, 2.65vw, 2.65rem); }
+  .secondary .microcopy { font-size: 0.6rem; }
+}
+
+@media (hover: none) {
+  .microcopy { opacity: 1 !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section *, .section *::before, .section *::after { animation: none !important; transition: none !important; }
+  .section [style] { transform: none !important; opacity: 1 !important; }
+  .section .grading { opacity: 0.15 !important; }
+  .section .activeBorder { opacity: 0 !important; }
+  .card:focus-visible .activeBorder { opacity: 0.65 !important; }
+}
