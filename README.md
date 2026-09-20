@@ -1,4 +1,4 @@
-# Men’s Hub
+# Men’s Hub Clothing Store
 
 Production-oriented Next.js catalogue and private administration application for Men’s Hub — Style Made for Men. Orders are prepared as WhatsApp inquiries; the website has no payment gateway and no customer accounts.
 
