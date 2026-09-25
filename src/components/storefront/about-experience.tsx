@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 
-import { AtelierScene } from "@/components/storefront/atelier-scene";
 import { Container } from "@/components/storefront/container";
 import { StoreImage } from "@/components/storefront/store-image";
 import { StoreHeroAtmosphere } from "@/components/storefront/store-hero-atmosphere";
@@ -70,7 +69,6 @@ export function AboutExperience({ imageUrl }: AboutExperienceProps) {
       </section>
 
       <section id="our-story" className={styles.storySection} aria-labelledby="story-title">
-        <div className={styles.storyCinema} aria-hidden="true"><AtelierScene fabric /></div>
         <span className={styles.storyChapter} aria-hidden="true">01 / The house</span>
         <Container size="wide">
           <motion.div className={styles.storyGrid} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.15 }} variants={stagger}>

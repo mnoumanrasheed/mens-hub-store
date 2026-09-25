@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 
 import { ScrollReveal } from "@/components/storefront/scroll-reveal";
+import type { StorefrontCategory } from "@/data/storefront";
 
 type Settings = {
   brandName: string;
@@ -17,30 +18,41 @@ type Settings = {
   tiktokUrl: string | null;
 };
 
+type CategoryItem = Pick<StorefrontCategory, "id" | "name" | "slug">;
+
 const exploreLinks = [
   ["Shop", "/shop"],
   ["New Arrivals", "/new-arrivals"],
   ["Categories", "/shop"],
   ["Sale", "/sale"],
-  ["About", "/about"],
 ] as const;
 
-const supportLinks = [
+const supportColumnLeft = [
   ["Contact", "/contact"],
-  ["How to Order", "/how-to-order"],
   ["Shipping Information", "/shipping-policy"],
-  ["Returns & Exchange", "/return-exchange-policy"],
   ["Size Guide", "/size-guide"],
+] as const;
+
+const supportColumnRight = [
+  ["How to Order", "/how-to-order"],
+  ["Returns & Exchange", "/return-exchange-policy"],
   ["FAQs", "/faq"],
 ] as const;
 
-const marqueeText = "STYLE MADE FOR MEN  •  MODERN ESSENTIALS  •  TIMELESS DETAIL  •  PERSONAL SERVICE  •  ";
-
-export function StoreFooter({ settings }: {
+export function StoreFooter({
+  settings,
+  categories = [],
+}: {
   settings: Settings;
+  categories?: CategoryItem[];
   content?: Record<string, string>;
 }) {
-  const whatsappHref = `https://wa.me/${settings.whatsapp.replace(/\D/g, "")}`;
+  const brandName = settings.brandName || "Men's Hub";
+  const tagline = settings.tagline || "STYLE MADE FOR MEN";
+  const proprietors = settings.proprietors || "TAHA SONI / SHAHZAIB SONI";
+  const phone = settings.phone || "03081000025";
+  const email = settings.email || "mens.hub919@gmail.com";
+
   const socials = [
     { label: "Instagram", href: settings.instagramUrl, icon: FaInstagram },
     { label: "Facebook", href: settings.facebookUrl, icon: FaFacebookF },
@@ -48,64 +60,148 @@ export function StoreFooter({ settings }: {
   ].filter((item): item is typeof item & { href: string } => Boolean(item.href));
 
   return (
-    <footer className="minimal-footer" aria-label="Store footer">
-      <div className="minimal-footer-inner">
-        <section className="minimal-footer-cta" aria-labelledby="footer-cta-title">
-          <div className="minimal-footer-cta-copy">
-            <ScrollReveal><p className="minimal-footer-eyebrow">Men&apos;s Hub</p></ScrollReveal>
-            <div className="minimal-footer-heading-mask">
-              <ScrollReveal delay={0.06}><h2 id="footer-cta-title">Style should feel <em>effortless.</em></h2></ScrollReveal>
+    <footer className="w-full bg-[#070809] text-[#ece8de] border-t border-[#1c1d20]" aria-label="Store footer">
+      <div className="mx-auto max-w-[92rem] px-6 py-16 sm:px-10 lg:py-20">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-8">
+          
+          {/* LEFT: Brand Identity, Tagline, Bio & Proprietors (5 cols) */}
+          <ScrollReveal className="flex flex-col justify-between lg:col-span-5 pr-0 lg:pr-8">
+            <div>
+              <Link href="/" aria-label={`${brandName} home`} className="group inline-flex items-center gap-3.5">
+                <div className="relative flex h-11 w-12 shrink-0 items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                  <Image
+                    src="/logo.png"
+                    alt=""
+                    width={1448}
+                    height={1086}
+                    className="h-full w-full object-contain filter drop-shadow-sm"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-display text-2xl font-medium tracking-wide text-white transition-colors group-hover:text-gold">
+                    {brandName}
+                  </span>
+                  <span className="text-[0.62rem] font-bold uppercase tracking-[0.26em] text-gold">
+                    {tagline}
+                  </span>
+                </div>
+              </Link>
+
+              <p className="mt-6 max-w-md text-sm leading-relaxed text-[#9ca3af]">
+                Modern menswear, footwear and accessories curated for confidence and effortless everyday style.
+              </p>
             </div>
-          </div>
-          <div className="minimal-footer-cta-side">
-            <ScrollReveal delay={0.12}><p>Discover pieces made for the modern man.</p></ScrollReveal>
-            <ScrollReveal className="minimal-footer-actions" delay={0.18}>
-              <Link href="/shop" className="minimal-footer-primary">Explore Store <ArrowUpRight size={17} /></Link>
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="minimal-footer-secondary"><MessageCircle size={16} /> Chat on WhatsApp <ArrowUpRight size={15} /></a>
-            </ScrollReveal>
-          </div>
-        </section>
-      </div>
 
-      <div className="minimal-footer-marquee" aria-label="Style made for men, modern essentials, timeless detail, personal service">
-        <div aria-hidden="true"><span>{marqueeText}</span><span>{marqueeText}</span></div>
-      </div>
-
-      <div className="minimal-footer-inner">
-        <div className="minimal-footer-directory">
-          <ScrollReveal className="minimal-footer-brand">
-            <Link href="/" aria-label={`${settings.brandName} home`} className="minimal-footer-brand-lockup">
-              <Image src="/logo.png" alt="" width={1448} height={1086} className="minimal-footer-logo" />
-              <span>{settings.brandName}<small>{settings.tagline || "Style Made for Men."}</small></span>
-            </Link>
-            <p>Modern menswear, footwear and accessories curated for confidence and effortless everyday style.</p>
-            {settings.proprietors ? <small className="minimal-footer-proprietors">{settings.proprietors}</small> : null}
+            {proprietors ? (
+              <p className="mt-8 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#6b7280]">
+                {proprietors}
+              </p>
+            ) : null}
           </ScrollReveal>
 
-          <ScrollReveal className="minimal-footer-column" delay={0.08}>
-            <h3>Explore</h3>
-            <nav aria-label="Footer explore links">
-              {exploreLinks.map(([label, href]) => <Link key={label} href={href}>{label}</Link>)}
+          {/* MIDDLE: Explore Links (3 cols) */}
+          <ScrollReveal className="lg:col-span-3" delay={0.06}>
+            <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.24em] text-gold">
+              Explore
+            </h3>
+            <nav aria-label="Footer explore links" className="flex flex-col gap-3.5">
+              {exploreLinks.map(([label, href]) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="text-sm font-normal text-[#d1d5db] transition-colors duration-200 hover:text-gold hover:translate-x-0.5"
+                >
+                  {label}
+                </Link>
+              ))}
             </nav>
           </ScrollReveal>
 
-          <ScrollReveal className="minimal-footer-column minimal-footer-support" delay={0.16}>
-            <h3>Support</h3>
-            <nav aria-label="Footer support links">
-              {supportLinks.map(([label, href]) => <Link key={label} href={href}>{label}</Link>)}
-            </nav>
-            <div className="minimal-footer-contact">
-              <a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}><Phone size={14} /><span>{settings.phone}</span></a>
-              <a href={`mailto:${settings.email}`}><Mail size={14} /><span>{settings.email}</span></a>
+          {/* RIGHT: Support Links & Direct Contact Strip (4 cols) */}
+          <ScrollReveal className="lg:col-span-4 flex flex-col justify-between" delay={0.12}>
+            <div>
+              <h3 className="mb-6 text-xs font-bold uppercase tracking-[0.24em] text-gold">
+                Support
+              </h3>
+              <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                <nav aria-label="Support links left" className="flex flex-col gap-3.5">
+                  {supportColumnLeft.map(([label, href]) => (
+                    <Link
+                      key={label}
+                      href={href}
+                      className="text-sm font-normal text-[#d1d5db] transition-colors duration-200 hover:text-gold hover:translate-x-0.5"
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </nav>
+                <nav aria-label="Support links right" className="flex flex-col gap-3.5">
+                  {supportColumnRight.map(([label, href]) => (
+                    <Link
+                      key={label}
+                      href={href}
+                      className="text-sm font-normal text-[#d1d5db] transition-colors duration-200 hover:text-gold hover:translate-x-0.5"
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </div>
+
+            {/* Support Contact Line */}
+            <div className="mt-8 border-t border-[#26272b] pt-6 flex flex-wrap items-center gap-6 text-xs text-[#9ca3af]">
+              {phone ? (
+                <a
+                  href={`tel:${phone.replace(/[^+\d]/g, "")}`}
+                  className="group inline-flex items-center gap-2 text-xs font-medium text-[#d1d5db] transition-colors hover:text-gold"
+                >
+                  <Phone size={14} className="text-gold transition-transform group-hover:scale-110" />
+                  <span>{phone}</span>
+                </a>
+              ) : null}
+              {email ? (
+                <a
+                  href={`mailto:${email}`}
+                  className="group inline-flex items-center gap-2 text-xs font-medium text-[#d1d5db] transition-colors hover:text-gold"
+                >
+                  <Mail size={14} className="text-gold transition-transform group-hover:scale-110" />
+                  <span>{email}</span>
+                </a>
+              ) : null}
             </div>
           </ScrollReveal>
         </div>
 
-        <div className="minimal-footer-bottom">
-          <div><p>&copy; {new Date().getFullYear()} {settings.brandName}. All rights reserved.</p><nav aria-label="Legal"><Link href="/privacy-policy">Privacy</Link><Link href="/terms-and-conditions">Terms</Link></nav></div>
-          <div className="minimal-footer-socials">
-            {socials.map(({ label, href, icon: Icon }) => <a key={label} href={href} aria-label={label} target="_blank" rel="noopener noreferrer"><Icon size={14} /></a>)}
+        {/* BOTTOM STRIP: Copyright & Policy Links */}
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-[#1e2023] pt-8 text-xs text-[#6b7280] sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} {brandName}. All rights reserved.</p>
+          
+          <div className="flex items-center gap-6">
+            <Link href="/privacy-policy" className="transition-colors hover:text-[#d1d5db]">
+              Privacy
+            </Link>
+            <Link href="/terms-and-conditions" className="transition-colors hover:text-[#d1d5db]">
+              Terms
+            </Link>
           </div>
+
+          {socials.length > 0 ? (
+            <div className="flex items-center gap-3">
+              {socials.map(({ label, href, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex size-7 items-center justify-center rounded-full border border-[#2a2c30] text-[#9ca3af] transition-colors hover:border-gold hover:text-gold"
+                >
+                  <Icon size={12} />
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import "server-only";
 
+import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import { PrismaClient } from "@/generated/prisma/client";
@@ -7,12 +8,28 @@ import { databaseEnvSchema } from "@/validation/env";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
+  pool: Pool | undefined;
 };
 
 function createPrismaClient(): PrismaClient {
   const { DATABASE_URL } = databaseEnvSchema.parse(process.env);
-  const adapter = new PrismaPg({ connectionString: withVerifiedSsl(DATABASE_URL) });
+  const connectionString = withVerifiedSsl(DATABASE_URL);
 
+  const pool = new Pool({
+    connectionString,
+    max: 10,
+    idleTimeoutMillis: 20000,
+    connectionTimeoutMillis: 10000,
+    keepAlive: true,
+  });
+
+  pool.on("error", (err) => {
+    console.warn("[Prisma DB Pool] Background connection error handled:", err.message);
+  });
+
+  globalForPrisma.pool = pool;
+
+  const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }
 

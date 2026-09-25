@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --mh-canvas: #0b0b0c;
-  --font-manrope: "Helvetica Neue", Arial, sans-serif;
+  --mh-canvas: #fafafa;
+  --font-manrope: "Manrope", "Helvetica Neue", Arial, sans-serif;
   --font-cormorant: Georgia, "Times New Roman", serif;
-  --mh-surface: #141416;
-  --mh-surface-raised: #1b1b1e;
-  --mh-ivory: #f5f2ea;
-  --mh-muted: #aaa69d;
-  --mh-subtle: #8c8982;
-  --mh-line: #302f32;
-  --mh-gold: #d2ad45;
-  --mh-gold-strong: #c9a227;
-  --mh-gold-ink: #171306;
+  --mh-surface: #ffffff;
+  --mh-surface-raised: #f4f4f5;
+  --mh-ivory: #111111;
+  --mh-muted: #555555;
+  --mh-subtle: #777777;
+  --mh-line: #e5e7eb;
+  --mh-gold: #c59b27;
+  --mh-gold-strong: #a8821c;
+  --mh-gold-ink: #ffffff;
   --mh-critical: #c44848;
-  --mh-critical-surface: #2a1113;
-  --mh-focus: #efd16d;
+  --mh-critical-surface: #fee2e2;
+  --mh-focus: #c59b27;
   --mh-admin-bg: #f3f3ef;
   --mh-admin-soft: #f7f7f4;
   --mh-admin-ink: #171719;

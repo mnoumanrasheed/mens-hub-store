@@ -1,58 +1,86 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
-import { StoreImage } from "@/components/storefront/store-image";
-import { AtelierScene } from "@/components/storefront/atelier-scene";
+import { ArrowRight } from "lucide-react";
+import { ProductShowroomScene } from "@/components/storefront/product-showroom-scene";
 
 type HeroImage = { url: string; alt: string };
 type Props = {
-  heading: string; tagline?: string; description: string;
-  primaryLabel: string; primaryLink: string; secondaryLabel: string; secondaryLink: string;
-  mainImage?: HeroImage; secondaryImages?: HeroImage[]; immersiveLayer?: ReactNode;
+  heading: string;
+  tagline?: string;
+  description: string;
+  primaryLabel: string;
+  primaryLink: string;
+  secondaryLabel: string;
+  secondaryLink: string;
+  mainImage?: HeroImage;
+  secondaryImages?: HeroImage[];
 };
 
 export function CinematicHero(props: Props) {
-  const root = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  useEffect(() => {
-    if (reduceMotion) return;
-    let cancelled = false;
-    let revert: (() => void) | undefined;
-    void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([{ gsap }, { ScrollTrigger }]) => {
-      if (cancelled || !root.current) return;
-      gsap.registerPlugin(ScrollTrigger);
-      const media = gsap.matchMedia();
-      media.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.to(".campaign-photo", { yPercent: 12, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 0.8 } });
-        gsap.to(".campaign-watermark", { xPercent: -8, ease: "none", scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: 1.2 } });
-      }, root);
-      revert = () => media.revert();
-    }).catch(() => { /* The static campaign remains available. */ });
-    return () => { cancelled = true; revert?.(); };
-  }, [reduceMotion]);
+  const headingText = props.heading || "Style Starts Here.";
+  const taglineText = props.tagline || "NEW SEASON / MEN’S HUB";
+  const descriptionText =
+    props.description || "Explore menswear, footwear and accessories selected for every day.";
+
+  const primaryBtnLabel = props.primaryLabel || "Shop New In";
+  const primaryBtnLink = props.primaryLink || "/new-arrivals";
+  const secondaryBtnLabel = props.secondaryLabel || "Explore Categories";
+  const secondaryBtnLink = props.secondaryLink || "/shop";
+
   return (
-    <section ref={root} className="campaign-hero" aria-labelledby="hero-title">
-      <div className="campaign-photo"><StoreImage src={props.mainImage?.url || "/images/atelier-campaign.webp"} alt={props.mainImage?.alt || "Men’s Hub monochrome menswear campaign"} fill preload sizes="100vw" className="object-cover" /></div>
-      <div className="campaign-shade" aria-hidden="true" />
-      <AtelierScene />{props.immersiveLayer}
-      <div className="campaign-topline"><span>{props.tagline || "Style made for men"}</span><span>Menswear · Footwear · Accessories</span></div>
-      <div className="campaign-content">
-        <p className="store-eyebrow"><span className="campaign-dash" />{props.heading}</p>
-        <h1 id="hero-title" className="campaign-title">
-          {["Presence.", "Without a word."].map((line, index) => <span className="campaign-line" key={line}><motion.span initial={false} className={index === 1 ? "campaign-title-italic" : undefined} whileInView={reduceMotion ? undefined : { y: [28, 0], opacity: [0.5, 1] }} viewport={{ once: true }} transition={{ duration: 1.1, delay: index * 0.13, ease: [0.22, 1, 0.36, 1] }}>{line}</motion.span></span>)}
-        </h1>
-        <p className="campaign-description">{props.description}</p>
-        <div className="campaign-actions"><Link className="store-cta-primary" href={props.primaryLink}>{props.primaryLabel}<ArrowUpRight size={17} /></Link><Link className="campaign-text-link" href={props.secondaryLink}>{props.secondaryLabel}<ArrowUpRight size={16} /></Link></div>
-      </div>
-      <div className="campaign-watermark" aria-hidden="true">MEN’S HUB</div>
-      <div className="campaign-bottomline">
-        <a href="#categories" className="campaign-scroll"><span className="campaign-scroll-icon"><ArrowDown size={17} /></span>Discover the collection</a>
-        <span className="campaign-caption">An expression of individuality.<br /><span>A wardrobe of possibilities.</span></span>
-        <span className="campaign-index"><b>01</b><span />THE SIGNATURE EDIT</span>
+    <section
+      aria-labelledby="hero-title"
+      className="relative w-full h-[580px] sm:h-[640px] lg:h-[680px] overflow-hidden bg-[radial-gradient(ellipse_at_75%_45%,#2d2d33_0%,#18181b_60%,#0f0f11_100%)] text-white"
+    >
+      {/* 3D Luxury Product Showroom Scene (No human models or portraits) */}
+      <ProductShowroomScene />
+
+      {/* Ambient gradient overlay to sharpen text contrast on left side */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-0 bg-gradient-to-r from-[#0f0f11] via-[#0f0f11]/80 to-transparent max-w-3xl"
+      />
+
+      {/* Hero CMS Content overlay aligned to bottom-left */}
+      <div className="relative z-10 mx-auto flex h-full max-w-[90rem] flex-col justify-center px-4 sm:px-8 lg:px-12">
+        <div className="max-w-xl">
+          {taglineText ? (
+            <p className="mb-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.22em] text-gray-300">
+              {taglineText}
+            </p>
+          ) : null}
+
+          <h1
+            id="hero-title"
+            className="font-sans text-3xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl line-clamp-2 mb-4"
+          >
+            {headingText}
+          </h1>
+
+          <p className="mb-8 max-w-lg text-sm sm:text-base font-normal leading-relaxed text-gray-300 line-clamp-2">
+            {descriptionText}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-5 sm:gap-6">
+            {/* Primary CTA: Solid white button with black text */}
+            <Link
+              href={primaryBtnLink}
+              className="inline-flex min-h-[3rem] items-center gap-2 bg-white px-7 text-xs font-bold uppercase tracking-wider text-black transition-colors hover:bg-neutral-200"
+            >
+              {primaryBtnLabel}
+              <ArrowRight size={15} />
+            </Link>
+
+            {/* Secondary CTA: Simple text link with underline */}
+            <Link
+              href={secondaryBtnLink}
+              className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-white underline underline-offset-4 transition-colors hover:text-gray-300"
+            >
+              {secondaryBtnLabel}
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

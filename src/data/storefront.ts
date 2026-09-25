@@ -58,6 +58,74 @@ export async function getHomepageData() {
   return { settings: publicSettings, blocks, categories, newProducts: newProducts.map((product) => productDto(product, threshold, now)), saleProducts: saleProducts.map((product) => productDto(product, threshold, now)), featuredProducts: featuredProducts.map((product) => productDto(product, threshold, now)) };
 }
 
+export type StorefrontCategoryShelf = {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  imageUrl: string | null;
+  bannerImageUrl: string | null;
+  products: StorefrontProduct[];
+};
+
+/**
+ * Fetch active categories with up to 8 published products each.
+ * Single efficient query — no N+1.
+ */
+export async function getCategoryShelvesData(lowStockThreshold?: number): Promise<StorefrontCategoryShelf[]> {
+  const prisma = getPrismaClient();
+  const now = new Date();
+  let threshold = lowStockThreshold;
+  let categories;
+
+  const categorySelect = {
+    id: true,
+    name: true,
+    slug: true,
+    description: true,
+    imageUrl: true,
+    bannerImageUrl: true,
+    products: {
+      where: {
+        isPublished: true,
+        OR: [{ subcategoryId: null }, { subcategory: { isActive: true } }],
+      },
+      orderBy: { createdAt: "desc" as const },
+      take: 8,
+      select: productSelect,
+    },
+  };
+
+  if (typeof threshold === "number") {
+    categories = await prisma.category.findMany({
+      where: { isActive: true },
+      orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+      select: categorySelect,
+    });
+  } else {
+    const [settings, catRows] = await Promise.all([
+      prisma.siteSettings.findUnique({ where: { id: "site" }, select: { lowStockThreshold: true } }),
+      prisma.category.findMany({
+        where: { isActive: true },
+        orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
+        select: categorySelect,
+      }),
+    ]);
+    threshold = settings?.lowStockThreshold ?? 3;
+    categories = catRows;
+  }
+
+  return categories.map((cat) => ({
+    id: cat.id,
+    name: cat.name,
+    slug: cat.slug,
+    description: cat.description,
+    imageUrl: cat.imageUrl,
+    bannerImageUrl: cat.bannerImageUrl,
+    products: cat.products.map((p) => productDto(p, threshold!, now)),
+  }));
+}
+
 type CollectionKind = "all" | "new" | "sale";
 const pageSize = 24;
 
