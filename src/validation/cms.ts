@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { cmsBlockDefinitions, policyDefinitions } from "@/types/cms";
+import { cmsBlockDefinitions } from "@/types/cms";
 
 const emptyToNull = (value: unknown) => typeof value === "string" && value.trim() === "" ? null : value;
 const optionalText = (max: number) => z.preprocess(emptyToNull, z.string().trim().max(max).nullable());
@@ -63,32 +63,5 @@ export const contentBlockSchema = z.object({
   }
 });
 
-export const policySchema = z.object({
-  slug: z.enum(policyDefinitions.map((item) => item[0])),
-  title: z.string().trim().min(2).max(120),
-  text: z.string().trim().max(50_000),
-  isPublished: z.boolean(),
-  seoTitle: optionalText(70),
-  seoDescription: optionalText(170),
-}).superRefine((value, context) => {
-  if (value.isPublished && !value.text) context.addIssue({ code: "custom", path: ["text"], message: "Add approved page content before publishing." });
-});
-
-export const announcementSchema = z.object({
-  id: optionalText(64),
-  text: z.string().trim().min(1).max(250),
-  linkUrl: z.preprocess(emptyToNull, z.union([internalPath, httpsUrl]).nullable()),
-  linkLabel: optionalText(80),
-  background: z.enum(["DARK", "GOLD", "CRITICAL"]),
-  enabled: z.boolean(),
-  startAt: z.date().nullable(),
-  endAt: z.date().nullable(),
-}).superRefine((value, context) => {
-  if (value.endAt && value.startAt && value.endAt <= value.startAt) context.addIssue({ code: "custom", path: ["endAt"], message: "End date must be after start date." });
-  if (value.linkLabel && !value.linkUrl) context.addIssue({ code: "custom", path: ["linkUrl"], message: "Add a link when a label is set." });
-});
-
 export type SettingsInput = z.infer<typeof settingsSchema>;
 export type ContentBlockInput = z.infer<typeof contentBlockSchema>;
-export type PolicyInput = z.infer<typeof policySchema>;
-export type AnnouncementInput = z.infer<typeof announcementSchema>;

@@ -40,8 +40,6 @@ export function AdminShell({ admin, children }: AdminShellProps) {
           <Link className="admin-nav-link" href="/admin">Dashboard</Link>
           <Link className="admin-nav-link" href="/admin/products">Products</Link>
           <Link className="admin-nav-link" href="/admin/categories">Categories</Link>
-          <Link className="admin-nav-link" href="/admin/inventory">Inventory</Link>
-          <Link className="admin-nav-link" href="/admin/analytics">Analytics</Link>
           <Link className="admin-nav-link" href="/admin/content">Content</Link>
           <Link className="admin-nav-link" href="/admin/settings">Settings</Link>
         </Container>

@@ -21,13 +21,3 @@ export type CmsBlockValue = {
   imageUrl?: string | null;
   imagePublicId?: string | null;
 };
-
-export const policyDefinitions = [
-  ["shipping-policy", "Shipping Policy"],
-  ["return-exchange-policy", "Return & Exchange Policy"],
-  ["privacy-policy", "Privacy Policy"],
-  ["terms-and-conditions", "Terms & Conditions"],
-  ["how-to-order", "How to Order"],
-  ["size-guide", "Size Guide"],
-  ["faq", "FAQ"],
-] as const;

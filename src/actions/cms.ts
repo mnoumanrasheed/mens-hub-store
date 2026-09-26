@@ -3,28 +3,26 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-import { saveAnnouncement, saveContentBlock, savePolicy, saveSettings } from "@/data/cms";
+import { saveContentBlock, saveSettings } from "@/data/cms";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { uploadContentImage } from "@/lib/cloudinary/images";
 import { deleteOrQueueManagedImage, retryDueMediaCleanupJobs } from "@/lib/cloudinary/cleanup";
 import { ImageValidationError } from "@/lib/cloudinary/image-validation";
 import type { MutationState } from "@/types/mutation-state";
 import { cmsBlockDefinitions } from "@/types/cms";
-import { announcementSchema, contentBlockSchema, policySchema, settingsSchema } from "@/validation/cms";
+import { contentBlockSchema, settingsSchema } from "@/validation/cms";
 
 const text = (formData: FormData, key: string) => typeof formData.get(key) === "string" ? String(formData.get(key)).trim() : "";
 const checked = (formData: FormData, key: string) => ["on", "true"].includes(text(formData, key));
 const file = (formData: FormData, key: string) => { const value = formData.get(key); return value instanceof File && value.size > 0 ? value : null; };
-const utcDate = (value: string) => value ? new Date(`${value}:00Z`) : null;
 
 function validationError(error: z.ZodError): MutationState {
   return { status: "error", message: "Correct the highlighted information and try again.", fieldErrors: z.flattenError(error).fieldErrors };
 }
-
 function saveError(error: unknown): MutationState {
   return { status: "error", message: error instanceof ImageValidationError ? error.message : "The changes could not be saved. Please try again." };
 }
-
+// End of CMS actions.
 function revalidateSettings() {
   revalidatePath("/admin/settings");
   revalidatePath("/", "layout");
@@ -50,7 +48,6 @@ export async function saveSettingsAction(_state: MutationState, formData: FormDa
     return saveError(error);
   }
 }
-
 export async function saveContentBlockAction(_state: MutationState, formData: FormData): Promise<MutationState> {
   const admin = await requireAdmin();
   await retryDueMediaCleanupJobs();
@@ -73,17 +70,5 @@ export async function saveContentBlockAction(_state: MutationState, formData: Fo
     return saveError(error);
   }
 }
-
-export async function savePolicyAction(_state: MutationState, formData: FormData): Promise<MutationState> {
-  const admin = await requireAdmin();
-  const parsed = policySchema.safeParse({ slug: text(formData, "slug"), title: text(formData, "title"), text: text(formData, "content"), isPublished: checked(formData, "isPublished"), seoTitle: text(formData, "seoTitle"), seoDescription: text(formData, "seoDescription") });
-  if (!parsed.success) return validationError(parsed.error);
-  try { await savePolicy(admin.id, parsed.data); revalidatePath("/admin/content"); revalidatePath(`/${parsed.data.slug}`); return { status: "success", message: `${parsed.data.title} saved.` }; } catch (error) { return saveError(error); }
-}
-
-export async function saveAnnouncementAction(_state: MutationState, formData: FormData): Promise<MutationState> {
-  const admin = await requireAdmin();
-  const parsed = announcementSchema.safeParse({ id: text(formData, "id"), text: text(formData, "text"), linkUrl: text(formData, "linkUrl"), linkLabel: text(formData, "linkLabel"), background: text(formData, "background"), enabled: checked(formData, "enabled"), startAt: utcDate(text(formData, "startAt")), endAt: utcDate(text(formData, "endAt")) });
-  if (!parsed.success) return validationError(parsed.error);
-  try { await saveAnnouncement(admin.id, parsed.data); revalidatePath("/admin/content"); revalidatePath("/", "layout"); return { status: "success", message: "Announcement saved." }; } catch (error) { return saveError(error); }
-}
+// End of CMS actions.
+//

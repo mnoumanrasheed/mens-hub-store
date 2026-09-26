@@ -1,7 +1,6 @@
 import "./storefront.css";
 import { StorefrontShell } from "@/components/storefront/storefront-shell";
-import { getActiveAnnouncement, getPublicSiteSettings } from "@/data/cms";
-import { getPublicContentBlock } from "@/data/cms";
+import { getPublicContentBlock, getPublicSiteSettings } from "@/data/cms";
 import { getStorefrontShellData } from "@/data/storefront";
 import type { Metadata } from "next";
 import { getSiteUrl } from "@/lib/site-url";
@@ -29,6 +28,6 @@ type StorefrontLayoutProps = Readonly<{
 }>;
 
 export default async function StorefrontLayout({ children }: StorefrontLayoutProps) {
-  const [announcement, shell, footer] = await Promise.all([getActiveAnnouncement(), getStorefrontShellData(), getPublicContentBlock("FOOTER", "overview")]);
-  return <StorefrontShell announcement={announcement} brandName={shell.settings.brandName} categories={shell.categories} settings={shell.settings} footerContent={footer?.fields}>{children}</StorefrontShell>;
+  const [shell, footer] = await Promise.all([getStorefrontShellData(), getPublicContentBlock("FOOTER", "overview")]);
+  return <StorefrontShell brandName={shell.settings.brandName} categories={shell.categories} settings={shell.settings} footerContent={footer?.fields}>{children}</StorefrontShell>;
 }

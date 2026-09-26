@@ -30,7 +30,7 @@ export type CategoryAdminDto = {
 export type CategoryWriteInput = {
   name: string;
   slug: string;
-  description: string | null;
+  description?: string | null;
 };
 
 export type CategoryMediaWrite = {
@@ -44,7 +44,7 @@ export type SubcategoryWriteInput = {
   categoryId: string;
   name: string;
   slug: string;
-  description: string | null;
+  description?: string | null;
 };
 
 export async function getCategoriesForAdmin(): Promise<CategoryAdminDto[]> {

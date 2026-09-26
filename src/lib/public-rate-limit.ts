@@ -15,7 +15,7 @@ function requestKey(request: Request): string {
 
 export async function acceptPublicRequest(
   request: Request,
-  scope: "analytics" | "search" | "whatsapp",
+  scope: "search" | "whatsapp",
   maximum: number,
   windowMs = 60_000,
 ): Promise<boolean> {

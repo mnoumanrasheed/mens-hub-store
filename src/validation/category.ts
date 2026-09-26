@@ -10,8 +10,8 @@ const slug = z
 
 export const categoryInputSchema = z.object({
   name: z.string().trim().min(2).max(80),
-  slug,
-  description: z.string().trim().max(1000).nullable(),
+  slug: slug.optional(),
+  description: z.string().trim().max(1000).nullable().optional(),
   removeImage: z.boolean(),
   removeBannerImage: z.boolean(),
 });
@@ -19,8 +19,8 @@ export const categoryInputSchema = z.object({
 export const subcategoryInputSchema = z.object({
   categoryId: identifier,
   name: z.string().trim().min(2).max(80),
-  slug,
-  description: z.string().trim().max(1000).nullable(),
+  slug: slug.optional(),
+  description: z.string().trim().max(1000).nullable().optional(),
 });
 
 export const entityIdSchema = identifier;

@@ -39,7 +39,7 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
         <ShoppingBag className="mx-auto text-gold" />
         <h1 className="mt-5 font-display text-4xl text-ivory">Your Cart</h1>
         <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">Your cart is currently empty.</p>
-        <Link href="/shop" className="store-cta-primary mt-7 w-full min-[390px]:w-auto">Shop collection</Link>
+        <Link href="/new-arrivals" className="store-cta-primary mt-7 w-full min-[390px]:w-auto">Shop collection</Link>
       </div>
     );
   }
@@ -56,13 +56,12 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
         <div className="grid gap-4">
           {lines.map((line) => (
             <article key={line.lineId} className="atelier-cart-line grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 border border-line bg-surface p-3 min-[390px]:grid-cols-[6.5rem_minmax(0,1fr)] min-[390px]:gap-4 sm:grid-cols-[8rem_minmax(0,1fr)_auto] sm:p-4">
-              <Link href={`/product/${line.slug}`} className="relative aspect-[4/5] overflow-hidden bg-surface-raised">
+              <Link href={`/product/${line.id}`} className="relative aspect-[4/5] overflow-hidden bg-surface-raised">
                 <StoreImage src={line.imageUrl} alt={line.name} fill sizes="128px" className="object-cover" />
               </Link>
 
               <div className="min-w-0 py-0.5 sm:py-1">
-                <Link href={`/product/${line.slug}`} className="line-clamp-2 font-display text-xl leading-tight text-ivory hover:text-gold sm:text-2xl">{line.name}</Link>
-                <p className="mt-1 text-[0.62rem] font-bold uppercase tracking-[0.11em] text-subtle">Article {line.sku}</p>
+                <Link href={`/product/${line.id}`} className="line-clamp-2 font-display text-xl leading-tight text-ivory hover:text-gold sm:text-2xl">{line.name}</Link>
                 <dl className="mt-3 grid gap-1 text-sm leading-5 text-muted">
                   <div className="flex flex-wrap gap-x-2"><dt>Size:</dt><dd className="text-ivory">{line.selectedSize || "N/A"}</dd></div>
                   <div className="flex flex-wrap gap-x-2"><dt>Color:</dt><dd className="text-ivory">{line.selectedColor || "N/A"}</dd></div>

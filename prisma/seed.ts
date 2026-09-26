@@ -103,25 +103,8 @@ async function main() {
       update: {},
     });
 
-    const policyPages = [
-      ["shipping-policy", "Shipping Policy"],
-      ["return-exchange-policy", "Return & Exchange Policy"],
-      ["privacy-policy", "Privacy Policy"],
-      ["terms-and-conditions", "Terms & Conditions"],
-      ["how-to-order", "How to Order"],
-      ["size-guide", "Size Guide"],
-      ["faq", "FAQ"],
-    ] as const;
-    for (const [slug, title] of policyPages) {
-      await prisma.policyPage.upsert({
-        where: { slug },
-        create: { slug, title, content: { text: "" }, isPublished: false },
-        update: {},
-      });
-    }
-
     const homepageBlocks = [
-      ["hero", { heading: "MEN’S HUB", tagline: "Style Made for Men", description: "Premium menswear, footwear and accessories crafted for the modern man.", primaryCtaLabel: "SHOP COLLECTION", primaryCtaLink: "/shop", secondaryCtaLabel: "VIEW NEW ARRIVALS", secondaryCtaLink: "/new-arrivals" }],
+      ["hero", { heading: "MEN’S HUB", tagline: "Style Made for Men", description: "Refined menswear, footwear and accessories for the modern man.", primaryCtaLabel: "SHOP COLLECTION", primaryCtaLink: "/shop", secondaryCtaLabel: "VIEW NEW ARRIVALS", secondaryCtaLink: "/new-arrivals" }],
       ["shop-by-category", { heading: "Shop by Category", description: "" }],
       ["new-arrivals", { heading: "New Arrivals", description: "" }],
       ["sale", { heading: "Sale / Discount Collection", description: "" }],

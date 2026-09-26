@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AnimatedCollectionHero } from "@/components/storefront/animated-collection-hero";
 import { Container } from "@/components/storefront/container";
 import { ProductCard } from "@/components/storefront/product-card";
+import type { InternalHeroBreadcrumb } from "@/components/storefront/internal-cinematic-hero";
 import type { StorefrontProduct } from "@/data/storefront";
 import type { StorefrontFilters } from "@/validation/storefront";
 
@@ -12,6 +13,8 @@ type CollectionData = {
     id: string;
     name: string;
     slug: string;
+    imageUrl?: string | null;
+    bannerImageUrl?: string | null;
     subcategories: { id: string; name: string; slug: string }[];
   }[];
   options: { sizes: string[]; colors: string[] };
@@ -27,6 +30,34 @@ function pageHref(action: string, filters: StorefrontFilters, page: number) {
   });
   return action + "?" + query;
 }
+
+const categoryHeroFallbacks: Record<string, string> = {
+  shirts: "/seed-media/01-Shirts/shirt-02.jpg",
+  pants: "/seed-media/02-Pants/pants-02.jpg",
+  "shalwar-qameez": "/seed-media/03-Shalwar-Qameez/shalwar-qameez-02.jpg",
+  trousers: "/seed-media/04-Trousers/trousers-02.jpg",
+  shoes: "/seed-media/05-Shoes/shoes-02.jpg",
+  watches: "/seed-media/06-Watches/watch-02.jpg",
+  perfumes: "/seed-media/07-Perfumes/perfume-02.jpg",
+  glasses: "/seed-media/08-Glasses/glasses-02.jpg",
+  belts: "/seed-media/09-Belts/belt-02.jpg",
+  accessories: "/seed-media/10-Accessories/accessories-02.jpg",
+  tracksuits: "/seed-media/11-Tracksuits/tracksuit-02.jpg",
+};
+
+const categorySecondaryFallbacks: Record<string, string> = {
+  shirts: "/seed-media/02-Pants/pants-02.jpg",
+  pants: "/seed-media/04-Trousers/trousers-02.jpg",
+  "shalwar-qameez": "/seed-media/01-Shirts/shirt-02.jpg",
+  trousers: "/seed-media/05-Shoes/shoes-02.jpg",
+  shoes: "/seed-media/06-Watches/watch-02.jpg",
+  watches: "/seed-media/07-Perfumes/perfume-02.jpg",
+  perfumes: "/seed-media/08-Glasses/glasses-02.jpg",
+  glasses: "/seed-media/09-Belts/belt-02.jpg",
+  belts: "/seed-media/10-Accessories/accessories-02.jpg",
+  accessories: "/seed-media/11-Tracksuits/tracksuit-02.jpg",
+  tracksuits: "/seed-media/01-Shirts/shirt-02.jpg",
+};
 
 export function CollectionPage({
   eyebrow,
@@ -49,12 +80,19 @@ export function CollectionPage({
     ? data.categories.find((item) => item.slug === routeCategory)
     : undefined;
   const heroDescription = description || "Explore a considered selection of modern menswear, chosen for confident everyday style.";
+  const routeKey = action.replace(/^\//, "");
+  const fallbackImage = category ? categoryHeroFallbacks[category.slug] : routeKey === "new-arrivals" ? "/seed-media/01-Shirts/shirt-02.jpg" : routeKey === "sale" ? "/seed-media/04-Trousers/trousers-02.jpg" : "/seed-media/01-Shirts/shirt-02.jpg";
+  const fallbackSecondaryImage = category ? categorySecondaryFallbacks[category.slug] : routeKey === "new-arrivals" ? "/seed-media/03-Shalwar-Qameez/shalwar-qameez-02.jpg" : routeKey === "sale" ? "/seed-media/05-Shoes/shoes-02.jpg" : "/seed-media/02-Pants/pants-02.jpg";
+  const heroImage = category?.bannerImageUrl || category?.imageUrl || fallbackImage;
+  const breadcrumbItems: InternalHeroBreadcrumb[] = [
+    { label: "Home", href: "/" },
+    ...(category && category.name !== title ? [{ label: category.name, href: "/shop/" + category.slug }] : []),
+    { label: title },
+  ];
 
   return (
-    <main className="atelier-collection pb-24 pt-10 sm:pb-32 sm:pt-20">
-      <Container size="wide">
-        <nav className="collection-breadcrumb" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><span>{title}</span></nav>
-        <AnimatedCollectionHero key={action} eyebrow={eyebrow} title={title} description={heroDescription}>
+    <main className="atelier-collection pb-24 sm:pb-32">
+      <AnimatedCollectionHero key={action} routeKey={category?.slug || routeKey} eyebrow={eyebrow} title={title} description={heroDescription} image={heroImage} secondaryImage={fallbackSecondaryImage} imageAlt={`${title} fashion editorial`} breadcrumbItems={breadcrumbItems}>
           {category?.subcategories.length ? (
             <nav aria-label={category.name + " subcategories"} className="mt-5 flex flex-wrap gap-2">
               {category.subcategories.map((subcategory) => (
@@ -64,9 +102,10 @@ export function CollectionPage({
               ))}
             </nav>
           ) : null}
-        </AnimatedCollectionHero>
+      </AnimatedCollectionHero>
 
-        <nav className="collection-category-nav" aria-label="Browse collections"><Link href="/shop" aria-current={action === "/shop" && !routeCategory ? "page" : undefined}>All pieces</Link>{data.categories.map((item) => <Link key={item.id} href={"/shop/" + item.slug} aria-current={routeCategory === item.slug ? "page" : undefined}>{item.name}</Link>)}</nav>
+      <Container size="wide" className="pt-8 sm:pt-12">
+        <nav className="collection-category-nav" aria-label="Browse collections"><Link href="/new-arrivals" aria-current={action === "/new-arrivals" && !routeCategory ? "page" : undefined}>New arrivals</Link>{data.categories.map((item) => <Link key={item.id} href={"/shop/" + item.slug} aria-current={routeCategory === item.slug ? "page" : undefined}>{item.name}</Link>)}</nav>
 
         <div className="min-w-0">
           <section className="min-w-0" aria-label="Products">
