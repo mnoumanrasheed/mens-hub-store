@@ -31,13 +31,13 @@ export default async function HomePage() {
   return (
     <main className="mh-homepage">
       <CinematicHero
-        heading={hero.fields.heading || "The everyday edit."}
-        tagline={hero.fields.tagline || data.settings.tagline || "NEW SEASON / MEN'S HUB"}
-        description={hero.fields.description || "Modern menswear, footwear and finishing details selected for the way you move."}
-        primaryLabel={hero.fields.primaryCtaLabel || "Shop the collection"}
-         primaryLink={hero.fields.primaryCtaLink || "/new-arrivals"}
-        secondaryLabel={hero.fields.secondaryCtaLabel || "View new arrivals"}
-        secondaryLink={hero.fields.secondaryCtaLink || "/new-arrivals"}
+        heading={"DRESS WITH\nDISTINCTION."}
+        tagline="MEN'S HUB — PREMIUM MENSWEAR"
+        description="Modern menswear, footwear and accessories selected for everyday confidence."
+        primaryLabel="Shop collection"
+        primaryLink="/shop"
+        secondaryLabel="New arrivals"
+        secondaryLink="/new-arrivals"
         mainImage={hero.imageUrl ? { url: hero.imageUrl, alt: "Men's Hub campaign" } : undefined}
       />
 
@@ -63,7 +63,7 @@ export default async function HomePage() {
           heading={block("featured").fields.heading || "Essentials"}
           description={block("featured").fields.description}
           products={essentials}
-         href="/new-arrivals"
+         href="/shop"
         />
       ) : null}
 

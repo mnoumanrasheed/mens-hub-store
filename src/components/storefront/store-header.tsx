@@ -19,6 +19,7 @@ type HeaderProps = {
 
 const navigation = [
   { href: "/new-arrivals", label: "New In" },
+  { href: "/shop", label: "Shop" },
   { href: "/sale", label: "Sale" },
   { href: "/contact", label: "Contact" },
 ] as const;
@@ -82,7 +83,7 @@ export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
   }
 
   function isActive(href: string) {
-    return pathname === href;
+    return pathname === href || (href === "/shop" && pathname.startsWith("/shop/"));
   }
 
   return (
@@ -100,20 +101,20 @@ export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
           </div>
 
           <nav className="mh-desktop-nav" aria-label="Main navigation">
-            {navigation.slice(0, 1).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active")}>{item.label}</Link>)}
+            {navigation.slice(0, 2).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active")}>{item.label}</Link>)}
             <div ref={categoryMenu} className="mh-category-menu">
               <button type="button" className={cn(categoryOpen && "is-active")} aria-expanded={categoryOpen} aria-controls="desktop-category-menu" onClick={() => setCategoryOpen((open) => !open)}>
                 Categories <ChevronDown size={14} className={cn(categoryOpen && "rotate-180")} />
               </button>
               <div id="desktop-category-menu" className={cn("mh-category-popover", categoryOpen && "is-open")} aria-hidden={!categoryOpen}>
-                <div className="mh-category-popover-heading"><span>Browse the collection</span><Link href="/new-arrivals" onClick={() => setCategoryOpen(false)}>View new arrivals <ArrowRight size={13} /></Link></div>
+                <div className="mh-category-popover-heading"><span>Browse the collection</span><Link href="/shop" onClick={() => setCategoryOpen(false)}>View all <ArrowRight size={13} /></Link></div>
                 <div className="mh-category-popover-grid">
                   {categories.map((category) => <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>{category.name}<ArrowRight size={13} /></Link>)}
                 </div>
                 <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mh-category-concierge"><MessageCircle size={14} /> Need a size check? Chat with us</a>
               </div>
             </div>
-            {navigation.slice(1).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active", item.href === "/sale" && "is-sale")}>{item.label}</Link>)}
+            {navigation.slice(2).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active", item.href === "/sale" && "is-sale")}>{item.label}</Link>)}
           </nav>
 
           <div className="mh-header-actions">

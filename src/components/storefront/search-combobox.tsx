@@ -39,10 +39,10 @@ export function SearchCombobox({ onNavigate }: { onNavigate?: () => void }) {
   }
 
   const expanded = query.trim().length >= 2;
-  const searchHref = query.trim() ? `/new-arrivals?q=${encodeURIComponent(query.trim())}` : "/new-arrivals";
+  const searchHref = query.trim() ? `/shop?q=${encodeURIComponent(query.trim())}` : "/shop";
 
   return (
-    <form action="/new-arrivals" className="relative" role="search" onSubmit={(event) => { event.preventDefault(); router.push(searchHref); onNavigate?.(); }}>
+    <form action="/shop" className="relative" role="search" onSubmit={(event) => { event.preventDefault(); router.push(searchHref); onNavigate?.(); }}>
       <label className="sr-only" htmlFor="site-search">Search products</label>
       <input ref={input} autoFocus id="site-search" name="q" role="combobox" aria-autocomplete="list" aria-controls={listId} aria-expanded={expanded} aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined} aria-busy={loading} autoComplete="off" className="min-h-12 w-full border border-line bg-canvas px-3 pr-20 text-base text-ivory placeholder:text-subtle sm:px-4 sm:pr-24" placeholder="Name or category…" value={query} onChange={(event) => { const value = event.target.value; setQuery(value); setActive(-1); setItems([]); setLoading(value.trim().length >= 2); }} onKeyDown={(event) => { if (!items.length) return; if (event.key === "ArrowDown") { event.preventDefault(); setActive((value) => Math.min(value + 1, items.length - 1)); } else if (event.key === "ArrowUp") { event.preventDefault(); setActive((value) => Math.max(value - 1, 0)); } else if (event.key === "Enter" && active >= 0) { event.preventDefault(); choose(items[active]); } else if (event.key === "Escape") { setItems([]); setActive(-1); } }} />
       <button className="absolute right-0 top-0 min-h-12 bg-gold px-3 text-xs font-bold uppercase tracking-[0.08em] text-gold-ink sm:px-4 sm:tracking-[0.12em]">Search</button>

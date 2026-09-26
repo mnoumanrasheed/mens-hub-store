@@ -39,7 +39,7 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
         <ShoppingBag className="mx-auto text-gold" />
         <h1 className="mt-5 font-display text-4xl text-ivory">Your Cart</h1>
         <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">Your cart is currently empty.</p>
-        <Link href="/new-arrivals" className="store-cta-primary mt-7 w-full min-[390px]:w-auto">Shop collection</Link>
+        <Link href="/shop" className="store-cta-primary mt-7 w-full min-[390px]:w-auto">Shop collection</Link>
       </div>
     );
   }

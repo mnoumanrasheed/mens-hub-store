@@ -18,6 +18,7 @@ type Settings = {
 };
 
 const exploreLinks = [
+  ["Shop all", "/shop"],
   ["New arrivals", "/new-arrivals"],
   ["Sale", "/sale"],
   ["Our story", "/about"],

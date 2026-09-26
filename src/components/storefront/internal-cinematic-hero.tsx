@@ -6,111 +6,49 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { Container } from "@/components/storefront/container";
-import { StoreImage } from "@/components/storefront/store-image";
 import { useHeroEntrance } from "@/components/storefront/hero-motion";
 
 export type InternalHeroVisual = "wardrobe" | "new-arrivals" | "sale" | "category" | "brand-space" | "story";
-
-export type InternalHeroBreadcrumb = {
-  label: string;
-  href?: string;
-};
+export type InternalHeroBreadcrumb = { label: string; href?: string };
 
 type InternalCinematicHeroProps = {
   eyebrow: string;
   title: string;
   description: string;
   visual: InternalHeroVisual;
-  image: string;
-  secondaryImage: string;
-  imageAlt: string;
   breadcrumbItems?: InternalHeroBreadcrumb[];
   cta?: { label: string; href: string; external?: boolean };
   children?: ReactNode;
 };
 
-const visualNotes: Record<InternalHeroVisual, string> = {
-  wardrobe: "The considered wardrobe",
-  "new-arrivals": "New season / 01",
-  sale: "Selected pieces / 02",
-  category: "Material / form / function",
-  "brand-space": "Client services / 01",
-  story: "The house / 01",
-};
-
-const visualIndices: Record<InternalHeroVisual, string> = {
-  wardrobe: "01",
-  "new-arrivals": "02",
-  sale: "03",
-  category: "04",
-  "brand-space": "05",
-  story: "06",
-};
-
-export function InternalCinematicHero({ eyebrow, title, description, visual, image, secondaryImage, imageAlt, breadcrumbItems, cta, children }: InternalCinematicHeroProps) {
+export function InternalCinematicHero({ eyebrow, title, description, visual, breadcrumbItems, cta, children }: InternalCinematicHeroProps) {
   const reduceMotion = useReducedMotion();
   const reveal = useHeroEntrance();
-  const titleLines = title.trim().split(/\s+/).filter(Boolean);
 
   return (
     <header className={`mh-internal-hero mh-internal-hero-${visual}`} data-store-hero aria-labelledby="internal-hero-title">
-      <div className="mh-internal-hero-atmosphere" aria-hidden="true" />
-      <div className="mh-internal-hero-grain" aria-hidden="true" />
+      <div className="mh-internal-hero-atmosphere" aria-hidden="true">
+        <motion.span className="mh-internal-hero-ambient-light" animate={reduceMotion ? undefined : { x: [0, 28, 0], y: [0, -16, 0], scale: [1, 1.04, 1] }} transition={{ duration: 21, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.span className="mh-internal-hero-ambient-fabric mh-internal-hero-ambient-fabric-primary" animate={reduceMotion ? undefined : { x: [0, -26, 0], y: [0, 12, 0], rotate: [-8, -5, -8] }} transition={{ duration: 23, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.span className="mh-internal-hero-ambient-fabric mh-internal-hero-ambient-fabric-secondary" animate={reduceMotion ? undefined : { x: [0, 20, 0], y: [0, -10, 0], rotate: [11, 7, 11] }} transition={{ duration: 19, repeat: Infinity, ease: "easeInOut" }} />
+        <svg className="mh-internal-hero-seam" viewBox="0 0 900 560" fill="none" preserveAspectRatio="none">
+          <motion.path d="M-40 480C150 360 235 490 390 340C530 204 640 120 940 34" initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduceMotion ? 0 : 1.6, delay: reduceMotion ? 0 : .35, ease: [0.22, 1, 0.36, 1] }} />
+        </svg>
+      </div>
       <Container size="wide" className="mh-internal-hero-inner">
-        {breadcrumbItems?.length ? (
-          <motion.nav className="mh-internal-hero-breadcrumb" aria-label="Breadcrumb" {...reveal(.02)}>
-            {breadcrumbItems.map((item, index) => (
-              <span key={`${item.label}-${index}`}>
-                {index ? <i aria-hidden="true">/</i> : null}
-                {item.href && index < breadcrumbItems.length - 1 ? <Link href={item.href}>{item.label}</Link> : <span aria-current={index === breadcrumbItems.length - 1 ? "page" : undefined}>{item.label}</span>}
-              </span>
-            ))}
-          </motion.nav>
-        ) : null}
+        {breadcrumbItems?.length ? <motion.nav className="mh-internal-hero-breadcrumb" aria-label="Breadcrumb" {...reveal(.02)}>
+          {breadcrumbItems.map((item, index) => <span key={`${item.label}-${index}`}>{index ? <i aria-hidden="true">/</i> : null}{item.href && index < breadcrumbItems.length - 1 ? <Link href={item.href}>{item.label}</Link> : <span aria-current={index === breadcrumbItems.length - 1 ? "page" : undefined}>{item.label}</span>}</span>)}
+        </motion.nav> : null}
 
         <div className="mh-internal-hero-grid">
           <div className="mh-internal-hero-copy">
-            <motion.p className="mh-internal-hero-eyebrow" {...reveal(.08)}><span aria-hidden="true" />{eyebrow}</motion.p>
-            <h1 id="internal-hero-title">
-              {titleLines.map((line, index) => <span className="mh-internal-hero-title-line" key={`${line}-${index}`}><motion.span {...reveal(.16 + index * .1, "heading")}>{line}</motion.span></span>)}
-            </h1>
-            <motion.p className="mh-internal-hero-description" {...reveal(.18 + titleLines.length * .1)}>{description}</motion.p>
-            {cta ? (
-              <motion.div className="mh-internal-hero-cta-row" {...reveal(.28 + titleLines.length * .1)}>
-                {cta.external ? <a className="mh-internal-hero-cta" href={cta.href} target="_blank" rel="noopener noreferrer">{cta.label}<ArrowUpRight size={16} aria-hidden="true" /></a> : <Link className="mh-internal-hero-cta" href={cta.href}>{cta.label}<ArrowRight size={16} aria-hidden="true" /></Link>}
-              </motion.div>
-            ) : null}
-            {children ? <motion.div className="mh-internal-hero-slot" {...reveal(.38 + titleLines.length * .1)}>{children}</motion.div> : null}
+            <motion.p className="mh-internal-hero-eyebrow" {...reveal(.08)}>{eyebrow}</motion.p>
+            <h1 id="internal-hero-title"><span className="mh-internal-hero-title-line"><motion.span {...reveal(.16, "heading")}>{title}</motion.span></span></h1>
+            <motion.p className="mh-internal-hero-description" {...reveal(.28)}>{description}</motion.p>
+            {cta ? <motion.div className="mh-internal-hero-cta-row" {...reveal(.38)}>{cta.external ? <a className="mh-internal-hero-cta" href={cta.href} target="_blank" rel="noopener noreferrer">{cta.label}<ArrowUpRight size={16} aria-hidden="true" /></a> : <Link className="mh-internal-hero-cta" href={cta.href}>{cta.label}<ArrowRight size={16} aria-hidden="true" /></Link>}</motion.div> : null}
+            {children ? <motion.div className="mh-internal-hero-slot" {...reveal(.46)}>{children}</motion.div> : null}
           </div>
-
-          <motion.div
-            className="mh-internal-hero-stage"
-            initial={reduceMotion ? false : { opacity: 0, y: 18, scale: .985 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: reduceMotion ? 0 : .9, delay: reduceMotion ? 0 : .1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <motion.div
-              className="mh-internal-hero-depth"
-              animate={reduceMotion ? undefined : { y: [0, -6, 0], rotateZ: [0, .3, 0] }}
-              transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className="mh-internal-hero-backdrop" aria-hidden="true">
-                <StoreImage src={secondaryImage} alt="" fill sizes="(max-width: 767px) 58vw, 29vw" className="mh-internal-hero-secondary-image" />
-              </div>
-              <div className="mh-internal-hero-frame">
-                <StoreImage src={image} alt={imageAlt} fill priority sizes="(max-width: 767px) 76vw, 38vw" className="mh-internal-hero-primary-image" />
-                <span className="mh-internal-hero-frame-glint" aria-hidden="true" />
-              </div>
-              <div className="mh-internal-hero-material" aria-hidden="true">
-                <span>{visualNotes[visual]}</span>
-                <i />
-              </div>
-              <span className="mh-internal-hero-index" aria-hidden="true">Men&apos;s Hub / {visualIndices[visual]}</span>
-            </motion.div>
-          </motion.div>
         </div>
-
-        <div className="mh-internal-hero-foot" aria-hidden="true"><span>Menswear / Objects / Details</span><span>Scroll to explore <i /></span></div>
       </Container>
     </header>
   );

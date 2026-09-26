@@ -36,11 +36,11 @@ export function CinematicHero({
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 80]);
-  const headingLines = heading.trim().split(/\s+/).filter(Boolean);
+  const headingLines = heading.trim().split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
 
   return (
     <section ref={heroRef} aria-labelledby="hero-title" className="mh-campaign-hero">
-      <motion.div className="mh-campaign-media" style={{ y: imageY }} aria-hidden="true">
+      <motion.div className="mh-campaign-media" style={{ y: imageY }} animate={reduceMotion ? undefined : { scale: [1, 1.025, 1], x: [0, -5, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} aria-hidden="true">
         <Image
           src={mainImage?.url || "/images/atelier-campaign.webp"}
           alt={mainImage?.alt || "Men's Hub editorial campaign"}

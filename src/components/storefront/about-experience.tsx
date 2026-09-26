@@ -6,8 +6,6 @@ import { Container } from "@/components/storefront/container";
 import { InternalCinematicHero } from "@/components/storefront/internal-cinematic-hero";
 import styles from "./about-experience.module.css";
 
-type AboutExperienceProps = { imageUrl?: string | null };
-
 const philosophy = [
   ["01", "Curated Style", "Collections selected with a clear focus on modern masculine fashion."],
   ["02", "Complete Wardrobe", "From clothing and footwear to fragrances, watches and finishing accessories."],
@@ -26,7 +24,7 @@ const story = [
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export function AboutExperience({ imageUrl }: AboutExperienceProps) {
+export function AboutExperience() {
   const reduceMotion = useReducedMotion();
   const reveal: Variants = {
     hidden: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 28 },
@@ -39,11 +37,8 @@ export function AboutExperience({ imageUrl }: AboutExperienceProps) {
       <InternalCinematicHero
         eyebrow="Our story"
         title="Style Made for Men"
-        description="Modern menswear curated for confidence, individuality and effortless style."
+        description="Learn about Men's Hub and the products we bring together in one place."
         visual="story"
-        image={imageUrl || "/images/atelier-campaign.webp"}
-        secondaryImage="/seed-media/01-Shirts/shirt-02.jpg"
-        imageAlt="Men's Hub modern menswear"
         breadcrumbItems={[{ label: "Home", href: "/" }, { label: "About" }]}
         cta={{ label: "Discover the collection", href: "/new-arrivals" }}
       />

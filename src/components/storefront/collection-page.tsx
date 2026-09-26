@@ -31,34 +31,6 @@ function pageHref(action: string, filters: StorefrontFilters, page: number) {
   return action + "?" + query;
 }
 
-const categoryHeroFallbacks: Record<string, string> = {
-  shirts: "/seed-media/01-Shirts/shirt-02.jpg",
-  pants: "/seed-media/02-Pants/pants-02.jpg",
-  "shalwar-qameez": "/seed-media/03-Shalwar-Qameez/shalwar-qameez-02.jpg",
-  trousers: "/seed-media/04-Trousers/trousers-02.jpg",
-  shoes: "/seed-media/05-Shoes/shoes-02.jpg",
-  watches: "/seed-media/06-Watches/watch-02.jpg",
-  perfumes: "/seed-media/07-Perfumes/perfume-02.jpg",
-  glasses: "/seed-media/08-Glasses/glasses-02.jpg",
-  belts: "/seed-media/09-Belts/belt-02.jpg",
-  accessories: "/seed-media/10-Accessories/accessories-02.jpg",
-  tracksuits: "/seed-media/11-Tracksuits/tracksuit-02.jpg",
-};
-
-const categorySecondaryFallbacks: Record<string, string> = {
-  shirts: "/seed-media/02-Pants/pants-02.jpg",
-  pants: "/seed-media/04-Trousers/trousers-02.jpg",
-  "shalwar-qameez": "/seed-media/01-Shirts/shirt-02.jpg",
-  trousers: "/seed-media/05-Shoes/shoes-02.jpg",
-  shoes: "/seed-media/06-Watches/watch-02.jpg",
-  watches: "/seed-media/07-Perfumes/perfume-02.jpg",
-  perfumes: "/seed-media/08-Glasses/glasses-02.jpg",
-  glasses: "/seed-media/09-Belts/belt-02.jpg",
-  belts: "/seed-media/10-Accessories/accessories-02.jpg",
-  accessories: "/seed-media/11-Tracksuits/tracksuit-02.jpg",
-  tracksuits: "/seed-media/01-Shirts/shirt-02.jpg",
-};
-
 export function CollectionPage({
   eyebrow,
   title,
@@ -79,11 +51,20 @@ export function CollectionPage({
   const category = routeCategory
     ? data.categories.find((item) => item.slug === routeCategory)
     : undefined;
-  const heroDescription = description || "Explore a considered selection of modern menswear, chosen for confident everyday style.";
+  const routeDescriptions: Record<string, string> = {
+    "new-arrivals": "Recently added clothing, footwear and accessories from Men's Hub.",
+    sale: "Selected Men's Hub pieces currently available at reduced prices.",
+  };
+  const categoryDescriptions: Record<string, string> = {
+    shirts: "Dress shirts, polos, casual shirts and T-shirts for everyday and formal wear.",
+    pants: "Jeans, cotton pants and dress pants in current Men's Hub styles.",
+    trousers: "Tailored and casual trousers for everyday and formal wear.",
+    "shalwar-qameez": "Casual, cotton and wash-and-wear options for everyday and occasion dressing.",
+    shoes: "Sneakers, formal shoes, loafers and sandals selected for everyday use.",
+    accessories: "Rings, bracelets, chains, wallets and finishing pieces.",
+  };
+  const heroDescription = description || categoryDescriptions[routeCategory || ""] || routeDescriptions[action.replace(/^\//, "")] || "Browse the latest products from Men's Hub.";
   const routeKey = action.replace(/^\//, "");
-  const fallbackImage = category ? categoryHeroFallbacks[category.slug] : routeKey === "new-arrivals" ? "/seed-media/01-Shirts/shirt-02.jpg" : routeKey === "sale" ? "/seed-media/04-Trousers/trousers-02.jpg" : "/seed-media/01-Shirts/shirt-02.jpg";
-  const fallbackSecondaryImage = category ? categorySecondaryFallbacks[category.slug] : routeKey === "new-arrivals" ? "/seed-media/03-Shalwar-Qameez/shalwar-qameez-02.jpg" : routeKey === "sale" ? "/seed-media/05-Shoes/shoes-02.jpg" : "/seed-media/02-Pants/pants-02.jpg";
-  const heroImage = category?.bannerImageUrl || category?.imageUrl || fallbackImage;
   const breadcrumbItems: InternalHeroBreadcrumb[] = [
     { label: "Home", href: "/" },
     ...(category && category.name !== title ? [{ label: category.name, href: "/shop/" + category.slug }] : []),
@@ -92,7 +73,7 @@ export function CollectionPage({
 
   return (
     <main className="atelier-collection pb-24 sm:pb-32">
-      <AnimatedCollectionHero key={action} routeKey={category?.slug || routeKey} eyebrow={eyebrow} title={title} description={heroDescription} image={heroImage} secondaryImage={fallbackSecondaryImage} imageAlt={`${title} fashion editorial`} breadcrumbItems={breadcrumbItems}>
+      <AnimatedCollectionHero key={action} routeKey={category?.slug || routeKey} eyebrow={eyebrow} title={title} description={heroDescription} breadcrumbItems={breadcrumbItems}>
           {category?.subcategories.length ? (
             <nav aria-label={category.name + " subcategories"} className="mt-5 flex flex-wrap gap-2">
               {category.subcategories.map((subcategory) => (
@@ -105,7 +86,7 @@ export function CollectionPage({
       </AnimatedCollectionHero>
 
       <Container size="wide" className="pt-8 sm:pt-12">
-        <nav className="collection-category-nav" aria-label="Browse collections"><Link href="/new-arrivals" aria-current={action === "/new-arrivals" && !routeCategory ? "page" : undefined}>New arrivals</Link>{data.categories.map((item) => <Link key={item.id} href={"/shop/" + item.slug} aria-current={routeCategory === item.slug ? "page" : undefined}>{item.name}</Link>)}</nav>
+        <nav id="collection-navigation" className="collection-category-nav" aria-label="Browse collections"><Link href="/shop" aria-current={action === "/shop" && !routeCategory ? "page" : undefined}>All products</Link>{data.categories.map((item) => <Link key={item.id} href={"/shop/" + item.slug} aria-current={routeCategory === item.slug ? "page" : undefined}>{item.name}</Link>)}</nav>
 
         <div className="min-w-0">
           <section className="min-w-0" aria-label="Products">
@@ -119,7 +100,7 @@ export function CollectionPage({
               </div>
             ) : (
               <div className="border border-dashed border-line bg-surface/50 px-5 py-16 text-center sm:py-20">
-                <p className="store-eyebrow">The edit is evolving</p><h2 className="font-display text-3xl text-ivory">No matching pieces</h2><p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">Explore the collection or return as new pieces arrive.</p><Link href={action} className="store-cta-secondary mt-6">Browse collection</Link>
+                <h2 className="font-display text-3xl text-ivory">No products available yet</h2><p className="mx-auto mt-3 max-w-md text-sm leading-7 text-muted">New products will appear here after they are published.</p><a href="#collection-navigation" className="store-cta-secondary mt-6">Browse categories</a>
               </div>
             )}
 
