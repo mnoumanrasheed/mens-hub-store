@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
           ? `/${cloudinaryCloudName}/image/upload/**`
           : "/mens-hub-cloudinary-not-configured/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
     ],
   },
   experimental: {

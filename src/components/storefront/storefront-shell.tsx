@@ -3,6 +3,8 @@ import { StoreHeader } from "@/components/storefront/store-header";
 import { StoreFooter } from "@/components/storefront/store-footer";
 import type { StorefrontCategory } from "@/data/storefront";
 import { FloatingWhatsApp } from "@/components/storefront/floating-whatsapp";
+import { InitialStorefrontLoader } from "@/components/storefront/initial-storefront-loader";
+import { StorefrontScrollReset } from "@/components/storefront/storefront-scroll-reset";
 
 type StorefrontShellProps = {
   children: ReactNode;
@@ -15,6 +17,8 @@ type StorefrontShellProps = {
 export function StorefrontShell({ brandName, categories, children, footerContent, settings }: StorefrontShellProps) {
   return (
     <div className="atelier-store flex min-h-svh flex-col bg-canvas">
+      <InitialStorefrontLoader />
+      <StorefrontScrollReset />
       <a
         href="#main-content"
         className="fixed left-4 top-4 z-50 -translate-y-24 rounded-sm bg-gold px-4 py-3 text-sm font-bold text-gold-ink transition-transform focus:translate-y-0"

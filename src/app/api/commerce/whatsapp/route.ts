@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { initialSettings } from "@/data/cms";
 import { getSalePresentation } from "@/domain/product/sale";
+import { normalizeProductSizeOptions } from "@/domain/product/size-options";
 import { createCartInquiryMessage, createWhatsAppUrl, WHATSAPP_NUMBER } from "@/domain/whatsapp/product-inquiry";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { acceptPublicRequest } from "@/lib/public-rate-limit";
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
   const requestedLines = [...grouped.values()];
   const ids = [...new Set(requestedLines.map((line) => line.productId))];
   const [settings, products] = await Promise.all([
-    prisma.siteSettings.findUnique({ where: { id: "site" }, select: { brandName: true, whatsappGreeting: true, whatsappOrderStatement: true, deliveryChargesMessage: true } }),
+    prisma.siteSettings.findUnique({ where: { id: "site" }, select: { brandName: true, whatsapp: true, whatsappGreeting: true, whatsappOrderStatement: true, deliveryChargesMessage: true } }),
     prisma.product.findMany({
       where: { id: { in: ids }, isPublished: true, category: { isActive: true }, OR: [{ subcategoryId: null }, { subcategory: { isActive: true } }] },
       select: { id: true, name: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, sizes: { select: { label: true } }, colors: { select: { name: true } } },
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
   for (const requested of requestedLines) {
     const product = byId.get(requested.productId);
     if (!product || product.stock < 1) return NextResponse.json({ error: "One or more products are no longer available. Review your cart and try again." }, { status: 409 });
-    const sizes = product.sizes.map((item) => item.label);
+    const sizes = normalizeProductSizeOptions(product.sizes.map((item) => item.label));
     const colors = product.colors.map((item) => item.name);
     if ((sizes.length && !sizes.includes(requested.selectedSize)) || (!sizes.length && requested.selectedSize)) return NextResponse.json({ error: `${product.name} has an invalid size selection.` }, { status: 409 });
     if ((colors.length && !colors.includes(requested.selectedColor)) || (!colors.length && requested.selectedColor)) return NextResponse.json({ error: `${product.name} has an invalid color selection.` }, { status: 409 });
@@ -54,6 +55,6 @@ export async function POST(request: Request) {
   }
 
   const publicSettings = settings ?? initialSettings;
-  const message = createCartInquiryMessage({ greeting: publicSettings.whatsappGreeting || `Greeting from ${publicSettings.brandName}`, statement: publicSettings.whatsappOrderStatement || "I would like to place this order.", deliveryMessage: publicSettings.deliveryChargesMessage, lines: reconciled });
-  return NextResponse.json({ url: createWhatsAppUrl(WHATSAPP_NUMBER, message), lines: reconciled }, { headers: { "Cache-Control": "private, no-store" } });
+  const message = createCartInquiryMessage({ lines: reconciled });
+  return NextResponse.json({ url: createWhatsAppUrl(publicSettings.whatsapp || WHATSAPP_NUMBER, message), lines: reconciled }, { headers: { "Cache-Control": "private, no-store" } });
 }

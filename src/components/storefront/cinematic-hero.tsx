@@ -1,13 +1,10 @@
 "use client";
 
 import { ArrowDown, ArrowRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 import { useHeroEntrance } from "./hero-motion";
-
-type HeroImage = { url: string; alt: string };
 
 type Props = {
   heading: string;
@@ -17,8 +14,6 @@ type Props = {
   primaryLink: string;
   secondaryLabel: string;
   secondaryLink: string;
-  mainImage?: HeroImage;
-  secondaryImages?: HeroImage[];
 };
 
 export function CinematicHero({
@@ -29,7 +24,6 @@ export function CinematicHero({
   primaryLink,
   secondaryLabel,
   secondaryLink,
-  mainImage,
 }: Props) {
   const reduceMotion = useReducedMotion();
   const reveal = useHeroEntrance();
@@ -41,22 +35,13 @@ export function CinematicHero({
   return (
     <section ref={heroRef} aria-labelledby="hero-title" className="mh-campaign-hero">
       <motion.div className="mh-campaign-media" style={{ y: imageY }} animate={reduceMotion ? undefined : { scale: [1, 1.025, 1], x: [0, -5, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} aria-hidden="true">
-        <Image
-          src={mainImage?.url || "/images/atelier-campaign.webp"}
-          alt={mainImage?.alt || "Men's Hub editorial campaign"}
-          fill
-          priority
-          sizes="100vw"
-          className="mh-campaign-image"
-        />
         <video
           className="mh-campaign-video"
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          poster={mainImage?.url || "/images/atelier-campaign.webp"}
+          preload="auto"
           tabIndex={-1}
         >
           <source src="/video.mp4" type="video/mp4" />

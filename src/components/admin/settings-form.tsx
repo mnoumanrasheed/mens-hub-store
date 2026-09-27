@@ -10,7 +10,7 @@ export type SettingsFormValue = { brandName: string; tagline: string; proprietor
 export function SettingsForm({ settings }: { settings: SettingsFormValue }) {
   const [state, action, pending] = useActionState(saveSettingsAction, initialMutationState);
   const [preview, setPreview] = useState(settings.ogImageUrl ?? "");
-  return <form action={action} encType="multipart/form-data" className="grid gap-6">
+  return <form action={action} className="grid gap-6">
     <Feedback state={state} />
     <Section title="Business" help="Core identity and contact details used consistently across the website"><Grid><Field name="brandName" label="Brand Name" value={settings.brandName} required /><Field name="tagline" label="Tagline" value={settings.tagline} required /><Field name="proprietors" label="Proprietors" value={settings.proprietors} required /><Field name="phone" label="Phone" value={settings.phone} required /><Field name="whatsapp" label="WhatsApp" value={settings.whatsapp} required hint="Digits only, including country code." /><Field name="email" label="Email" type="email" value={settings.email} required /></Grid></Section>
     <Section title="Social" help="Leave a field empty to hide that social network everywhere."><Grid><Field name="instagramUrl" label="Instagram" type="url" value={settings.instagramUrl ?? ""} /><Field name="facebookUrl" label="Facebook" type="url" value={settings.facebookUrl ?? ""} /><Field name="tiktokUrl" label="TikTok" type="url" value={settings.tiktokUrl ?? ""} /></Grid></Section>

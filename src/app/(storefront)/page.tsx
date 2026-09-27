@@ -24,7 +24,6 @@ export default async function HomePage() {
   const data = await getHomepageData();
   const shelves = await getCategoryShelvesData(data.settings.lowStockThreshold);
   const block = (key: string): CmsBlockValue => data.blocks[key] ?? { fields: {} };
-  const hero = block("hero");
   const categoryBlock = block("shop-by-category");
   const essentials = data.featuredProducts.length ? data.featuredProducts : data.saleProducts;
 
@@ -38,7 +37,6 @@ export default async function HomePage() {
         primaryLink="/shop"
         secondaryLabel="New arrivals"
         secondaryLink="/new-arrivals"
-        mainImage={hero.imageUrl ? { url: hero.imageUrl, alt: "Men's Hub campaign" } : undefined}
       />
 
       <TrustStrip deliveryMessage={data.settings.deliveryChargesMessage} />

@@ -31,7 +31,8 @@ export function ContactExperience({ settings }: { settings: ContactSettings }) {
         description="Contact Men's Hub for sizing, availability and order assistance."
         visual="brand-space"
         breadcrumbItems={[{ label: "Home", href: "/" }, { label: "Contact" }]}
-        cta={{ label: "Contact us on WhatsApp", href: whatsappHref, external: true }}
+        cta={{ label: "WhatsApp us", href: whatsappHref, external: true }}
+        secondaryCta={settings.phone ? { label: "Call us", href: phoneHref } : undefined}
       />
 
       <section className={styles.contactSection} aria-labelledby="contact-options-title">

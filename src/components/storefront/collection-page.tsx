@@ -57,13 +57,18 @@ export function CollectionPage({
   };
   const categoryDescriptions: Record<string, string> = {
     shirts: "Dress shirts, polos, casual shirts and T-shirts for everyday and formal wear.",
-    pants: "Jeans, cotton pants and dress pants in current Men's Hub styles.",
-    trousers: "Tailored and casual trousers for everyday and formal wear.",
+    pants: "Jeans, cotton pants and dress pants for everyday and smart dressing.",
+    trousers: "Clean everyday trouser styles for polished casual and formal looks.",
     "shalwar-qameez": "Casual, cotton and wash-and-wear options for everyday and occasion dressing.",
-    shoes: "Sneakers, formal shoes, loafers and sandals selected for everyday use.",
+    shoes: "Sneakers, loafers, sandals and formal shoes selected for everyday use.",
+    watches: "Classic and modern watches designed to complete your everyday look.",
+    perfumes: "Fragrance selections that add the finishing touch to your style.",
+    glasses: "Modern eyewear styles that complement everyday and occasion wear.",
+    belts: "Essential belt styles crafted to complete formal and casual outfits.",
     accessories: "Rings, bracelets, chains, wallets and finishing pieces.",
+    tracksuits: "Comfort-driven coordinated styles for casual wear and daily movement.",
   };
-  const heroDescription = description || categoryDescriptions[routeCategory || ""] || routeDescriptions[action.replace(/^\//, "")] || "Browse the latest products from Men's Hub.";
+  const heroDescription = categoryDescriptions[routeCategory || ""] || description || routeDescriptions[action.replace(/^\//, "")] || "Browse the latest products from Men's Hub.";
   const routeKey = action.replace(/^\//, "");
   const breadcrumbItems: InternalHeroBreadcrumb[] = [
     { label: "Home", href: "/" },

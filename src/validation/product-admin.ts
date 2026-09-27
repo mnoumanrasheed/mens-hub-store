@@ -31,17 +31,5 @@ export const productFormSchema = z.object({
 });
 
 export const productIdSchema = id;
-export const productListFilterSchema = z.object({
-  q: z.string().trim().max(100).default(""),
-  category: z.string().trim().max(64).default(""),
-  subcategory: z.string().trim().max(64).default(""),
-  published: z.enum(["", "published", "unpublished"]).default(""),
-  inventory: z.enum(["", "in-stock", "low-stock", "out-of-stock"]).default(""),
-  sale: z.enum(["", "active", "inactive"]).default(""),
-  newArrival: z.enum(["", "yes", "no"]).default(""),
-  featured: z.enum(["", "yes", "no"]).default(""),
-  page: z.coerce.number().int().positive().default(1),
-});
 
 export type ProductFormInput = z.infer<typeof productFormSchema>;
-export type ProductListFilters = z.infer<typeof productListFilterSchema>;

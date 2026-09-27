@@ -4,7 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { useRef } from "react";
-import type { PointerEvent } from "react";
+import type { MouseEvent, PointerEvent } from "react";
 
 import { Container } from "@/components/storefront/container";
 import { ProductCard } from "@/components/storefront/product-card";
@@ -152,9 +152,21 @@ function CategoryCollectionSection({ category, products, featureImage, imagePosi
   );
 }
 
+const DRAG_START_THRESHOLD = 6;
+
+type RailDragState = {
+  startX: number;
+  startY: number;
+  startScroll: number;
+  pointerId: number;
+  isDragging: boolean;
+};
+
 function CategoryProductRail({ products, label }: { products: StorefrontProduct[]; label: string }) {
   const rail = useRef<HTMLDivElement>(null);
-  const dragState = useRef<{ startX: number; startScroll: number } | null>(null);
+  const dragState = useRef<RailDragState | null>(null);
+  const suppressNextClick = useRef(false);
+  const clickResetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const reduceMotion = useReducedMotion();
 
   function scrollBy(direction: "left" | "right") {
@@ -162,19 +174,78 @@ function CategoryProductRail({ products, label }: { products: StorefrontProduct[
   }
 
   function startDrag(event: PointerEvent<HTMLDivElement>) {
-    if (event.pointerType !== "mouse") return;
-    dragState.current = { startX: event.clientX, startScroll: event.currentTarget.scrollLeft };
-    event.currentTarget.setPointerCapture(event.pointerId);
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+
+    dragState.current = {
+      startX: event.clientX,
+      startY: event.clientY,
+      startScroll: event.currentTarget.scrollLeft,
+      pointerId: event.pointerId,
+      isDragging: false,
+    };
   }
 
   function moveDrag(event: PointerEvent<HTMLDivElement>) {
-    if (!rail.current || !dragState.current) return;
-    rail.current.scrollLeft = dragState.current.startScroll - (event.clientX - dragState.current.startX);
+    const state = dragState.current;
+    if (!rail.current || !state || event.pointerId !== state.pointerId) return;
+
+    const deltaX = event.clientX - state.startX;
+    const deltaY = event.clientY - state.startY;
+
+    if (!state.isDragging) {
+      if (Math.abs(deltaX) < DRAG_START_THRESHOLD) return;
+      if (Math.abs(deltaX) <= Math.abs(deltaY)) {
+        dragState.current = null;
+        return;
+      }
+
+      state.isDragging = true;
+      event.currentTarget.setPointerCapture(event.pointerId);
+      event.currentTarget.dataset.dragging = "true";
+    }
+
+    event.preventDefault();
+    rail.current.scrollLeft = state.startScroll - deltaX;
+  }
+
+  function clearDrag(event: PointerEvent<HTMLDivElement>, suppressClick: boolean) {
+    const state = dragState.current;
+    if (!state || event.pointerId !== state.pointerId) return;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    delete event.currentTarget.dataset.dragging;
+    dragState.current = null;
+
+    if (!suppressClick || !state.isDragging) return;
+
+    suppressNextClick.current = true;
+    if (clickResetTimer.current) clearTimeout(clickResetTimer.current);
+    clickResetTimer.current = setTimeout(() => {
+      suppressNextClick.current = false;
+      clickResetTimer.current = null;
+    }, 0);
   }
 
   function stopDrag(event: PointerEvent<HTMLDivElement>) {
-    if (dragState.current && event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
-    dragState.current = null;
+    clearDrag(event, true);
+  }
+
+  function cancelDrag(event: PointerEvent<HTMLDivElement>) {
+    clearDrag(event, false);
+  }
+
+  function leaveRail() {
+    if (!dragState.current?.isDragging) dragState.current = null;
+  }
+
+  function preventClickAfterDrag(event: MouseEvent<HTMLDivElement>) {
+    if (!suppressNextClick.current) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    suppressNextClick.current = false;
   }
 
   return (
@@ -189,8 +260,9 @@ function CategoryProductRail({ products, label }: { products: StorefrontProduct[
         onPointerDown={startDrag}
         onPointerMove={moveDrag}
         onPointerUp={stopDrag}
-        onPointerCancel={stopDrag}
-        onPointerLeave={stopDrag}
+        onPointerCancel={cancelDrag}
+        onPointerLeave={leaveRail}
+        onClickCapture={preventClickAfterDrag}
       >
         {products.map((product) => (
           <div key={product.id} className="mh-category-product-slot">

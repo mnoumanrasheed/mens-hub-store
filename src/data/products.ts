@@ -1,8 +1,7 @@
 import "server-only";
 
 import { AdminAuditAction } from "@/generated/prisma/enums";
-import type { Prisma } from "@/generated/prisma/client";
-import type { ProductFormInput, ProductListFilters } from "@/validation/product-admin";
+import type { ProductFormInput } from "@/validation/product-admin";
 import { getPrismaClient } from "@/lib/db/prisma";
 import { getSalePresentation } from "@/domain/product/sale";
 
@@ -39,27 +38,13 @@ export async function productTaxonomyExists(categoryId: string, subcategoryId: s
   return Boolean(category && (!subcategoryId || category.subcategories.length === 1));
 }
 
-export async function getProductsForAdmin(filters: ProductListFilters) {
+export async function getProductsForAdmin(requestedPage = 1) {
   const prisma = getPrismaClient();
   const threshold = (await prisma.siteSettings.findUnique({ where: { id: "site" }, select: { lowStockThreshold: true } }))?.lowStockThreshold ?? 3;
-  const activeSale: Prisma.ProductWhereInput = { salePrice: { not: null } };
-  const where: Prisma.ProductWhereInput = {
-    ...(filters.q ? { name: { contains: filters.q, mode: "insensitive" as const } } : {}),
-    ...(filters.category ? { categoryId: filters.category } : {}),
-    ...(filters.subcategory ? { subcategoryId: filters.subcategory } : {}),
-    ...(filters.published ? { isPublished: filters.published === "published" } : {}),
-    ...(filters.newArrival ? { isNewArrival: filters.newArrival === "yes" } : {}),
-    ...(filters.featured ? { isFeatured: filters.featured === "yes" } : {}),
-    ...(filters.inventory === "out-of-stock" ? { stock: 0 } : {}),
-    ...(filters.inventory === "in-stock" ? { stock: { gt: threshold } } : {}),
-    ...(filters.inventory === "low-stock" ? { stock: { gt: 0, lte: threshold } } : {}),
-    ...(filters.sale === "active" ? activeSale : {}),
-    ...(filters.sale === "inactive" ? { NOT: activeSale } : {}),
-  };
-  const total = await prisma.product.count({ where });
+  const total = await prisma.product.count();
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
-  const page = Math.min(filters.page, pageCount);
-  const products = await prisma.product.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * pageSize, take: pageSize, select: { id: true, name: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, isPublished: true, isFeatured: true, isNewArrival: true, category: { select: { name: true } }, subcategory: { select: { name: true } } } });
+  const page = Math.min(requestedPage, pageCount);
+  const products = await prisma.product.findMany({ orderBy: { createdAt: "desc" }, skip: (page - 1) * pageSize, take: pageSize, select: { id: true, name: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, isPublished: true, isFeatured: true, isNewArrival: true, category: { select: { name: true } }, subcategory: { select: { name: true } } } });
   return { products: products.map((product) => ({ ...product, isActiveSale: getSalePresentation({ originalPrice: product.originalPrice.toFixed(2), salePrice: product.salePrice?.toFixed(2) ?? null }).active, originalPrice: product.originalPrice.toFixed(2), salePrice: product.salePrice?.toFixed(2) ?? null })), total, page, pageCount, threshold };
 }
 

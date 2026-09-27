@@ -2,22 +2,266 @@
 
 import { Check, Copy, Minus, Plus, Share2 } from "lucide-react";
 import { useState } from "react";
+
 import { addCartLine } from "@/components/storefront/commerce-store";
 import { WishlistButton } from "@/components/storefront/wishlist-button";
+import { normalizeProductSizeOptions } from "@/domain/product/size-options";
 import type { CommerceProduct } from "@/domain/commerce/storage";
-import { prepareWhatsAppInquiry } from "@/lib/whatsapp-inquiry";
 import { createProductStructuredData } from "@/domain/seo/product";
+import { prepareWhatsAppInquiry } from "@/lib/whatsapp-inquiry";
 
-type Props = { product: { id: string; name: string; imageUrl: string; effectivePrice: string; stock: number; sizes: { label: string }[]; colors: { name: string; hexCode: string | null }[] }; ordering: { brandName: string; greeting: string | null; statement: string | null }; productUrl: string };
+type Props = {
+  product: {
+    id: string;
+    name: string;
+    imageUrl: string;
+    effectivePrice: string;
+    stock: number;
+    sizes: { label: string }[];
+    colors: { name: string; hexCode: string | null }[];
+  };
+  ordering: {
+    brandName: string;
+    greeting: string | null;
+    statement: string | null;
+    deliveryMessage: string;
+  };
+  productUrl: string;
+};
+
+const individualColourNames = new Set([
+  "black",
+  "white",
+  "grey",
+  "gray",
+  "brown",
+  "beige",
+  "red",
+  "green",
+  "blue",
+  "yellow",
+  "orange",
+  "pink",
+  "purple",
+]);
+
+function formatColourName(value: string) {
+  const trimmed = value.trim();
+  const parts = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
+  const displayParts = parts.length > 1 && parts.every((part) => individualColourNames.has(part))
+    ? parts
+    : [trimmed.toLowerCase()];
+
+  return displayParts
+    .map((part) => part.replace(/\b\w/g, (character) => character.toUpperCase()))
+    .join(" / ");
+}
 
 export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
-  const [size, setSize] = useState(""); const [color, setColor] = useState(""); const [quantity, setQuantity] = useState(1); const [notice, setNotice] = useState(""); const [inquiryPending, setInquiryPending] = useState(false); const soldOut = product.stock === 0; const selectionReady = (!product.sizes.length || size) && (!product.colors.length || color); const disabled = soldOut || !selectionReady;
-  const commerceProduct: CommerceProduct = { id: product.id, name: product.name, imageUrl: product.imageUrl, price: product.effectivePrice, availableStock: product.stock, sizes: product.sizes.map((item) => item.label), colors: product.colors.map((item) => item.name), productUrl };
-  const structuredData = createProductStructuredData({ id: product.id, name: product.name, imageUrl: product.imageUrl, effectivePrice: product.effectivePrice, stock: product.stock }, ordering.brandName, productUrl);
-  function requireSelection() { if (!disabled) return true; setNotice(soldOut ? "This product is out of stock." : "Select the available options first."); return false; }
-  function addToCart() { if (!requireSelection()) return; addCartLine(commerceProduct, size, color, quantity); setNotice("Added to cart."); }
-  async function inquiry() { if (!requireSelection()) return; setInquiryPending(true); setNotice(""); try { const result = await prepareWhatsAppInquiry([{ id: product.id, selectedSize: size, selectedColor: color, quantity }]); window.open(result.url, "_blank", "noopener,noreferrer"); } catch (cause) { setNotice(cause instanceof Error ? cause.message : "The inquiry could not be prepared."); } finally { setInquiryPending(false); } }
-  async function copyLink() { try { await navigator.clipboard.writeText(productUrl); setNotice("Product link copied."); } catch { setNotice("Copy failed. Please copy the address from your browser."); } }
-  async function share() { try { if (navigator.share) await navigator.share({ title: product.name, url: productUrl }); else await copyLink(); } catch (error) { if (!(error instanceof DOMException && error.name === "AbortError")) setNotice("Sharing is unavailable right now."); } }
-  return <div className="atelier-purchase mt-8 grid gap-7"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }} />{product.colors.length ? <fieldset><legend className="text-xs font-bold uppercase tracking-[0.15em] text-muted">Color <span className="normal-case tracking-normal text-subtle">{color || "— select"}</span></legend><div className="mt-3 flex flex-wrap gap-2">{product.colors.map((item) => <label key={item.name} className="cursor-pointer"><input className="peer sr-only" type="radio" name="color" value={item.name} checked={color === item.name} onChange={() => setColor(item.name)} /><span className="flex min-h-11 items-center gap-2 border border-line px-3 text-sm text-muted peer-checked:border-gold peer-checked:text-ivory"><span className="size-4 rounded-full border border-white/25" style={{ backgroundColor: item.hexCode ?? "#777" }} />{item.name}</span></label>)}</div></fieldset> : null}{product.sizes.length ? <fieldset><legend className="text-xs font-bold uppercase tracking-[0.15em] text-muted">Size <span className="normal-case tracking-normal text-subtle">{size || "— select"}</span></legend><div className="mt-3 flex flex-wrap gap-2">{product.sizes.map((item) => <label key={item.label} className="cursor-pointer"><input className="peer sr-only" type="radio" name="size" value={item.label} checked={size === item.label} onChange={() => setSize(item.label)} /><span className="grid min-h-11 min-w-12 place-items-center border border-line px-3 text-sm text-ivory peer-checked:border-gold peer-checked:bg-gold peer-checked:text-gold-ink">{item.label}</span></label>)}</div></fieldset> : null}<div><p className="text-xs font-bold uppercase tracking-[0.15em] text-muted">Quantity</p><div className="mt-3 inline-grid grid-cols-3 border border-line"><button className="grid min-h-11 min-w-11 place-items-center disabled:text-subtle" type="button" aria-label="Decrease quantity" disabled={quantity <= 1} onClick={() => setQuantity((value) => Math.max(1, value - 1))}><Minus size={16} /></button><output className="grid min-w-12 place-items-center border-x border-line text-sm" aria-live="polite">{quantity}</output><button className="grid min-h-11 min-w-11 place-items-center disabled:text-subtle" type="button" aria-label="Increase quantity" disabled={quantity >= product.stock} onClick={() => setQuantity((value) => Math.min(product.stock, value + 1))}><Plus size={16} /></button></div></div><div className="grid gap-3 sm:grid-cols-2"><button className="store-cta-primary disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={disabled} onClick={addToCart}>Add to cart</button><button className="store-cta-secondary disabled:cursor-not-allowed disabled:opacity-40" type="button" disabled={disabled || inquiryPending} onClick={inquiry}>{inquiryPending ? "Preparing…" : "Order on WhatsApp"}</button></div>{notice ? <p className="flex items-center gap-2 text-sm text-gold" role="status"><Check size={16} />{notice}</p> : null}<div className="flex flex-wrap items-center gap-2"><WishlistButton product={commerceProduct} className="static" /><button className="store-icon-button border border-line" type="button" onClick={share} aria-label="Share product"><Share2 size={17} /></button><a className="flex min-h-11 items-center border border-line px-3 text-xs font-bold uppercase tracking-[0.1em] text-ivory hover:text-gold" href={`https://wa.me/?text=${encodeURIComponent(`${product.name} ${productUrl}`)}`} target="_blank" rel="noreferrer">WhatsApp</a><button className="store-icon-button border border-line" type="button" onClick={copyLink} aria-label="Copy product link"><Copy size={17} /></button></div></div>;
+  const sizeOptions = normalizeProductSizeOptions(product.sizes.map((item) => item.label));
+  const defaultSize = sizeOptions[0] ?? "";
+  const defaultColor = product.colors[0]?.name ?? "";
+  const [size, setSize] = useState(defaultSize);
+  const [color, setColor] = useState(defaultColor);
+  const [quantity, setQuantity] = useState(1);
+  const [notice, setNotice] = useState("");
+  const [inquiryPending, setInquiryPending] = useState(false);
+
+  const soldOut = product.stock === 0;
+  const selectionReady = (!sizeOptions.length || size) && (!product.colors.length || color);
+  const disabled = soldOut || !selectionReady;
+  const commerceProduct: CommerceProduct = {
+    id: product.id,
+    name: product.name,
+    imageUrl: product.imageUrl,
+    price: product.effectivePrice,
+    availableStock: product.stock,
+    sizes: sizeOptions,
+    colors: product.colors.map((item) => item.name),
+    productUrl,
+  };
+  const structuredData = createProductStructuredData(
+    {
+      id: product.id,
+      name: product.name,
+      imageUrl: product.imageUrl,
+      effectivePrice: product.effectivePrice,
+      stock: product.stock,
+    },
+    ordering.brandName,
+    productUrl,
+  );
+
+  function requireSelection() {
+    if (!disabled) return true;
+    setNotice(soldOut ? "This product is out of stock." : "Select the available options first.");
+    return false;
+  }
+
+  function addToCart() {
+    if (!requireSelection()) return;
+    addCartLine(commerceProduct, size, color, quantity);
+    setNotice("Added to bag.");
+  }
+
+  async function inquiry() {
+    if (!requireSelection()) return;
+    const inquiryWindow = window.open("about:blank", "_blank");
+    if (inquiryWindow) inquiryWindow.opener = null;
+    setInquiryPending(true);
+    setNotice("");
+
+    try {
+      const result = await prepareWhatsAppInquiry([
+        { id: product.id, selectedSize: size, selectedColor: color, quantity },
+      ]);
+      if (inquiryWindow && !inquiryWindow.closed) {
+        inquiryWindow.location.replace(result.url);
+      } else {
+        window.location.assign(result.url);
+      }
+    } catch (cause) {
+      inquiryWindow?.close();
+      setNotice(cause instanceof Error ? cause.message : "The inquiry could not be prepared.");
+    } finally {
+      setInquiryPending(false);
+    }
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(productUrl);
+      setNotice("Product link copied.");
+    } catch {
+      setNotice("Copy failed. Please copy the address from your browser.");
+    }
+  }
+
+  async function share() {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: product.name, url: productUrl });
+      } else {
+        await copyLink();
+      }
+    } catch (error) {
+      if (!(error instanceof DOMException && error.name === "AbortError")) {
+        setNotice("Sharing is unavailable right now.");
+      }
+    }
+  }
+
+  return (
+    <section className="mh-pdp-purchase" aria-label="Product options">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+      />
+
+      {sizeOptions.length ? (
+        <fieldset className="mh-pdp-option-group">
+          <legend>
+            Select size <span>{size ? `Selected: ${size}` : "Required"}</span>
+          </legend>
+          <div className="mh-pdp-size-options">
+            {sizeOptions.map((option) => (
+              <label key={option}>
+                <input
+                  type="radio"
+                  name="size"
+                  value={option}
+                  checked={size === option}
+                  onChange={() => setSize(option)}
+                />
+                <span>{option}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
+
+      {product.colors.length ? (
+        <fieldset className="mh-pdp-option-group">
+          <legend>
+            Colour <span>{color ? `Selected: ${formatColourName(color)}` : "Required"}</span>
+          </legend>
+          <div className="mh-pdp-colour-options">
+            {product.colors.map((option) => (
+              <label key={option.name}>
+                <input
+                  type="radio"
+                  name="color"
+                  value={option.name}
+                  checked={color === option.name}
+                  onChange={() => setColor(option.name)}
+                />
+                <span>
+                  <i style={{ backgroundColor: option.hexCode ?? "#777" }} aria-hidden="true" />
+                  {formatColourName(option.name)}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      ) : null}
+
+      <div className="mh-pdp-quantity">
+        <span>Quantity</span>
+        <div>
+          <button
+            type="button"
+            aria-label="Decrease quantity"
+            disabled={quantity <= 1}
+            onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+          >
+            <Minus size={16} />
+          </button>
+          <output aria-live="polite">{quantity}</output>
+          <button
+            type="button"
+            aria-label="Increase quantity"
+            disabled={quantity >= product.stock}
+            onClick={() => setQuantity((value) => Math.min(product.stock, value + 1))}
+          >
+            <Plus size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div className="mh-pdp-actions">
+        <button type="button" className="mh-pdp-add" disabled={disabled} onClick={addToCart}>
+          Add to bag
+        </button>
+        <button
+          type="button"
+          className="mh-pdp-whatsapp"
+          disabled={disabled || inquiryPending}
+          onClick={inquiry}
+        >
+          {inquiryPending ? "Preparing…" : "Order on WhatsApp"}
+        </button>
+      </div>
+
+      {notice ? (
+        <p className="mh-pdp-notice" role="status">
+          <Check size={15} />
+          {notice}
+        </p>
+      ) : null}
+
+      <p className="mh-pdp-delivery-note">{ordering.deliveryMessage}</p>
+
+      <div className="mh-pdp-utility-actions">
+        <WishlistButton product={commerceProduct} className="mh-pdp-wishlist" />
+        <button type="button" onClick={share} aria-label="Share product">
+          <Share2 size={17} />
+          Share
+        </button>
+        <button type="button" onClick={copyLink} aria-label="Copy product link">
+          <Copy size={17} />
+          Copy link
+        </button>
+      </div>
+    </section>
+  );
 }

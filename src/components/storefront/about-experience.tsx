@@ -35,9 +35,9 @@ export function AboutExperience() {
   return (
     <main className={styles.page}>
       <InternalCinematicHero
-        eyebrow="Our story"
-        title="Style Made for Men"
-        description="Learn about Men's Hub and the products we bring together in one place."
+        eyebrow="About Men's Hub"
+        title="Modern menswear with a refined point of view."
+        description="Men's Hub brings together clothing, footwear and accessories chosen for confident everyday style."
         visual="story"
         breadcrumbItems={[{ label: "Home", href: "/" }, { label: "About" }]}
         cta={{ label: "Discover the collection", href: "/new-arrivals" }}
