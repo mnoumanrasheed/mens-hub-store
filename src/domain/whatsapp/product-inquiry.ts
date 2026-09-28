@@ -51,48 +51,40 @@ function formatColour(value: string) {
 
 function formatOrderMessage(lines: OrderLine[]) {
   const subtotal = lines.reduce((total, line) => total + Number(line.unitPrice) * line.quantity, 0);
-  const orderDetails = lines.flatMap((line, index) => [
-    `Item ${String(index + 1).padStart(2, "0")}`,
-    "",
-    `Product: ${line.name}`,
-    ...(line.size?.trim() ? [`Size: ${line.size.trim().toUpperCase()}`] : []),
-    ...(line.color?.trim() ? [`Color: ${formatColour(line.color)}`] : []),
-    `Quantity: ${line.quantity}`,
-    `Price: PKR ${formatPrice(line.unitPrice)}`,
-    "",
-    "Product Link:",
-    line.productUrl,
-    ...(index < lines.length - 1 ? ["", "---", ""] : []),
-  ]);
+  const deliveryCharge = subtotal < 10000 ? 250 : 0;
+  const delivery = deliveryCharge ? `PKR ${formatPrice(deliveryCharge)}` : "FREE";
+  const grandTotal = subtotal + deliveryCharge;
+  const divider = "\u2501".repeat(18);
+  const brand = "*MEN\u2019S HUB*";
+  const orderDetails = lines.flatMap((line, index) => {
+    const options = [
+      line.size?.trim() ? `Size: ${line.size.trim().toUpperCase()}` : null,
+      line.color?.trim() ? `Color: ${formatColour(line.color)}` : null,
+    ].filter(Boolean).join(" | ");
+
+    return [
+      `*ITEM ${String(index + 1).padStart(2, "0")}*`,
+      line.name,
+      ...(options ? [options] : []),
+      `Qty: ${line.quantity} | Price: PKR ${formatPrice(line.unitPrice)}`,
+      `Product: ${line.productUrl}`,
+      ...(index < lines.length - 1 ? [divider] : []),
+    ];
+  });
 
   return [
-    "MEN’S HUB",
-    "Order Request",
-    "",
-    "Thank you for shopping with Men’s Hub.",
-    "",
-    "---",
-    "",
-    "ORDER DETAILS",
-    "",
+    `${brand} | _Premium Menswear_`,
+    "*ORDER REQUEST*",
+    divider,
     ...orderDetails,
-    "",
-    "---",
-    "",
-    "ORDER SUMMARY",
-    "",
-    `Products Subtotal: PKR ${formatPrice(subtotal)}`,
-    "",
-    "Delivery Charges: Not Included",
-    "Delivery charges will be calculated separately and confirmed on WhatsApp before the order is finalized.",
-    "",
-    `Total Before Delivery: PKR ${formatPrice(subtotal)}`,
-    "",
-    "I would like to place this order. Please confirm product availability and applicable delivery charges.",
-    "",
-    "Thank you.",
-    "MEN’S HUB",
-    "Premium Menswear",
+    divider,
+    "*ORDER SUMMARY*",
+    `Subtotal: *PKR ${formatPrice(subtotal)}*`,
+    `Delivery: *${delivery}*`,
+    `*TOTAL: PKR ${formatPrice(grandTotal)}*`,
+    divider,
+    "Please confirm availability to proceed.",
+    brand,
   ].join("\n");
 }
 

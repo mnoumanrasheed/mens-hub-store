@@ -1,23 +1,47 @@
-import {
-  Check,
-  CircleAlert,
-  MessageCircle,
-  PackageCheck,
-  RefreshCcw,
-  Tag,
-  Truck,
-} from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
+import Image from "next/image";
 
 import { createWhatsAppUrl } from "@/domain/whatsapp/product-inquiry";
-import { InternalCinematicHero } from "@/components/storefront/internal-cinematic-hero";
 
 import styles from "./shipping-returns-content.module.css";
 
 const highlights = [
-  { icon: Truck, metric: "PKR 250", title: "Nationwide Delivery", detail: "Flat delivery charge on orders below PKR 10,000." },
-  { icon: PackageCheck, metric: "FREE DELIVERY", title: "Orders PKR 10,000+", detail: "Complimentary nationwide delivery on qualifying orders." },
-  { icon: RefreshCcw, metric: "7 DAYS", title: "Return / Exchange Request", detail: "Contact Men’s Hub within seven days of receiving the order." },
-  { icon: Tag, metric: "ORIGINAL CONDITION", title: "Unused + Tags Attached", detail: "Returned products must remain unworn, unused and in original condition." },
+  { metric: "PKR 250", label: "Nationwide Delivery" },
+  { metric: "PKR 10,000+", label: "Free Delivery" },
+  { metric: "7 DAYS", label: "Return Request" },
+  { metric: "WHATSAPP", label: "Customer Assistance" },
+] as const;
+
+const policyNavigation = [
+  { number: "01", label: "Delivery", href: "#delivery" },
+  { number: "02", label: "Returns & Exchanges", href: "#returns" },
+  { number: "03", label: "Refunds", href: "#refunds" },
+  { number: "04", label: "Damaged / Incorrect Orders", href: "#issues" },
+  { number: "05", label: "Return Process", href: "#process" },
+] as const;
+
+const deliveryDetails = [
+  ["Delivery Charge", "PKR 250"],
+  ["Free Delivery", "Orders PKR 10,000+"],
+  ["Payment", "Delivery charges paid in advance"],
+  ["Coverage", "All over Pakistan"],
+] as const;
+
+const eligibility = [
+  "Return request within 7 days of receiving the order",
+  "Item unused and unworn",
+  "Item unwashed",
+  "All original tags attached",
+  "Item in its original condition",
+  "No alteration, damage, stains, perfume or odour",
+] as const;
+
+const returnSteps = [
+  ["01", "Contact us", "Send your return request through WhatsApp."],
+  ["02", "Share order details", "Provide the order and product details with your request."],
+  ["03", "Eligibility confirmation", "Wait for return eligibility and instructions to be confirmed."],
+  ["04", "Return the product", "Send the item back unused, unworn and with all tags attached."],
+  ["05", "Resolution", "An exchange or another solution will be confirmed by Men's Hub."],
 ] as const;
 
 export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
@@ -25,131 +49,158 @@ export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
 
   return (
     <main className={styles.page}>
-      <InternalCinematicHero
-        eyebrow="CUSTOMER INFORMATION"
-        title="Shipping & Returns"
-        description="Everything you need to know about delivery, returns and order eligibility at Men’s Hub."
-        visual="brand-space"
-        breadcrumbItems={[{ label: "Home", href: "/" }, { label: "Shipping & Returns" }]}
-      />
-
-      <section className={styles.highlights} aria-label="Policy highlights">
-        <div className={styles.shell}>
-          <div className={styles.highlightGrid}>
-            {highlights.map(({ icon: Icon, metric, title, detail }) => (
-              <article className={styles.highlightCard} key={title}>
-                <Icon className={styles.highlightIcon} size={22} strokeWidth={1.5} aria-hidden="true" />
-                <p className={styles.highlightMetric}>{metric}</p>
-                <h2>{title}</h2>
-                <p>{detail}</p>
-              </article>
-            ))}
+      <header className={styles.hero} aria-labelledby="shipping-returns-title">
+        <div className={styles.heroShell}>
+          <div className={styles.heroCopy}>
+            <p className={styles.eyebrow}>Customer Care / Shipping &amp; Returns</p>
+            <h1 id="shipping-returns-title">Delivery, without the guesswork.</h1>
+            <p className={styles.heroDescription}>Simple nationwide delivery, clear returns and straightforward support.</p>
+            <a className={styles.heroCta} href="#delivery">View delivery details <span aria-hidden="true">&darr;</span></a>
           </div>
-        </div>
-      </section>
 
-      <div className={styles.policyBody}>
-        <section className={styles.policySection} aria-labelledby="delivery-heading">
-          <div className={styles.sectionMarker}>01</div>
-          <div className={styles.policyCopy}>
-            <p className={styles.eyebrow}>Delivery</p>
-            <h2 id="delivery-heading">Nationwide Delivery</h2>
-            <div className={styles.prose}>
-              <p>Men’s Hub delivers across Pakistan.</p>
-              <p>A flat delivery charge of PKR 250 applies to orders below PKR 10,000.</p>
-              <p>Delivery charges are payable in advance before dispatch.</p>
-              <p>Orders with a merchandise value of PKR 10,000 or above qualify for free delivery.</p>
-              <p>Delivery eligibility and order details may be confirmed through WhatsApp before dispatch.</p>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles.policySection} aria-labelledby="returns-heading">
-          <div className={styles.sectionMarker}>02</div>
-          <div className={styles.policyCopy}>
-            <p className={styles.eyebrow}>Eligibility</p>
-            <h2 id="returns-heading">Returns &amp; Exchanges</h2>
-            <div className={styles.prose}>
-              <p>Return or exchange requests must be submitted within 7 days of receiving the order.</p>
-              <p>To be eligible, the product must:</p>
-              <ul>
-                <li>be unused and unworn</li>
-                <li>be unwashed</li>
-                <li>have all original tags attached</li>
-                <li>remain in its original condition</li>
-                <li>show no signs of alteration or damage</li>
-                <li>be free from stains, perfume, odour or other signs of use</li>
-              </ul>
-              <p>Items that do not meet these conditions may not be accepted.</p>
-              <p>Customers should contact Men’s Hub on WhatsApp before sending a return.</p>
-              <p>Returns sent without prior confirmation may not be accepted.</p>
-            </div>
-          </div>
-        </section>
-
-        <div className={styles.policyColumns}>
-          <section className={styles.compactSection} aria-labelledby="refunds-heading">
-            <p className={styles.eyebrow}>Resolution</p>
-            <h2 id="refunds-heading">Refunds</h2>
-            <div className={styles.prose}>
-              <p>Payments are non-refundable.</p>
-              <p>Approved return requests may be resolved through an exchange or another solution confirmed by Men’s Hub.</p>
-              <p>Previously paid delivery charges are non-refundable.</p>
-            </div>
-          </section>
-
-          <section className={styles.compactSection} aria-labelledby="issue-heading">
-            <p className={styles.eyebrow}>Order support</p>
-            <h2 id="issue-heading">Received the Wrong or Damaged Item?</h2>
-            <div className={styles.prose}>
-              <p>If an incorrect or damaged item is received, contact Men’s Hub as soon as possible.</p>
-              <p>Ask the customer to provide:</p>
-              <ul>
-                <li>order details</li>
-                <li>product name</li>
-                <li>clear photos showing the issue</li>
-              </ul>
-              <p>The Men’s Hub team will review the case and confirm the appropriate next step.</p>
-            </div>
-          </section>
+          <figure className={styles.heroVisual}>
+            <Image src="/seed-media/01-Shirts/shirt-01.jpg" alt="A folded blue shirt prepared for delivery" fill priority sizes="(max-width: 700px) 100vw, 56vw" className={styles.heroImage} />
+            <div className={styles.heroVisualShade} aria-hidden="true" />
+            <figcaption>MEN&apos;S HUB / CUSTOMER CARE</figcaption>
+          </figure>
         </div>
 
-        <section className={styles.processSection} aria-labelledby="process-heading">
-          <div className={styles.processHeading}>
-            <p className={styles.eyebrow}>A considered process</p>
-            <h2 id="process-heading">Return process</h2>
-          </div>
-          <div className={styles.processGrid}>
-            <ProcessStep number="01" title="Contact Men’s Hub">Send the order details and return request through WhatsApp.</ProcessStep>
-            <ProcessStep number="02" title="Receive Confirmation">Wait for return/exchange eligibility and instructions to be confirmed.</ProcessStep>
-            <ProcessStep number="03" title="Send the Product">Return the item in its original, unused condition with all tags attached.</ProcessStep>
-          </div>
-        </section>
+        <div className={styles.heroStats} role="list" aria-label="Shipping and support highlights">
+          {highlights.map(({ metric, label }) => (
+            <div className={styles.heroStat} key={label} role="listitem">
+              <p className={styles.highlightMetric}>{metric}</p>
+              <p className={styles.highlightLabel}>{label}</p>
+            </div>
+          ))}
+        </div>
+      </header>
 
-        <aside className={styles.note} aria-label="Important return note">
-          <CircleAlert size={21} strokeWidth={1.5} aria-hidden="true" />
-          <p>Please inspect your order after delivery and contact Men’s Hub promptly if there is an issue. Products that have been worn, washed, altered, damaged after delivery, or returned without original tags are not eligible for return or exchange.</p>
+      <div className={styles.policyLayout}>
+        <aside className={styles.policyAside} aria-label="On this page">
+          <p className={styles.asideEyebrow}>On this page</p>
+          <nav>
+            <ol className={styles.policyNav}>
+              {policyNavigation.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href}>
+                    <span>{item.number}</span>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
         </aside>
 
-        <section className={styles.whatsappCta} aria-labelledby="policy-help-heading">
-          <MessageCircle size={24} strokeWidth={1.5} aria-hidden="true" />
-          <p className={styles.eyebrow}>Need help with an order?</p>
-          <h2 id="policy-help-heading">We’re here to help.</h2>
-          <p>Our team can assist with delivery, availability and return questions.</p>
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer">CONTACT ON WHATSAPP <MessageCircle size={16} aria-hidden="true" /></a>
-        </section>
+        <div className={styles.policyContent}>
+          <section className={styles.policySection} id="delivery" aria-labelledby="delivery-heading">
+            <SectionIntro number="01" eyebrow="Delivery" title="Nationwide delivery" id="delivery-heading" />
+            <div className={styles.sectionBody}>
+              <p>Men&apos;s Hub delivers across Pakistan. Delivery eligibility and order details may be confirmed through WhatsApp before dispatch.</p>
+              <DetailRows rows={deliveryDetails} />
+              <p>Orders with a merchandise value of PKR 10,000 or above qualify for free delivery. Delivery charges are payable in advance before dispatch.</p>
+            </div>
+          </section>
+
+          <section className={styles.policySection} id="returns" aria-labelledby="returns-heading">
+            <SectionIntro number="02" eyebrow="Eligibility" title="Returns & exchanges" id="returns-heading" />
+            <div className={styles.sectionBody}>
+              <p>Return or exchange requests must be submitted within 7 days of receiving the order. Customers should contact Men&apos;s Hub on WhatsApp before sending a return.</p>
+              <div className={styles.eligibilityBlock}>
+                <p className={styles.subEyebrow}>A return is eligible when</p>
+                <ul className={styles.checklist}>
+                  {eligibility.map((condition) => (
+                    <li key={condition}><Check size={16} strokeWidth={1.5} aria-hidden="true" />{condition}</li>
+                  ))}
+                </ul>
+              </div>
+              <p>Items that do not meet these conditions may not be accepted. Returns sent without prior confirmation may not be accepted.</p>
+            </div>
+          </section>
+
+          <section className={styles.policySection} id="refunds" aria-labelledby="refunds-heading">
+            <SectionIntro number="03" eyebrow="Resolution" title="Refunds" id="refunds-heading" />
+            <div className={styles.sectionBody}>
+              <p>Payments are non-refundable. Approved return requests may be resolved through an exchange or another solution confirmed by Men&apos;s Hub.</p>
+              <DetailRows rows={[
+                ["Product payment", "Non-refundable"],
+                ["Delivery charges", "Non-refundable"],
+                ["Approved request", "Exchange or another confirmed solution"],
+              ]} />
+            </div>
+          </section>
+
+          <section className={styles.policySection} id="issues" aria-labelledby="issues-heading">
+            <SectionIntro number="04" eyebrow="Order support" title="Damaged / incorrect orders" id="issues-heading" />
+            <div className={styles.sectionBody}>
+              <p>If an incorrect or damaged item is received, contact Men&apos;s Hub as soon as possible so the team can review the case and confirm the appropriate next step.</p>
+              <div className={styles.requestDetails}>
+                <p className={styles.subEyebrow}>Please share</p>
+                <ul>
+                  <li>Order details</li>
+                  <li>Product name</li>
+                  <li>Clear photos showing the issue</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.policySection + " " + styles.processSection} id="process" aria-labelledby="process-heading">
+            <SectionIntro number="05" eyebrow="A considered process" title="Return process" id="process-heading" />
+            <ol className={styles.processList}>
+              {returnSteps.map(([number, title, description]) => (
+                <li className={styles.processStep} key={number}>
+                  <span className={styles.processNumber}>{number}</span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <aside className={styles.note} aria-label="Important return note">
+            <p><strong>Please note.</strong> Products that have been worn, washed, altered, damaged after delivery, or returned without original tags are not eligible for return or exchange.</p>
+          </aside>
+
+          <section className={styles.whatsappCta} aria-labelledby="policy-help-heading">
+            <div>
+              <p className={styles.eyebrow}>Personal assistance</p>
+              <h2 id="policy-help-heading">Need help with your order?</h2>
+              <p>Our team is available to assist with delivery, return and exchange queries.</p>
+            </div>
+            <a className={styles.whatsappLink} href={whatsappHref} target="_blank" rel="noopener noreferrer">
+              Chat on WhatsApp <ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" />
+            </a>
+          </section>
+        </div>
       </div>
     </main>
   );
 }
 
-function ProcessStep({ number, title, children }: { number: string; title: string; children: string }) {
+function SectionIntro({ number, eyebrow, title, id }: { number: string; eyebrow: string; title: string; id: string }) {
   return (
-    <article className={styles.processStep}>
-      <span className={styles.processNumber}>{number}</span>
-      <Check className={styles.processIcon} size={19} strokeWidth={1.5} aria-hidden="true" />
-      <h3>{title}</h3>
-      <p>{children}</p>
-    </article>
+    <div className={styles.sectionIntro}>
+      <span className={styles.sectionNumber}>{number}</span>
+      <div>
+        <p className={styles.eyebrow}>{eyebrow}</p>
+        <h2 id={id}>{title}</h2>
+      </div>
+    </div>
+  );
+}
+
+function DetailRows({ rows }: { rows: readonly (readonly [string, string])[] }) {
+  return (
+    <dl className={styles.detailRows}>
+      {rows.map(([label, value]) => (
+        <div key={label}>
+          <dt>{label}</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }

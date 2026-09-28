@@ -1,12 +1,13 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { FormEvent } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Mail, MessageCircle, Phone, Sparkles } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { ArrowUpRight, ChevronDown, Mail, MessageCircle, Phone } from "lucide-react";
 
 import { createWhatsAppUrl } from "@/domain/whatsapp/product-inquiry";
-import { InternalCinematicHero } from "./internal-cinematic-hero";
+
 import styles from "./contact-experience.module.css";
 
 type ContactSettings = {
@@ -15,87 +16,163 @@ type ContactSettings = {
   email: string;
 };
 
-const ease = [0.22, 1, 0.36, 1] as const;
+const faqs = [
+  ["How can I check product availability?", "Send us the product name or link on WhatsApp and our team will check the current availability for you."],
+  ["How do I choose the right size?", "Share the piece you are considering and the fit you usually wear. We will help you choose with confidence."],
+  ["What are your delivery charges?", "Delivery is PKR 250 for orders below PKR 10,000 and FREE for orders of PKR 10,000 or above."],
+  ["How do returns work?", "Return or exchange requests must be made within 7 days. Items must be unused, unworn, unwashed, undamaged and have their original tags attached. See our shipping and returns policy for details."],
+] as const;
+
+const enquiryTypes = ["Product Availability", "Size Guidance", "Existing Order", "Shipping & Returns", "Other"] as const;
+const conciergeServices = ["Product availability", "Size guidance", "Order updates", "Shipping & returns"] as const;
 
 export function ContactExperience({ settings }: { settings: ContactSettings }) {
-  const reduceMotion = useReducedMotion();
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const whatsappHref = createWhatsAppUrl(settings.whatsapp, "Hello Men's Hub! I would like help with a product or order.");
-  const phoneHref = `tel:${settings.phone.replace(/[^+\d]/g, "")}`;
-  const emailHref = `mailto:${settings.email}`;
+  const phoneHref = "tel:" + settings.phone.replace(/[^+\d]/g, "");
+  const emailHref = "mailto:" + settings.email;
+
+  function submitEnquiry(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const fields = [
+      "Hello Men's Hub, I would like assistance.",
+      "",
+      "Name: " + String(form.get("name") || ""),
+      "Email: " + String(form.get("email") || ""),
+      "Phone / WhatsApp: " + String(form.get("phone") || ""),
+      "Enquiry Type: " + String(form.get("enquiryType") || ""),
+      "Message: " + String(form.get("message") || ""),
+    ];
+    const message = fields.join("\n");
+
+    if (settings.whatsapp) {
+      window.open(createWhatsAppUrl(settings.whatsapp, message), "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    window.location.href = emailHref + "?subject=" + encodeURIComponent("Men's Hub enquiry") + "&body=" + encodeURIComponent(message);
+  }
 
   return (
     <main className={styles.page}>
-      <InternalCinematicHero
-        eyebrow="MEN’S HUB CONCIERGE"
-        title="A better way to find your fit."
-        description="From the first question to the final choice, our team is here for considered guidance on sizing, availability and orders."
-        visual="brand-space"
-        breadcrumbItems={[{ label: "Home", href: "/" }, { label: "Contact" }]}
-        cta={settings.whatsapp ? { label: "WhatsApp concierge", href: whatsappHref, external: true } : undefined}
-        secondaryCta={settings.phone ? { label: "Call the store", href: phoneHref } : undefined}
-      />
+      <header className={styles.hero} aria-labelledby="contact-title">
+        <div className={styles.heroCopy}>
+          <p className={styles.eyebrow}>Client Services</p>
+          <h1 id="contact-title">We&apos;re here when you need us.</h1>
+          <p className={styles.heroDescription}>From product guidance and sizing to orders, delivery and returns, our team is ready to assist.</p>
+          <p className={styles.heroFooter}>Men&apos;s Hub / Client Services / Pakistan</p>
+        </div>
+        <div className={styles.heroMedia}>
+          <Image
+            src="/images/atelier-campaign.webp"
+            alt="Man wearing a tailored jacket and shirt"
+            fill
+            priority
+            sizes="(max-width: 700px) 100vw, 54vw"
+            className={styles.coverImage}
+          />
+          <div className={styles.heroMediaShade} aria-hidden="true" />
+        </div>
+      </header>
+
+      <section className={styles.channelsSection} aria-labelledby="channels-heading">
+        <div className={styles.shell}>
+          <div className={styles.sectionHeading}>
+            <h2 id="channels-heading">Direct contact</h2>
+          </div>
+          <div className={styles.channelsGrid}>
+            <Channel number="01" label="WhatsApp" description="Fastest assistance" href={whatsappHref} icon={<MessageCircle size={18} strokeWidth={1.4} />} action="Open WhatsApp" external />
+            <Channel number="02" label="Call" description="Speak directly with our team." detail={settings.phone} href={phoneHref} icon={<Phone size={18} strokeWidth={1.4} />} action="Call now" />
+            <Channel number="03" label="Email" description="For detailed enquiries." detail={settings.email} href={emailHref} icon={<Mail size={18} strokeWidth={1.4} />} action="Send email" />
+          </div>
+        </div>
+      </section>
 
       <section className={styles.conciergeSection} aria-labelledby="concierge-heading">
         <div className={styles.shell}>
-          <SectionIntro eyebrow="Direct line" title="Talk to someone who knows the collection." description="Choose the channel that suits you. For the quickest response on products and orders, WhatsApp is the best place to begin." headingId="concierge-heading" />
-
-          <div className={styles.channelLayout}>
-            {settings.whatsapp ? <motion.a className={styles.primaryChannel} href={whatsappHref} target="_blank" rel="noopener noreferrer" whileHover={reduceMotion ? undefined : { y: -4 }} transition={{ duration: reduceMotion ? 0 : .3, ease }}>
-              <div className={styles.channelTopline}><span className={styles.channelEyebrow}>Recommended</span><MessageCircle size={22} strokeWidth={1.4} aria-hidden="true" /></div>
-              <div className={styles.channelBody}><h3>WhatsApp concierge</h3><p>The quickest way to ask about a product, size, availability or an existing order.</p></div>
-              <span className={styles.channelAction}>Start a conversation <ArrowUpRight size={17} aria-hidden="true" /></span>
-            </motion.a> : null}
-
-            <div className={styles.secondaryChannels}>
-              {settings.phone ? <ContactChannel href={phoneHref} icon={<Phone size={18} strokeWidth={1.4} />} label="Call the store" value={settings.phone} action="Call us" /> : null}
-              {settings.email ? <ContactChannel href={emailHref} icon={<Mail size={18} strokeWidth={1.4} />} label="Email us" value={settings.email} action="Send an enquiry" /> : null}
+          <div className={styles.conciergeGrid}>
+            <div className={styles.conciergeIntro}>
+              <p className={styles.eyebrow}>Client concierge / 01</p>
+              <h2 id="concierge-heading">Need personal assistance?</h2>
+            </div>
+            <div className={styles.conciergeDetails}>
+              <p>Our team can assist with product availability, sizing, existing orders, shipping and returns.</p>
+              <ul className={styles.serviceList}>
+                {conciergeServices.map((service) => <li key={service}>{service}<ArrowUpRight size={15} strokeWidth={1.4} aria-hidden="true" /></li>)}
+              </ul>
+              <a className={styles.conciergeLink} href={whatsappHref} target="_blank" rel="noopener noreferrer">Chat on WhatsApp <ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" /></a>
             </div>
           </div>
         </div>
       </section>
 
-      <section className={styles.topicsSection} aria-labelledby="topics-heading">
+      <section className={styles.enquirySection} aria-labelledby="enquiry-heading">
         <div className={styles.shell}>
-          <div className={styles.topicsHeader}>
-            <div><p className={styles.eyebrow}>Client service</p><h2 id="topics-heading">Make the next step easy.</h2></div>
-            <p>Whether you are building an outfit or checking on an order, bring us the question and we will help you move forward.</p>
-          </div>
-          <div className={styles.topicGrid}>
-            <Topic number="01" title="Product availability">Check whether a favourite piece is available before you visit or order.</Topic>
-            <Topic number="02" title="Size guidance">Share what you usually wear and let us help you find the right fit.</Topic>
-            <Topic number="03" title="Order assistance">Get help with placing an order, delivery details or an existing purchase.</Topic>
-            <Topic number="04" title="A considered edit">Tell us what you are looking for and we can point you towards the collection.</Topic>
+          <div className={styles.enquiryGrid}>
+            <div className={styles.enquiryIntro}>
+              <p className={styles.eyebrow}>Send an enquiry</p>
+              <h2 id="enquiry-heading">Tell us what you need.</h2>
+              <p>For detailed questions, send us a message and our team will assist you.</p>
+            </div>
+            <form className={styles.enquiryForm} onSubmit={submitEnquiry}>
+              <div className={styles.fieldGrid}>
+                <label className={styles.field}><span>Full Name</span><input name="name" type="text" autoComplete="name" required /></label>
+                <label className={styles.field}><span>Email</span><input name="email" type="email" autoComplete="email" required /></label>
+                <label className={styles.field}><span>Phone / WhatsApp</span><input name="phone" type="tel" autoComplete="tel" /></label>
+                <label className={styles.field}><span>Enquiry Type</span><select name="enquiryType" defaultValue="" required><option value="" disabled>Select one</option>{enquiryTypes.map((type) => <option value={type} key={type}>{type}</option>)}</select></label>
+              </div>
+              <label className={styles.field}><span>Message</span><textarea name="message" rows={5} required /></label>
+              <button className={styles.submitButton} type="submit">Send enquiry <ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" /></button>
+            </form>
           </div>
         </div>
       </section>
 
-      <section className={styles.expectSection} aria-labelledby="expect-heading">
+      <section className={styles.faqSection} aria-labelledby="faq-heading">
         <div className={styles.shell}>
-          <div className={styles.expectIntro}><Sparkles size={21} strokeWidth={1.4} aria-hidden="true" /><p className={styles.eyebrow}>A simple beginning</p><h2 id="expect-heading">Good style starts with a good conversation.</h2></div>
-          <div className={styles.expectSteps}>
-            <ExpectStep number="01" title="Tell us what you need">Send a message with the product, size or order you have in mind.</ExpectStep>
-            <ExpectStep number="02" title="We look into it">Our team checks the details and shares the most useful next step.</ExpectStep>
-            <ExpectStep number="03" title="Choose with confidence">Take your time, ask another question and decide when it feels right.</ExpectStep>
+          <div className={styles.faqGrid}>
+            <div className={styles.faqIntro}>
+              <p className={styles.eyebrow}>Quick answers</p>
+              <h2 id="faq-heading">A few things, made clear.</h2>
+              <p>Still have a question?</p>
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer">Ask us on WhatsApp <ArrowUpRight size={15} aria-hidden="true" /></a>
+            </div>
+            <div className={styles.faqList}>
+              {faqs.map(([question, answer], index) => {
+                const isOpen = openFaq === index;
+                const answerId = "faq-answer-" + index;
+                return (
+                  <div className={styles.faqItem} key={question}>
+                    <button className={styles.faqQuestion} type="button" aria-expanded={isOpen} aria-controls={answerId} onClick={() => setOpenFaq(isOpen ? null : index)}>
+                      <span><b>{String(index + 1).padStart(2, "0")}</b>{question}</span>
+                      <ChevronDown size={19} strokeWidth={1.4} aria-hidden="true" />
+                    </button>
+                    {isOpen ? <div className={styles.faqAnswer} id={answerId}><p>{answer}{index === 3 ? <> <Link href="/shipping-returns">Read shipping &amp; returns.</Link></> : null}</p></div> : null}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <Link className={styles.collectionLink} href="/new-arrivals">Explore new arrivals <ArrowRight size={17} aria-hidden="true" /></Link>
+        </div>
+      </section>
+
+      <section className={styles.collectionSection} aria-labelledby="collection-heading">
+        <div className={styles.collectionMedia}>
+          <Image src="/seed-media/01-Shirts/shirt-01.jpg" alt="Tailored blue shirt detail" fill sizes="(max-width: 700px) 100vw, 50vw" className={styles.coverImage} />
+          <div className={styles.collectionShade} aria-hidden="true" />
+        </div>
+        <div className={styles.collectionCopy}>
+          <p className={styles.eyebrow}>Continue shopping</p>
+          <h2 id="collection-heading">Discover what&apos;s new.</h2>
+          <Link className={styles.collectionLink} href="/new-arrivals">Explore collection <ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" /></Link>
         </div>
       </section>
     </main>
   );
 }
 
-function SectionIntro({ eyebrow, title, description, headingId }: { eyebrow: string; title: string; description: string; headingId: string }) {
-  return <header className={styles.sectionIntro}><p className={styles.eyebrow}>{eyebrow}</p><h2 id={headingId}>{title}</h2><p>{description}</p></header>;
-}
-
-function ContactChannel({ href, icon, label, value, action }: { href: string; icon: ReactNode; label: string; value: string; action: string }) {
-  return <a className={styles.secondaryChannel} href={href}><span className={styles.secondaryIcon}>{icon}</span><span className={styles.secondaryCopy}><span>{label}</span><strong>{value}</strong></span><span className={styles.secondaryAction}>{action}<ArrowUpRight size={15} aria-hidden="true" /></span></a>;
-}
-
-function Topic({ number, title, children }: { number: string; title: string; children: string }) {
-  return <article className={styles.topic}><span>{number}</span><h3>{title}</h3><p>{children}</p></article>;
-}
-
-function ExpectStep({ number, title, children }: { number: string; title: string; children: string }) {
-  return <article className={styles.expectStep}><span>{number}</span><h3>{title}</h3><p>{children}</p></article>;
+function Channel({ number, label, description, detail, href, icon, action, external }: { number: string; label: string; description: string; detail?: string; href: string; icon: React.ReactNode; action: string; external?: boolean }) {
+  const content = <><span className={styles.channelNumber}>{number}</span><span className={styles.channelIcon}>{icon}</span><h3>{label}</h3><p>{description}</p>{detail ? <strong>{detail}</strong> : null}<span className={styles.channelAction}>{action} <ArrowUpRight size={15} aria-hidden="true" /></span></>;
+  return external ? <a className={styles.channel} href={href} target="_blank" rel="noopener noreferrer">{content}</a> : <a className={styles.channel} href={href}>{content}</a>;
 }
