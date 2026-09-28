@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ChevronDown, Heart, Menu, MessageCircle, Search, ShoppingBag, X } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronRight, Heart, Menu, MessageCircle, Search, ShoppingBag, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,6 +10,7 @@ import { useCart, useWishlist } from "@/components/storefront/commerce-store";
 import { SearchCombobox } from "@/components/storefront/search-combobox";
 import type { StorefrontCategory } from "@/data/storefront";
 import { cn } from "@/lib/cn";
+import { getStorefrontNavigation } from "@/lib/category-navigation";
 
 type HeaderProps = {
   brandName: string;
@@ -25,12 +26,15 @@ const navigation = [
 ] as const;
 
 export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
+  const categoryNavigation = getStorefrontNavigation(categories);
   const pathname = usePathname();
   const cartCount = useCart().reduce((total, item) => total + item.quantity, 0);
   const wishlistCount = useWishlist().length;
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
+  const [accessoryOpen, setAccessoryOpen] = useState(false);
+  const [mobileAccessoriesOpen, setMobileAccessoriesOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const menuTrigger = useRef<HTMLButtonElement>(null);
   const searchTrigger = useRef<HTMLButtonElement>(null);
@@ -103,13 +107,23 @@ export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
           <nav className="mh-desktop-nav" aria-label="Main navigation">
             {navigation.slice(0, 2).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active")}>{item.label}</Link>)}
             <div ref={categoryMenu} className="mh-category-menu">
-              <button type="button" className={cn(categoryOpen && "is-active")} aria-expanded={categoryOpen} aria-controls="desktop-category-menu" onClick={() => setCategoryOpen((open) => !open)}>
+              <button type="button" className={cn(categoryOpen && "is-active")} aria-expanded={categoryOpen} aria-controls="desktop-category-menu" onClick={() => { setCategoryOpen((open) => !open); setAccessoryOpen(false); }}>
                 Categories <ChevronDown size={14} className={cn(categoryOpen && "rotate-180")} />
               </button>
               <div id="desktop-category-menu" className={cn("mh-category-popover", categoryOpen && "is-open")} aria-hidden={!categoryOpen}>
                 <div className="mh-category-popover-heading"><span>Browse the collection</span><Link href="/shop" onClick={() => setCategoryOpen(false)}>View all <ArrowRight size={13} /></Link></div>
                 <div className="mh-category-popover-grid">
-                  {categories.map((category) => <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>{category.name}<ArrowRight size={13} /></Link>)}
+                  {categoryNavigation.map((category) => category.children.length ? (
+                    <div key={category.id} className={cn("mh-category-popover-group", accessoryOpen && "is-open")}>
+                      <button type="button" aria-expanded={accessoryOpen} aria-controls="desktop-accessories-submenu" onClick={() => setAccessoryOpen((open) => !open)}>
+                        {category.name}<ChevronRight size={13} />
+                      </button>
+                      <div id="desktop-accessories-submenu" className="mh-category-submenu">
+                        <Link href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>All Accessories<ArrowRight size={13} /></Link>
+                        {category.children.map((child) => <Link key={child.id} href={`/shop/${child.slug}`} onClick={() => setCategoryOpen(false)}>{child.name}<ArrowRight size={13} /></Link>)}
+                      </div>
+                    </div>
+                  ) : <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>{category.name}<ArrowRight size={13} /></Link>)}
                 </div>
                 <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mh-category-concierge"><MessageCircle size={14} /> Need a size check? Chat with us</a>
               </div>
@@ -128,7 +142,20 @@ export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
           <nav aria-label="Mobile navigation">
             {navigation.map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active", item.href === "/sale" && "is-sale")} onClick={() => setMenuOpen(false)}>{item.label}<ArrowRight size={17} /></Link>)}
           </nav>
-          <div className="mh-mobile-categories"><p>Categories</p>{categories.map((category) => <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>{category.name}</Link>)}</div>
+          <div className="mh-mobile-categories">
+            <p>Categories</p>
+            {categoryNavigation.map((category) => category.children.length ? (
+              <div key={category.id} className="mh-mobile-category-group">
+                <button type="button" className="mh-mobile-category-toggle" aria-expanded={mobileAccessoriesOpen} aria-controls="mobile-accessories-submenu" onClick={() => setMobileAccessoriesOpen((open) => !open)}>
+                  {category.name}<span aria-hidden="true">{mobileAccessoriesOpen ? "−" : "+"}</span>
+                </button>
+                {mobileAccessoriesOpen ? <div id="mobile-accessories-submenu" className="mh-mobile-category-children">
+                  <Link href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>All Accessories</Link>
+                  {category.children.map((child) => <Link key={child.id} href={`/shop/${child.slug}`} onClick={() => setMenuOpen(false)}>{child.name}</Link>)}
+                </div> : null}
+              </div>
+            ) : <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>{category.name}</Link>)}
+          </div>
           <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mh-mobile-whatsapp"><MessageCircle size={16} /> Chat on WhatsApp</a>
         </div>
       </header>

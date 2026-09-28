@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { ArrowRight, ArrowUpRight, Mail, MessageCircle, Phone, Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import { ArrowRight, ArrowUpRight, Mail, MessageCircle, Phone } from "lucide-react";
 
 import { createWhatsAppUrl } from "@/domain/whatsapp/product-inquiry";
 import { InternalCinematicHero } from "./internal-cinematic-hero";
@@ -26,51 +26,76 @@ export function ContactExperience({ settings }: { settings: ContactSettings }) {
   return (
     <main className={styles.page}>
       <InternalCinematicHero
-        eyebrow="Customer support"
-        title="How can we help?"
-        description="Contact Men's Hub for sizing, availability and order assistance."
+        eyebrow="MEN’S HUB CONCIERGE"
+        title="A better way to find your fit."
+        description="From the first question to the final choice, our team is here for considered guidance on sizing, availability and orders."
         visual="brand-space"
         breadcrumbItems={[{ label: "Home", href: "/" }, { label: "Contact" }]}
-        cta={{ label: "WhatsApp us", href: whatsappHref, external: true }}
-        secondaryCta={settings.phone ? { label: "Call us", href: phoneHref } : undefined}
+        cta={settings.whatsapp ? { label: "WhatsApp concierge", href: whatsappHref, external: true } : undefined}
+        secondaryCta={settings.phone ? { label: "Call the store", href: phoneHref } : undefined}
       />
 
-      <section className={styles.contactSection} aria-labelledby="contact-options-title">
+      <section className={styles.conciergeSection} aria-labelledby="concierge-heading">
         <div className={styles.shell}>
-          <motion.header className={styles.sectionHeading} initial={reduceMotion ? false : { opacity: 0, y: 20 }} whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }} viewport={{ once: true, amount: .25 }} transition={{ duration: reduceMotion ? 0 : .7, ease }}>
-            <p className={styles.eyebrow}>Client service</p>
-            <h2 id="contact-options-title">Here when you need us.</h2>
-            <p className={styles.sectionIntro}>For product availability, sizing and order support, choose the contact method that suits you.</p>
-          </motion.header>
+          <SectionIntro eyebrow="Direct line" title="Talk to someone who knows the collection." description="Choose the channel that suits you. For the quickest response on products and orders, WhatsApp is the best place to begin." headingId="concierge-heading" />
 
-          <div className={styles.contactGrid}>
-            {settings.whatsapp ? <ContactMethod featured reduceMotion={Boolean(reduceMotion)} href={whatsappHref} icon={<MessageCircle size={20} strokeWidth={1.5} />} eyebrow="Recommended" title="WhatsApp" detail="The quickest way to ask about a product or your order." action="Start a conversation" external /> : null}
-            {settings.phone ? <ContactMethod reduceMotion={Boolean(reduceMotion)} href={phoneHref} icon={<Phone size={20} strokeWidth={1.5} />} eyebrow="Call us" title="Phone" detail={settings.phone} action="Call Men's Hub" /> : null}
-            {settings.email ? <ContactMethod reduceMotion={Boolean(reduceMotion)} href={emailHref} icon={<Mail size={20} strokeWidth={1.5} />} eyebrow="Email us" title="Email" detail={settings.email} action="Send an enquiry" /> : null}
+          <div className={styles.channelLayout}>
+            {settings.whatsapp ? <motion.a className={styles.primaryChannel} href={whatsappHref} target="_blank" rel="noopener noreferrer" whileHover={reduceMotion ? undefined : { y: -4 }} transition={{ duration: reduceMotion ? 0 : .3, ease }}>
+              <div className={styles.channelTopline}><span className={styles.channelEyebrow}>Recommended</span><MessageCircle size={22} strokeWidth={1.4} aria-hidden="true" /></div>
+              <div className={styles.channelBody}><h3>WhatsApp concierge</h3><p>The quickest way to ask about a product, size, availability or an existing order.</p></div>
+              <span className={styles.channelAction}>Start a conversation <ArrowUpRight size={17} aria-hidden="true" /></span>
+            </motion.a> : null}
+
+            <div className={styles.secondaryChannels}>
+              {settings.phone ? <ContactChannel href={phoneHref} icon={<Phone size={18} strokeWidth={1.4} />} label="Call the store" value={settings.phone} action="Call us" /> : null}
+              {settings.email ? <ContactChannel href={emailHref} icon={<Mail size={18} strokeWidth={1.4} />} label="Email us" value={settings.email} action="Send an enquiry" /> : null}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className={styles.supportNote} aria-labelledby="help-topics-title">
+      <section className={styles.topicsSection} aria-labelledby="topics-heading">
         <div className={styles.shell}>
-          <div>
-            <p className={styles.eyebrow}>Before you get in touch</p>
-            <h2 id="help-topics-title">What can we help with?</h2>
+          <div className={styles.topicsHeader}>
+            <div><p className={styles.eyebrow}>Client service</p><h2 id="topics-heading">Make the next step easy.</h2></div>
+            <p>Whether you are building an outfit or checking on an order, bring us the question and we will help you move forward.</p>
           </div>
-          <ul aria-label="Support topics"><li>Product availability</li><li>Size guidance</li><li>Order assistance</li><li>General enquiries</li></ul>
-          <Link href="/new-arrivals">View new arrivals <ArrowRight size={17} aria-hidden="true" /></Link>
+          <div className={styles.topicGrid}>
+            <Topic number="01" title="Product availability">Check whether a favourite piece is available before you visit or order.</Topic>
+            <Topic number="02" title="Size guidance">Share what you usually wear and let us help you find the right fit.</Topic>
+            <Topic number="03" title="Order assistance">Get help with placing an order, delivery details or an existing purchase.</Topic>
+            <Topic number="04" title="A considered edit">Tell us what you are looking for and we can point you towards the collection.</Topic>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.expectSection} aria-labelledby="expect-heading">
+        <div className={styles.shell}>
+          <div className={styles.expectIntro}><Sparkles size={21} strokeWidth={1.4} aria-hidden="true" /><p className={styles.eyebrow}>A simple beginning</p><h2 id="expect-heading">Good style starts with a good conversation.</h2></div>
+          <div className={styles.expectSteps}>
+            <ExpectStep number="01" title="Tell us what you need">Send a message with the product, size or order you have in mind.</ExpectStep>
+            <ExpectStep number="02" title="We look into it">Our team checks the details and shares the most useful next step.</ExpectStep>
+            <ExpectStep number="03" title="Choose with confidence">Take your time, ask another question and decide when it feels right.</ExpectStep>
+          </div>
+          <Link className={styles.collectionLink} href="/new-arrivals">Explore new arrivals <ArrowRight size={17} aria-hidden="true" /></Link>
         </div>
       </section>
     </main>
   );
 }
 
-function ContactMethod({ href, icon, eyebrow, title, detail, action, external = false, featured = false, reduceMotion }: { href: string; icon: ReactNode; eyebrow: string; title: string; detail: string; action: string; external?: boolean; featured?: boolean; reduceMotion: boolean }) {
-  return (
-    <motion.a className={`${styles.contactMethod}${featured ? ` ${styles.contactMethodFeatured}` : ""}`} href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined} whileHover={reduceMotion ? undefined : { y: -3 }} transition={{ duration: reduceMotion ? 0 : .25, ease }}>
-      <div className={styles.methodIcon}>{icon}</div>
-      <div className={styles.methodCopy}><span>{eyebrow}</span><h3>{title}</h3><p>{detail}</p></div>
-      <span className={styles.methodAction}>{action}<ArrowUpRight size={16} aria-hidden="true" /></span>
-    </motion.a>
-  );
+function SectionIntro({ eyebrow, title, description, headingId }: { eyebrow: string; title: string; description: string; headingId: string }) {
+  return <header className={styles.sectionIntro}><p className={styles.eyebrow}>{eyebrow}</p><h2 id={headingId}>{title}</h2><p>{description}</p></header>;
+}
+
+function ContactChannel({ href, icon, label, value, action }: { href: string; icon: ReactNode; label: string; value: string; action: string }) {
+  return <a className={styles.secondaryChannel} href={href}><span className={styles.secondaryIcon}>{icon}</span><span className={styles.secondaryCopy}><span>{label}</span><strong>{value}</strong></span><span className={styles.secondaryAction}>{action}<ArrowUpRight size={15} aria-hidden="true" /></span></a>;
+}
+
+function Topic({ number, title, children }: { number: string; title: string; children: string }) {
+  return <article className={styles.topic}><span>{number}</span><h3>{title}</h3><p>{children}</p></article>;
+}
+
+function ExpectStep({ number, title, children }: { number: string; title: string; children: string }) {
+  return <article className={styles.expectStep}><span>{number}</span><h3>{title}</h3><p>{children}</p></article>;
 }

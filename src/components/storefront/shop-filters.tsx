@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
+import { getTopLevelStorefrontCategories } from "@/lib/category-navigation";
 import type { StorefrontFilters } from "@/validation/storefront";
 
 type CategoryOption = {
@@ -25,12 +26,13 @@ type FilterProps = {
 
 function Fields({ filters, categories, sizes, colors, routeCategory }: Omit<FilterProps, "action">) {
   const category = categories.find((item) => item.slug === (routeCategory || filters.category));
+  const topLevelCategories = getTopLevelStorefrontCategories(categories);
   const labelClass = "grid gap-2 text-xs font-bold uppercase tracking-[0.12em] text-muted";
 
   return (
     <div className="grid gap-5">
       <label className={labelClass}>Search<input className="store-filter-input" name="q" defaultValue={filters.q} placeholder="Name or article" /></label>
-      {!routeCategory ? <label className={labelClass}>Category<select className="store-filter-input" name="category" defaultValue={filters.category}><option value="">All categories</option>{categories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}</select></label> : null}
+      {!routeCategory ? <label className={labelClass}>Category<select className="store-filter-input" name="category" defaultValue={filters.category}><option value="">All categories</option>{topLevelCategories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}</select></label> : null}
       {category ? <label className={labelClass}>Subcategory<select className="store-filter-input" name="subcategory" defaultValue={filters.subcategory}><option value="">All subcategories</option>{category.subcategories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}</select></label> : null}
       <fieldset>
         <legend className="text-xs font-bold uppercase tracking-[0.12em] text-muted">Price (PKR)</legend>

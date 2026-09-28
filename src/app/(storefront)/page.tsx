@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 
 import { CategoriesInFocus } from "@/components/storefront/categories-in-focus";
+import { AnnouncementBar } from "@/components/storefront/announcement-bar";
 import { CinematicHero } from "@/components/storefront/cinematic-hero";
 import { Container } from "@/components/storefront/container";
 import { ProductCard } from "@/components/storefront/product-card";
@@ -29,6 +30,7 @@ export default async function HomePage() {
 
   return (
     <main className="mh-homepage">
+      <AnnouncementBar />
       <CinematicHero
         heading={"DRESS WITH\nDISTINCTION."}
         tagline="MEN'S HUB — PREMIUM MENSWEAR"

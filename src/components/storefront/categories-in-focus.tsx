@@ -10,6 +10,7 @@ import { Container } from "@/components/storefront/container";
 import { ProductCard } from "@/components/storefront/product-card";
 import { StoreImage } from "@/components/storefront/store-image";
 import type { StorefrontCategoryShelf, StorefrontProduct } from "@/data/storefront";
+import { getTopLevelStorefrontCategories } from "@/lib/category-navigation";
 
 type ImagePosition = "left" | "right";
 
@@ -27,18 +28,6 @@ type CategoryCollectionSectionProps = {
   index: number;
 };
 
-const preferredCategoryOrder = [
-  "shirts",
-  "pants",
-  "shalwar-qameez",
-  "trousers",
-  "shoes",
-  "watches",
-  "perfumes",
-  "glasses",
-  "accessories",
-];
-
 const categoryImageFallbacks: Record<string, string> = {
   shirts: "/seed-media/01-Shirts/shirt-02.jpg",
   pants: "/seed-media/02-Pants/pants-02.jpg",
@@ -53,22 +42,12 @@ const categoryImageFallbacks: Record<string, string> = {
   tracksuits: "/seed-media/11-Tracksuits/tracksuit-02.jpg",
 };
 
-function orderCategories(shelves: StorefrontCategoryShelf[]) {
-  return [...shelves].sort((left, right) => {
-    const leftOrder = preferredCategoryOrder.indexOf(left.slug);
-    const rightOrder = preferredCategoryOrder.indexOf(right.slug);
-    const normalizedLeftOrder = leftOrder === -1 ? preferredCategoryOrder.length : leftOrder;
-    const normalizedRightOrder = rightOrder === -1 ? preferredCategoryOrder.length : rightOrder;
-    return normalizedLeftOrder - normalizedRightOrder || left.name.localeCompare(right.name);
-  });
-}
-
 function resolveCategoryImage(category: StorefrontCategoryShelf) {
   return category.bannerImageUrl || category.imageUrl || categoryImageFallbacks[category.slug] || "/images/atelier-campaign.webp";
 }
 
 export function CategoriesInFocus({ shelves, heading = "Shop by category", description }: CategoriesInFocusProps) {
-  const orderedShelves = orderCategories(shelves);
+  const orderedShelves = getTopLevelStorefrontCategories(shelves);
 
   if (!orderedShelves.length) return null;
 

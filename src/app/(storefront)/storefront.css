@@ -120,6 +120,8 @@
 .atelier-store .collection-category-nav { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .75rem; margin-bottom: 2rem; scrollbar-width: thin; }
 .atelier-store .collection-category-nav a { white-space: nowrap; padding: .75rem 1rem; border: 1px solid var(--mh-line); color: var(--mh-muted); font-size: .6rem; text-transform: uppercase; letter-spacing: .1em; }
 .atelier-store .collection-category-nav a:hover, .atelier-store .collection-category-nav a[aria-current] { color: var(--mh-gold-ink); background: var(--mh-gold); border-color: var(--mh-gold); }
+.atelier-store .collection-category-group { display: inline-flex; flex: 0 0 auto; gap: .35rem; }
+.atelier-store .collection-category-children { display: inline-flex; gap: .35rem; }
 .atelier-store .atelier-filter-form { background: transparent; border: 0; border-top: 1px solid var(--mh-gold); padding: 1.5rem 0; }
 .atelier-store .atelier-filter-form > p { margin-bottom: 1.5rem; }
 .atelier-store .atelier-bag-heading { padding-bottom: 2rem; border-bottom: 1px solid var(--mh-line); }
@@ -273,6 +275,15 @@
 .atelier-store .mh-whatsapp-section > div > p:not(.mh-eyebrow) { max-width: 26rem; margin: 1.25rem auto 0; color: rgb(255 255 255 / .65); font-size: .86rem; line-height: 1.7; }
 .atelier-store .mh-whatsapp-section .mh-button { margin-top: 2rem; }
 
+/* Home-only premium delivery announcement. */
+.atelier-store .mh-announcement-bar { display: block; height: 2.4rem; overflow: hidden; background: #30241e; color: var(--warm-white); font-family: var(--font-manrope); }
+.atelier-store .mh-announcement-bar:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--warm-white); outline-offset: -3px; }
+.atelier-store .mh-announcement-viewport { display: flex; height: 100%; align-items: center; overflow: hidden; }
+.atelier-store .mh-announcement-track { display: flex; width: max-content; min-width: max-content; flex: 0 0 auto; align-items: center; animation: mh-announcement-loop 22s linear infinite; }
+.atelier-store .mh-announcement-group { display: flex; flex: 0 0 auto; align-items: center; gap: 3.5rem; padding-right: 3.5rem; color: rgb(244 242 237 / .9); font-size: .6875rem; font-weight: 600; letter-spacing: .14em; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+.atelier-store .mh-announcement-group i { color: #b98d72; font-style: normal; }
+@keyframes mh-announcement-loop { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
 @media (max-width: 1023px) {
   .atelier-store .mh-product-collection-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
@@ -307,6 +318,9 @@
   .atelier-store .mh-campaign-video { display: none; }
   .atelier-store .mh-product-card-image { transition: none; }
   .atelier-store .mh-button:hover, .atelier-store .mh-text-link:hover { transform: none; }
+  .atelier-store .mh-announcement-track { animation: none; justify-content: center; width: 100%; }
+  .atelier-store .mh-announcement-group { display: none; }
+  .atelier-store .mh-announcement-group:first-child { display: flex; }
 }
 
 /* Store header */
@@ -372,6 +386,11 @@
 .atelier-store .mh-category-popover-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .1rem 1rem; padding-block: .75rem; }
 .atelier-store .mh-category-popover-grid a { min-height: 2.6rem; justify-content: space-between; border-bottom: 1px solid rgb(244 242 237 / .1); color: rgb(244 242 237 / .72); font-size: .72rem; transition: color .2s, padding .2s; }
 .atelier-store .mh-category-popover-grid a:hover { padding-left: .3rem; color: var(--accent); }
+.atelier-store .mh-category-popover-group { position: relative; }
+.atelier-store .mh-category-popover-group > button { display: inline-flex; width: 100%; min-height: 2.6rem; align-items: center; justify-content: space-between; border-bottom: 1px solid rgb(244 242 237 / .1); color: rgb(244 242 237 / .72); font-size: .72rem; text-align: left; transition: color .2s, padding .2s; }
+.atelier-store .mh-category-popover-group > button:hover, .atelier-store .mh-category-popover-group.is-open > button { padding-left: .3rem; color: var(--accent); }
+.atelier-store .mh-category-submenu { position: absolute; z-index: 2; top: 0; left: calc(100% + .65rem); display: grid; width: 13rem; padding: .55rem .8rem; border: 1px solid rgb(244 242 237 / .14); background: #1d1d1d; box-shadow: 0 1rem 3rem rgb(0 0 0 / .3); opacity: 0; pointer-events: none; transform: translateX(-.35rem); transition: opacity .2s var(--mh-ease-out), transform .2s var(--mh-ease-out); }
+.atelier-store .mh-category-popover-group:hover .mh-category-submenu, .atelier-store .mh-category-popover-group.is-open .mh-category-submenu { opacity: 1; pointer-events: auto; transform: translateX(0); }
 .atelier-store .mh-category-concierge { border-top: 1px solid rgb(244 242 237 / .14); padding-top: .9rem; color: #c79a7f; font-size: .61rem; font-weight: 700; letter-spacing: .06em; }
 .atelier-store .mh-header-actions { gap: .15rem; }
 .atelier-store .mh-mobile-drawer { display: none; }
@@ -391,6 +410,11 @@
   .atelier-store .mh-mobile-categories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem 1.2rem; }
   .atelier-store .mh-mobile-categories p { grid-column: 1 / -1; margin: 0 0 .2rem; color: rgb(244 242 237 / .5); font-size: .61rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
   .atelier-store .mh-mobile-categories a { min-height: 2.6rem; border-bottom: 1px solid rgb(244 242 237 / .14); padding-top: .65rem; color: rgb(244 242 237 / .72); font-size: .76rem; }
+  .atelier-store .mh-mobile-category-group { grid-column: 1 / -1; }
+  .atelier-store .mh-mobile-category-toggle { display: flex; width: 100%; min-height: 2.6rem; align-items: center; justify-content: space-between; border-bottom: 1px solid rgb(244 242 237 / .14); color: rgb(244 242 237 / .72); font-size: .76rem; text-align: left; }
+  .atelier-store .mh-mobile-category-toggle span { color: var(--accent); font-size: 1.1rem; line-height: 1; }
+  .atelier-store .mh-mobile-category-children { display: grid; padding-left: 1rem; }
+  .atelier-store .mh-mobile-category-children a { color: rgb(244 242 237 / .58); font-size: .7rem; }
   .atelier-store .mh-mobile-whatsapp { display: inline-flex; min-height: 3rem; align-items: center; justify-content: center; gap: .6rem; border: 1px solid var(--accent); color: #d4ad96; font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
   .atelier-store .mh-footer-top { gap: 2.5rem; }
 }

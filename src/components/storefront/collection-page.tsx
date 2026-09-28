@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/storefront/product-card";
 import type { InternalHeroBreadcrumb } from "@/components/storefront/internal-cinematic-hero";
 import type { StorefrontProduct } from "@/data/storefront";
 import type { StorefrontFilters } from "@/validation/storefront";
+import { getAccessoryStorefrontCategories, getTopLevelStorefrontCategories } from "@/lib/category-navigation";
 
 type CollectionData = {
   products: StorefrontProduct[];
@@ -48,9 +49,13 @@ export function CollectionPage({
   action: string;
   routeCategory?: string;
 }) {
-  const category = routeCategory
-    ? data.categories.find((item) => item.slug === routeCategory)
+  const activeCategorySlug = routeCategory || filters.category;
+  const category = activeCategorySlug
+    ? data.categories.find((item) => item.slug === activeCategorySlug)
     : undefined;
+  const topLevelCategories = getTopLevelStorefrontCategories(data.categories);
+  const accessoryCategories = getAccessoryStorefrontCategories(data.categories);
+  const isAccessoryRoute = Boolean(activeCategorySlug && ["accessories", ...accessoryCategories.map((item) => item.slug)].includes(activeCategorySlug));
   const routeDescriptions: Record<string, string> = {
     "new-arrivals": "Recently added clothing, footwear and accessories from Men's Hub.",
     sale: "Selected Men's Hub pieces currently available at reduced prices.",
@@ -91,7 +96,17 @@ export function CollectionPage({
       </AnimatedCollectionHero>
 
       <Container size="wide" className="pt-8 sm:pt-12">
-        <nav id="collection-navigation" className="collection-category-nav" aria-label="Browse collections"><Link href="/shop" aria-current={action === "/shop" && !routeCategory ? "page" : undefined}>All products</Link>{data.categories.map((item) => <Link key={item.id} href={"/shop/" + item.slug} aria-current={routeCategory === item.slug ? "page" : undefined}>{item.name}</Link>)}</nav>
+        <nav id="collection-navigation" className="collection-category-nav" aria-label="Browse collections">
+          <Link href="/shop" aria-current={action === "/shop" && !routeCategory ? "page" : undefined}>All Products</Link>
+          {topLevelCategories.map((item) => item.slug === "accessories" ? (
+            <div key={item.id} className="collection-category-group">
+              <Link href={"/shop/" + item.slug} aria-current={isAccessoryRoute ? "page" : undefined}>{item.name}</Link>
+              {isAccessoryRoute ? <div className="collection-category-children" aria-label="Accessories categories">
+                {accessoryCategories.map((child) => <Link key={child.id} href={"/shop/" + child.slug} aria-current={routeCategory === child.slug ? "page" : undefined}>{child.name}</Link>)}
+              </div> : null}
+            </div>
+          ) : <Link key={item.id} href={"/shop/" + item.slug} aria-current={routeCategory === item.slug ? "page" : undefined}>{item.name}</Link>)}
+        </nav>
 
         <div className="min-w-0">
           <section className="min-w-0" aria-label="Products">

@@ -26,6 +26,7 @@ const exploreLinks = [
 
 const supportLinks = [
   ["Contact", "/contact"],
+  ["Shipping & Returns", "/shipping-returns"],
 ] as const;
 
 export function StoreFooter({ settings }: { settings: Settings; categories?: Pick<StorefrontCategory, "id" | "name" | "slug">[]; content?: Record<string, string> }) {

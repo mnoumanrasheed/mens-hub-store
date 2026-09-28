@@ -1,0 +1,374 @@
+.page {
+  background: var(--warm-white);
+  color: var(--ink);
+}
+
+.shell,
+.policyBody {
+  width: min(100% - (var(--mh-container-gutter) * 2), 82.5rem);
+  margin-inline: auto;
+}
+
+.highlights {
+  border-bottom: 1px solid var(--border);
+  background: var(--warm-white);
+}
+
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.highlightCard {
+  min-height: 15rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2.5vw, 2rem);
+  border-right: 1px solid var(--border);
+}
+
+.highlightCard:first-child {
+  border-left: 1px solid var(--border);
+}
+
+.highlightIcon {
+  color: var(--accent);
+}
+
+.highlightMetric,
+.eyebrow,
+.sectionMarker,
+.processNumber {
+  font-size: .6875rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.highlightMetric {
+  margin: 2.25rem 0 .55rem;
+  color: var(--accent);
+}
+
+.highlightCard h2 {
+  margin: 0;
+  font-family: var(--font-cormorant);
+  font-size: clamp(1.6rem, 2.4vw, 2.15rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.highlightCard > p:last-child {
+  max-width: 16rem;
+  margin: .75rem 0 0;
+  color: var(--ink-soft);
+  font-size: .9375rem;
+  line-height: 1.6;
+}
+
+.policyBody {
+  padding-block: clamp(3.75rem, 8vw, 7rem) clamp(5rem, 9vw, 8rem);
+}
+
+.policySection {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 42rem);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding-block: clamp(2rem, 5vw, 4.5rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.sectionMarker {
+  padding-top: .25rem;
+  color: var(--accent);
+}
+
+.policyCopy h2,
+.compactSection h2,
+.processHeading h2,
+.whatsappCta h2 {
+  margin: .65rem 0 0;
+  font-family: var(--font-cormorant);
+  font-size: clamp(2.35rem, 5vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: -.035em;
+  line-height: .95;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent);
+}
+
+.prose {
+  margin-top: 1.8rem;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.prose p {
+  margin: 0;
+}
+
+.prose p + p,
+.prose ul + p {
+  margin-top: 1rem;
+}
+
+.prose ul {
+  display: grid;
+  gap: .55rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.prose li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.prose li::before {
+  position: absolute;
+  top: .75em;
+  left: 0;
+  width: .35rem;
+  height: .35rem;
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+}
+
+.policyColumns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 8vw, 8rem);
+  padding-block: clamp(3rem, 7vw, 6rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.compactSection h2 {
+  max-width: 12ch;
+  font-size: clamp(2.25rem, 4vw, 3.8rem);
+}
+
+.processSection {
+  padding-block: clamp(3.75rem, 8vw, 7rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.processHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.processHeading h2 {
+  margin-top: 0;
+}
+
+.processGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 3rem;
+  background: var(--border);
+}
+
+.processStep {
+  min-height: 13rem;
+  padding: 1.75rem;
+  background: var(--warm-white);
+}
+
+.processNumber {
+  color: var(--accent);
+}
+
+.processIcon {
+  display: block;
+  margin-top: 2rem;
+  color: var(--accent);
+}
+
+.processStep h3 {
+  margin: 1rem 0 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.processStep p {
+  max-width: 18rem;
+  margin: .65rem 0 0;
+  color: var(--ink-soft);
+  font-size: .9375rem;
+  line-height: 1.65;
+}
+
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding: 1.25rem 1.5rem;
+  border-left: 2px solid var(--accent);
+  background: var(--surface-soft);
+  color: var(--ink-soft);
+}
+
+.note svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.note p {
+  margin: 0;
+  font-size: .9375rem;
+  line-height: 1.7;
+}
+
+.whatsappCta {
+  margin-top: clamp(3.5rem, 8vw, 7rem);
+  padding: clamp(2.5rem, 6vw, 5rem) 1.5rem;
+  background: var(--ink);
+  color: var(--white);
+  text-align: center;
+}
+
+.whatsappCta > svg {
+  color: #c09b85;
+}
+
+.whatsappCta .eyebrow {
+  margin-top: 1.25rem;
+  color: #c09b85;
+}
+
+.whatsappCta h2 {
+  margin-top: .65rem;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+}
+
+.whatsappCta > p:not(.eyebrow) {
+  max-width: 27rem;
+  margin: 1rem auto 0;
+  color: rgb(255 255 255 / .68);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.whatsappCta a {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  gap: .75rem;
+  margin-top: 2rem;
+  border: 1px solid #c09b85;
+  padding: 0 1.25rem;
+  color: var(--white);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  transition: background .25s, border-color .25s;
+}
+
+.whatsappCta a:hover {
+  border-color: var(--white);
+  background: rgb(255 255 255 / .08);
+}
+
+@media (max-width: 767px) {
+  .highlightGrid,
+  .policyColumns,
+  .processGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .highlightCard {
+    min-height: 13.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .highlightCard:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .highlightCard:nth-child(3),
+  .highlightCard:nth-child(4) {
+    border-bottom: 0;
+  }
+
+  .highlightCard:first-child {
+    border-left: 0;
+  }
+
+  .policySection {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .policyCopy h2,
+  .compactSection h2,
+  .processHeading h2 {
+    font-size: clamp(2.25rem, 10vw, 3.25rem);
+  }
+
+  .processHeading {
+    display: block;
+  }
+
+  .processHeading h2 {
+    margin-top: .65rem;
+  }
+
+  .processGrid {
+    gap: 1px;
+  }
+
+  .processStep {
+    min-height: 15rem;
+    padding: 1.25rem;
+  }
+
+  .processStep h3 {
+    font-size: 1rem;
+  }
+
+  .processStep p,
+  .prose,
+  .note p,
+  .whatsappCta > p:not(.eyebrow) {
+    font-size: .9375rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .highlightGrid,
+  .policyColumns,
+  .processGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .highlightCard,
+  .highlightCard:nth-child(3) {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .highlightCard:last-child {
+    border-bottom: 0;
+  }
+
+  .policySection {
+    grid-template-columns: 1fr;
+    gap: .85rem;
+  }
+
+  .sectionMarker {
+    padding-top: 0;
+  }
+
+  .processStep {
+    min-height: auto;
+  }
+}
