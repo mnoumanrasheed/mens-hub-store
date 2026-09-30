@@ -119,9 +119,9 @@
 .atelier-store .collection-breadcrumb a:hover { color: var(--mh-gold); }
 .atelier-store .collection-category-nav { display: flex; gap: .75rem; overflow-x: auto; padding-bottom: 1.5rem; margin-bottom: 2.5rem; scrollbar-width: none; }
 .atelier-store .collection-category-nav::-webkit-scrollbar { display: none; }
-.atelier-store .collection-category-nav a { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; padding: .65rem 1.4rem; border: 1px solid var(--mh-line); border-radius: 50px; color: var(--mh-muted); font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); background: rgba(255, 255, 255, 0.4); box-shadow: 0 2px 5px rgba(0,0,0,0); }
+.atelier-store .collection-category-nav a { display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; padding: .65rem 1.4rem; border: 1px solid var(--mh-ink, #0c0c0d); border-radius: 50px; color: #ffffff; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); background: var(--mh-ink, #0c0c0d); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 .atelier-store .collection-category-nav a:hover { transform: translateY(-2px); border-color: var(--mh-gold); color: var(--mh-gold-ink); background: var(--mh-gold); box-shadow: 0 6px 15px rgba(210, 173, 69, 0.2); }
-.atelier-store .collection-category-nav a[aria-current] { background: var(--mh-ink, #0c0c0d); color: #ffffff; border-color: var(--mh-ink, #0c0c0d); box-shadow: 0 6px 15px rgba(0,0,0,0.15); pointer-events: none; }
+.atelier-store .collection-category-nav a[aria-current] { background: var(--mh-gold); color: var(--mh-gold-ink); border-color: var(--mh-gold); box-shadow: 0 6px 15px rgba(210, 173, 69, 0.3); pointer-events: none; transform: scale(1.05); }
 .atelier-store .collection-category-group { display: inline-flex; flex: 0 0 auto; gap: .35rem; }
 .atelier-store .collection-category-children { display: inline-flex; gap: .35rem; }
 .atelier-store .atelier-filter-form { background: transparent; border: 0; border-top: 1px solid var(--mh-gold); padding: 1.5rem 0; }
