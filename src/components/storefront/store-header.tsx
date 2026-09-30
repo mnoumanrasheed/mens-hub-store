@@ -66,6 +66,19 @@ export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [categoryOpen]);
 
+  // Handle Escape key globally for drawer
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        menuTrigger.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [menuOpen]);
+
   function closeSearch() {
     setSearchOpen(false);
     requestAnimationFrame(() => searchTrigger.current?.focus());
@@ -93,79 +106,260 @@ export function StoreHeader({ brandName, categories, whatsapp }: HeaderProps) {
   return (
     <>
       <header className={cn("mh-site-header", isScrolled && "is-scrolled")}>
+        {/* ── Desktop inner ── */}
         <div className="mh-site-header-inner">
+
+          {/* LEFT — Brand lockup */}
           <div className="mh-header-leading">
-            <button ref={menuTrigger} type="button" className="mh-header-icon mh-menu-trigger" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen((open) => !open)}>
-              {menuOpen ? <X size={19} /> : <Menu size={19} />}
+            <button
+              ref={menuTrigger}
+              type="button"
+              className="mh-header-icon mh-menu-trigger"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {menuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
             </button>
+
             <Link href="/" className="mh-brand-lockup" aria-label={`${brandName} home`}>
-              <span className="mh-brand-mark"><Image src="/logo.png" alt="" width={1448} height={1086} priority /></span>
-              <span className="mh-brand-name"><strong>{brandName}</strong><small>Premium menswear</small></span>
+              <span className="mh-brand-mark">
+                <Image src="/logo.png" alt="" width={1448} height={1086} priority />
+              </span>
+              <span className="mh-brand-name">
+                <strong>{brandName}</strong>
+                <small>Premium Menswear</small>
+              </span>
             </Link>
           </div>
 
+          {/* CENTER — Navigation */}
           <nav className="mh-desktop-nav" aria-label="Main navigation">
-            {navigation.slice(0, 2).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active")}>{item.label}</Link>)}
+            {navigation.slice(0, 2).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(isActive(item.href) && "is-active")}
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            {/* Categories dropdown */}
             <div ref={categoryMenu} className="mh-category-menu">
-              <button type="button" className={cn(categoryOpen && "is-active")} aria-expanded={categoryOpen} aria-controls="desktop-category-menu" onClick={() => { setCategoryOpen((open) => !open); setAccessoryOpen(false); }}>
-                Categories <ChevronDown size={14} className={cn(categoryOpen && "rotate-180")} />
+              <button
+                type="button"
+                className={cn(categoryOpen && "is-active")}
+                aria-expanded={categoryOpen}
+                aria-controls="desktop-category-menu"
+                aria-haspopup="true"
+                onClick={() => { setCategoryOpen((open) => !open); setAccessoryOpen(false); }}
+              >
+                Categories
+                <ChevronDown size={13} strokeWidth={1.8} className={cn("mh-chevron", categoryOpen && "is-open")} />
               </button>
-              <div id="desktop-category-menu" className={cn("mh-category-popover", categoryOpen && "is-open")} aria-hidden={!categoryOpen}>
-                <div className="mh-category-popover-heading"><span>Browse the collection</span><Link href="/shop" onClick={() => setCategoryOpen(false)}>View all <ArrowRight size={13} /></Link></div>
-                <div className="mh-category-popover-grid">
-                  {categoryNavigation.map((category) => category.children.length ? (
-                    <div key={category.id} className={cn("mh-category-popover-group", accessoryOpen && "is-open")}>
-                      <button type="button" aria-expanded={accessoryOpen} aria-controls="desktop-accessories-submenu" onClick={() => setAccessoryOpen((open) => !open)}>
-                        {category.name}<ChevronRight size={13} />
-                      </button>
-                      <div id="desktop-accessories-submenu" className="mh-category-submenu">
-                        <Link href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>All Accessories<ArrowRight size={13} /></Link>
-                        {category.children.map((child) => <Link key={child.id} href={`/shop/${child.slug}`} onClick={() => setCategoryOpen(false)}>{child.name}<ArrowRight size={13} /></Link>)}
-                      </div>
-                    </div>
-                  ) : <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>{category.name}<ArrowRight size={13} /></Link>)}
+
+              <div
+                id="desktop-category-menu"
+                className={cn("mh-category-popover", categoryOpen && "is-open")}
+                aria-hidden={!categoryOpen}
+                role="region"
+                aria-label="Product categories"
+              >
+                <div className="mh-category-popover-heading">
+                  <span>Browse the collection</span>
+                  <Link href="/shop" onClick={() => setCategoryOpen(false)}>
+                    View all <ArrowRight size={12} strokeWidth={1.8} />
+                  </Link>
                 </div>
-                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mh-category-concierge"><MessageCircle size={14} /> Need a size check? Chat with us</a>
+                <div className="mh-category-popover-grid">
+                  {categoryNavigation.map((category) =>
+                    category.children.length ? (
+                      <div key={category.id} className={cn("mh-category-popover-group", accessoryOpen && "is-open")}>
+                        <button
+                          type="button"
+                          aria-expanded={accessoryOpen}
+                          aria-controls="desktop-accessories-submenu"
+                          onClick={() => setAccessoryOpen((open) => !open)}
+                        >
+                          {category.name}
+                          <ChevronRight size={12} strokeWidth={1.8} />
+                        </button>
+                        <div id="desktop-accessories-submenu" className="mh-category-submenu">
+                          <Link href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>
+                            All Accessories <ArrowRight size={12} strokeWidth={1.8} />
+                          </Link>
+                          {category.children.map((child) => (
+                            <Link key={child.id} href={`/shop/${child.slug}`} onClick={() => setCategoryOpen(false)}>
+                              {child.name} <ArrowRight size={12} strokeWidth={1.8} />
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setCategoryOpen(false)}>
+                        {category.name} <ArrowRight size={12} strokeWidth={1.8} />
+                      </Link>
+                    )
+                  )}
+                </div>
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mh-category-concierge">
+                  <MessageCircle size={13} strokeWidth={1.8} /> Need a size check? Chat with us
+                </a>
               </div>
             </div>
-            {navigation.slice(2).map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active", item.href === "/sale" && "is-sale")}>{item.label}</Link>)}
+
+            {navigation.slice(2).map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  isActive(item.href) && "is-active",
+                  item.href === "/sale" && "is-sale"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
+          {/* RIGHT — Action icons */}
           <div className="mh-header-actions">
-            <button ref={searchTrigger} type="button" className="mh-header-icon" aria-label="Search store" aria-haspopup="dialog" onClick={() => { setCategoryOpen(false); setSearchOpen(true); }}><Search size={18} /></button>
-            <Link href="/wishlist" className="mh-header-icon mh-wishlist-link" aria-label={`Wishlist, ${wishlistCount} saved pieces`}><Heart size={18} />{wishlistCount ? <span>{wishlistCount}</span> : null}</Link>
-            <Link href="/cart" className="mh-header-icon" aria-label={`Shopping bag, ${cartCount} items`}><ShoppingBag size={18} />{cartCount ? <span>{cartCount}</span> : null}</Link>
+            <button
+              ref={searchTrigger}
+              type="button"
+              className="mh-header-icon"
+              aria-label="Search store"
+              aria-haspopup="dialog"
+              title="Search"
+              onClick={() => { setCategoryOpen(false); setSearchOpen(true); }}
+            >
+              <Search size={19} strokeWidth={1.6} />
+            </button>
+
+            <Link
+              href="/wishlist"
+              className="mh-header-icon mh-wishlist-link"
+              aria-label={`Wishlist, ${wishlistCount} saved pieces`}
+              title="Wishlist"
+            >
+              <Heart size={19} strokeWidth={1.6} />
+              {wishlistCount ? <span aria-hidden="true">{wishlistCount}</span> : null}
+            </Link>
+
+            <Link
+              href="/cart"
+              className="mh-header-icon"
+              aria-label={`Shopping bag, ${cartCount} items`}
+              title="Shopping bag"
+            >
+              <ShoppingBag size={19} strokeWidth={1.6} />
+              {cartCount ? <span aria-hidden="true">{cartCount}</span> : null}
+            </Link>
           </div>
         </div>
 
-        <div id="mobile-navigation" className={cn("mh-mobile-drawer", menuOpen && "is-open")} aria-hidden={!menuOpen} inert={!menuOpen}>
-          <nav aria-label="Mobile navigation">
-            {navigation.map((item) => <Link key={item.href} href={item.href} className={cn(isActive(item.href) && "is-active", item.href === "/sale" && "is-sale")} onClick={() => setMenuOpen(false)}>{item.label}<ArrowRight size={17} /></Link>)}
+        {/* ── Mobile Drawer ── */}
+        <div
+          id="mobile-navigation"
+          className={cn("mh-mobile-drawer", menuOpen && "is-open")}
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
+          role="dialog"
+          aria-label="Mobile navigation"
+          aria-modal="true"
+        >
+          {/* Primary nav links */}
+          <nav aria-label="Mobile primary navigation">
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  isActive(item.href) && "is-active",
+                  item.href === "/sale" && "is-sale"
+                )}
+                onClick={() => setMenuOpen(false)}
+              >
+                {item.label}
+                <ArrowRight size={16} strokeWidth={1.5} />
+              </Link>
+            ))}
           </nav>
+
+          {/* Category section */}
           <div className="mh-mobile-categories">
             <p>Categories</p>
-            {categoryNavigation.map((category) => category.children.length ? (
-              <div key={category.id} className="mh-mobile-category-group">
-                <button type="button" className="mh-mobile-category-toggle" aria-expanded={mobileAccessoriesOpen} aria-controls="mobile-accessories-submenu" onClick={() => setMobileAccessoriesOpen((open) => !open)}>
-                  {category.name}<span aria-hidden="true">{mobileAccessoriesOpen ? "−" : "+"}</span>
-                </button>
-                {mobileAccessoriesOpen ? <div id="mobile-accessories-submenu" className="mh-mobile-category-children">
-                  <Link href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>All Accessories</Link>
-                  {category.children.map((child) => <Link key={child.id} href={`/shop/${child.slug}`} onClick={() => setMenuOpen(false)}>{child.name}</Link>)}
-                </div> : null}
-              </div>
-            ) : <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>{category.name}</Link>)}
+            {categoryNavigation.map((category) =>
+              category.children.length ? (
+                <div key={category.id} className="mh-mobile-category-group">
+                  <button
+                    type="button"
+                    className="mh-mobile-category-toggle"
+                    aria-expanded={mobileAccessoriesOpen}
+                    aria-controls="mobile-accessories-submenu"
+                    onClick={() => setMobileAccessoriesOpen((open) => !open)}
+                  >
+                    {category.name}
+                    <span aria-hidden="true">{mobileAccessoriesOpen ? "−" : "+"}</span>
+                  </button>
+                  {mobileAccessoriesOpen ? (
+                    <div id="mobile-accessories-submenu" className="mh-mobile-category-children">
+                      <Link href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>All Accessories</Link>
+                      {category.children.map((child) => (
+                        <Link key={child.id} href={`/shop/${child.slug}`} onClick={() => setMenuOpen(false)}>
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              ) : (
+                <Link key={category.id} href={`/shop/${category.slug}`} onClick={() => setMenuOpen(false)}>
+                  {category.name}
+                </Link>
+              )
+            )}
           </div>
-          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="mh-mobile-whatsapp"><MessageCircle size={16} /> Chat on WhatsApp</a>
+
+          {/* WhatsApp CTA */}
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mh-mobile-whatsapp"
+          >
+            <MessageCircle size={16} strokeWidth={1.6} /> Chat on WhatsApp
+          </a>
         </div>
       </header>
 
-      {searchOpen ? <div ref={dialog} className="mh-search-dialog" role="dialog" aria-modal="true" aria-labelledby="search-dialog-title" onKeyDown={handleDialogKeys} onMouseDown={(event) => { if (event.target === event.currentTarget) closeSearch(); }}>
-        <div className="mh-search-panel">
-          <div className="mh-search-heading"><div><p className="mh-eyebrow">Search the collection</p><h2 id="search-dialog-title">Find your next piece.</h2></div><button type="button" className="mh-header-icon" aria-label="Close search" onClick={closeSearch}><X size={19} /></button></div>
-          <SearchCombobox onNavigate={closeSearch} />
+      {/* ── Search dialog ── */}
+      {searchOpen ? (
+        <div
+          ref={dialog}
+          className="mh-search-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="search-dialog-title"
+          onKeyDown={handleDialogKeys}
+          onMouseDown={(event) => { if (event.target === event.currentTarget) closeSearch(); }}
+        >
+          <div className="mh-search-panel">
+            <div className="mh-search-heading">
+              <div>
+                <p className="mh-eyebrow">Search the collection</p>
+                <h2 id="search-dialog-title">Find your next piece.</h2>
+              </div>
+              <button type="button" className="mh-header-icon" aria-label="Close search" onClick={closeSearch}>
+                <X size={19} strokeWidth={1.5} />
+              </button>
+            </div>
+            <SearchCombobox onNavigate={closeSearch} />
+          </div>
         </div>
-      </div> : null}
+      ) : null}
     </>
   );
 }
