@@ -2,7 +2,7 @@ export const CART_STORAGE_KEY = "mens-hub:cart:v1";
 export const WISHLIST_STORAGE_KEY = "mens-hub:wishlist:v2";
 
 export type StorageLike = Pick<Storage, "getItem" | "setItem">;
-export type CommerceProduct = { id: string; name: string; imageUrl: string; price: string; availableStock: number; sizes: string[]; colors: string[]; productUrl: string };
+export type CommerceProduct = { id: string; name: string; sku?: string; imageUrl: string; price: string; availableStock: number; sizes: string[]; colors: string[]; productUrl: string };
 export type CartLine = CommerceProduct & { lineId: string; selectedSize: string; selectedColor: string; quantity: number };
 
 function isRecord(value: unknown): value is Record<string, unknown> { return Boolean(value) && typeof value === "object" && !Array.isArray(value); }
@@ -14,10 +14,12 @@ function productFrom(value: unknown): CommerceProduct | null {
   const name = text(value.name, 250);
   const imageUrl = text(value.imageUrl, 2_000);
   const price = text(value.price ?? value.effectivePrice, 30);
+  const sku = text(value.sku, 100);
   if (!id || !name || !imageUrl || !/^\d{1,12}(?:\.\d{1,2})?$/.test(price)) return null;
   const availableStock = Math.max(0, Math.min(100_000, Math.floor(Number(value.availableStock ?? value.stock ?? 0)) || 0));
   const strings = (candidate: unknown) => Array.isArray(candidate) ? candidate.map((item) => typeof item === "string" ? item : isRecord(item) ? text(item.label ?? item.name, 100) : "").filter(Boolean).slice(0, 100) : [];
-  return { id, name, imageUrl, price, availableStock, sizes: strings(value.sizes), colors: strings(value.colors), productUrl: text(value.productUrl, 2_000) || `/product/${id}` };
+  const product = { id, name, imageUrl, price, availableStock, sizes: strings(value.sizes), colors: strings(value.colors), productUrl: text(value.productUrl, 2_000) || `/product/${id}` };
+  return sku ? { ...product, sku } : product;
 }
 
 export function cartLineId(productId: string, size = "", color = ""): string { return JSON.stringify([productId, size, color]); }

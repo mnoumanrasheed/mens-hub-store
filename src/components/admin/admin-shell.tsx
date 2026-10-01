@@ -41,6 +41,9 @@ export function AdminShell({ admin, children }: AdminShellProps) {
           <Link className="admin-nav-link" href="/admin/products">Products</Link>
           <Link className="admin-nav-link" href="/admin/categories">Categories</Link>
           <Link className="admin-nav-link" href="/admin/settings">Settings</Link>
+          <Link className="admin-nav-link ml-auto" href="/" target="_blank" rel="noopener noreferrer">
+            View live website ↗
+          </Link>
         </Container>
       </nav>
       <main>{children}</main>

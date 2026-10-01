@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, Phone, MessageCircle, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MessageCircle, ArrowUpRight, MapPin } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 
 import type { StorefrontCategory } from "@/data/storefront";
@@ -12,6 +12,8 @@ type Settings = {
   phone: string;
   whatsapp: string;
   email: string;
+  address?: string | null;
+  googleMapsUrl?: string | null;
   instagramUrl: string | null;
   facebookUrl: string | null;
   tiktokUrl: string | null;
@@ -45,8 +47,41 @@ export function StoreFooter({
     { label: "TikTok", href: settings.tiktokUrl, icon: FaTiktok },
   ].filter((item): item is typeof item & { href: string } => Boolean(item.href));
 
+  const marqueeItems = [
+    { text: "Style for Men", highlight: true },
+    { text: "Premium Menswear" },
+    { text: "Confidence in Every Thread", highlight: true },
+    { text: "Crafted for the Modern Man" },
+    { text: "Elegance Redefined", highlight: true },
+    { text: "Bhalwal · Punjab · Pakistan" },
+    { text: "Wear Your Ambition", highlight: true },
+    { text: "New Arrivals · Every Season" },
+    { text: "Fashion Meets Tradition", highlight: true },
+    { text: "Men's Hub — Est. Excellence" },
+  ];
+
   return (
-    <footer className="mh-site-footer" aria-label="Store footer">
+    <>
+      {/* ── Pre-footer Marquee Strip ── */}
+      <div className="mh-marquee-strip" aria-hidden="true">
+        <div className="mh-marquee-track">
+          {[0, 1].map((copyIdx) => (
+            <div key={copyIdx} className="mh-marquee-set">
+              {marqueeItems.map((item, i) => (
+                <span
+                  key={i}
+                  className={`mh-marquee-item${item.highlight ? " mh-marquee-item--highlight" : ""}`}
+                >
+                  {item.text}
+                  <span className="mh-marquee-dot" />
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <footer className="mh-site-footer" aria-label="Store footer">
       <div className="mh-site-footer-inner">
 
         {/* ── Main grid ── */}
@@ -67,7 +102,15 @@ export function StoreFooter({
               Menswear, footwear, and finishing details curated for confident everyday style.
             </p>
             {settings.proprietors ? (
-              <small className="mh-footer-proprietors">{settings.proprietors}</small>
+              <div className="mh-footer-leadership-card">
+                <span className="mh-leadership-title">Proprietors</span>
+                <strong className="mh-leadership-names">                  {settings.proprietors.split("/").map((name) => name.trim()).filter(Boolean).map((name, index) => (
+                    <span key={name} className="mh-proprietor-name">
+                      <small>{String(index + 1).padStart(2, "0")}</small>
+                      <span>{name}</span>
+                    </span>
+                  ))}</strong>
+              </div>
             ) : null}
           </div>
 
@@ -97,10 +140,21 @@ export function StoreFooter({
             </nav>
           </div>
 
-          {/* Column 4 — Contact */}
+          {/* Column 4 — Contact & Address */}
           <div className="mh-footer-column mh-footer-contact-col">
-            <h3>Contact</h3>
+            <h3>Contact &amp; Location</h3>
             <div className="mh-footer-contact-list">
+              <a
+                href={settings.googleMapsUrl || "https://maps.app.goo.gl/4TY7B5eArRLybFUZA"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mh-footer-contact-item mh-footer-address"
+                aria-label="View store location on Google Maps"
+              >
+                <MapPin size={14} strokeWidth={1.8} className="flex-shrink-0" />
+                <span>{settings.address || "Liaqat Shaheed Rd, Chak No. 8 NB, Bhalwal, Punjab, Pakistan"}</span>
+              </a>
+
               {settings.phone ? (
                 <a
                   href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}
@@ -142,6 +196,17 @@ export function StoreFooter({
         {/* ── Bottom bar ── */}
         <div className="mh-footer-bottom">
           <p>© {new Date().getFullYear()} {brandName}. All rights reserved.</p>
+          <a
+            href="https://mnoumanrasheed.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mh-footer-dev-btn"
+            aria-label="Developer Portfolio"
+          >
+            <span className="mh-footer-dev-kicker">Crafted by</span>
+            <strong>Developer Portfolio</strong>
+            <ArrowUpRight size={13} strokeWidth={1.8} />
+          </a>
           {socials.length ? (
             <div className="mh-footer-socials">
               {socials.map(({ label, href, icon: Icon }) => (
@@ -161,5 +226,6 @@ export function StoreFooter({
         </div>
       </div>
     </footer>
+    </>
   );
 }

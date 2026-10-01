@@ -12,6 +12,7 @@ function uniqueBy<T>(items: T[], key: (item: T) => string): boolean {
 
 export const productFormSchema = z.object({
   name: z.string().trim().min(2).max(150),
+  sku: z.string().trim().max(100).nullable(),
   categoryId: id,
   subcategoryId: id.nullable(),
   originalPrice: money,

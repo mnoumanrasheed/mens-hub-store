@@ -14,6 +14,7 @@ type Props = {
   product: {
     id: string;
     name: string;
+    sku: string | null;
     imageUrl: string;
     effectivePrice: string;
     stock: number;
@@ -73,6 +74,7 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
   const commerceProduct: CommerceProduct = {
     id: product.id,
     name: product.name,
+    sku: product.sku ?? undefined,
     imageUrl: product.imageUrl,
     price: product.effectivePrice,
     availableStock: product.stock,

@@ -21,6 +21,7 @@ export async function getProductForEdit(id: string): Promise<ProductEditorDto | 
     name: product.name,
     categoryId: product.categoryId,
     subcategoryId: product.subcategoryId,
+    sku: product.sku,
     originalPrice: product.originalPrice.toFixed(2),
     salePrice: product.salePrice?.toFixed(2) ?? null,
     stock: product.stock,
@@ -44,7 +45,7 @@ export async function getProductsForAdmin(requestedPage = 1) {
   const total = await prisma.product.count();
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
   const page = Math.min(requestedPage, pageCount);
-  const products = await prisma.product.findMany({ orderBy: { createdAt: "desc" }, skip: (page - 1) * pageSize, take: pageSize, select: { id: true, name: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, isPublished: true, isFeatured: true, isNewArrival: true, category: { select: { name: true } }, subcategory: { select: { name: true } } } });
+  const products = await prisma.product.findMany({ orderBy: { createdAt: "desc" }, skip: (page - 1) * pageSize, take: pageSize, select: { id: true, name: true, sku: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, isPublished: true, isFeatured: true, isNewArrival: true, category: { select: { name: true } }, subcategory: { select: { name: true } } } });
   return { products: products.map((product) => ({ ...product, isActiveSale: getSalePresentation({ originalPrice: product.originalPrice.toFixed(2), salePrice: product.salePrice?.toFixed(2) ?? null }).active, originalPrice: product.originalPrice.toFixed(2), salePrice: product.salePrice?.toFixed(2) ?? null })), total, page, pageCount, threshold };
 }
 

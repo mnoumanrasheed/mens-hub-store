@@ -9,20 +9,20 @@ import type { Prisma } from "@/generated/prisma/client";
 import type { StorefrontFilters } from "@/validation/storefront";
 
 export type StorefrontCategory = { id: string; name: string; slug: string; description: string | null; imageUrl: string | null; bannerImageUrl: string | null };
-export type StorefrontProduct = { id: string; name: string; imageUrl: string; originalPrice: string; effectivePrice: string; discountPercent: number | null; isSale: boolean; isNewArrival: boolean; stock: number; lowStockThreshold: number; sizes: { label: string }[]; colors: { name: string; hexCode: string | null }[] };
+export type StorefrontProduct = { id: string; name: string; sku: string | null; imageUrl: string; originalPrice: string; effectivePrice: string; discountPercent: number | null; isSale: boolean; isNewArrival: boolean; stock: number; lowStockThreshold: number; sizes: { label: string }[]; colors: { name: string; hexCode: string | null }[] };
 export type PublicSettings = Omit<typeof initialSettings, "ogImagePublicId"> & { createdAt?: Date; updatedAt?: Date };
 
 const productSelect = {
-  id: true, name: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, isNewArrival: true,
+  id: true, name: true, sku: true, imageUrl: true, originalPrice: true, salePrice: true, stock: true, isNewArrival: true,
   sizes: { orderBy: { sortOrder: "asc" as const }, select: { label: true } },
   colors: { orderBy: { sortOrder: "asc" as const }, select: { name: true, hexCode: true } },
 };
 
 function readFields(content: unknown): CmsBlockValue { if (!content || typeof content !== "object" || Array.isArray(content)) return { fields: {} }; const raw = content as Record<string, unknown>; const fields = raw.fields && typeof raw.fields === "object" && !Array.isArray(raw.fields) ? Object.fromEntries(Object.entries(raw.fields).filter((entry): entry is [string, string] => typeof entry[1] === "string")) : {}; return { fields, imageUrl: typeof raw.imageUrl === "string" ? raw.imageUrl : null }; }
 
-function productDto(product: { id: string; name: string; imageUrl: string; originalPrice: { toFixed(value: number): string }; salePrice: { toFixed(value: number): string } | null; stock: number; isNewArrival: boolean; sizes: { label: string }[]; colors: { name: string; hexCode: string | null }[] }, threshold: number): StorefrontProduct {
+function productDto(product: { id: string; name: string; sku: string | null; imageUrl: string; originalPrice: { toFixed(value: number): string }; salePrice: { toFixed(value: number): string } | null; stock: number; isNewArrival: boolean; sizes: { label: string }[]; colors: { name: string; hexCode: string | null }[] }, threshold: number): StorefrontProduct {
   const originalPrice = product.originalPrice.toFixed(2); const salePrice = product.salePrice?.toFixed(2) ?? null; const sale = getSalePresentation({ originalPrice, salePrice });
-  return { id: product.id, name: product.name, imageUrl: product.imageUrl, originalPrice, effectivePrice: sale.effectivePrice, discountPercent: sale.discountPercent, isSale: sale.active, isNewArrival: product.isNewArrival, stock: product.stock, lowStockThreshold: threshold, sizes: product.sizes, colors: product.colors };
+  return { id: product.id, name: product.name, sku: product.sku, imageUrl: product.imageUrl, originalPrice, effectivePrice: sale.effectivePrice, discountPercent: sale.discountPercent, isSale: sale.active, isNewArrival: product.isNewArrival, stock: product.stock, lowStockThreshold: threshold, sizes: product.sizes, colors: product.colors };
 }
 
 export async function getStorefrontShellData() {

@@ -45,6 +45,9 @@ export function ProductGallery({ imageUrl, name }: { imageUrl: string; name: str
             sizes="(max-width: 1023px) 100vw, (max-width: 1360px) 56vw, 720px"
             className="mh-pdp-gallery-image"
           />
+          {/* Corner accent lines — editorial frame effect */}
+          <span className="mh-pdp-gallery-corner mh-pdp-gallery-corner--tl" aria-hidden="true" />
+          <span className="mh-pdp-gallery-corner mh-pdp-gallery-corner--br" aria-hidden="true" />
           <button
             type="button"
             className="mh-pdp-zoom-control"
@@ -52,7 +55,7 @@ export function ProductGallery({ imageUrl, name }: { imageUrl: string; name: str
             aria-haspopup="dialog"
             onClick={openZoom}
           >
-            <Maximize2 size={17} />
+            <Maximize2 size={16} />
           </button>
         </div>
       </motion.figure>

@@ -70,6 +70,7 @@ export default async function ProductsPage({
                     {product.category.name}
                     {product.subcategory ? ` / ${product.subcategory.name}` : ""}
                   </p>
+                  {product.sku ? <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-admin-muted">Tag: {product.sku}</p> : null}
                   <p className="mt-2 text-sm font-semibold text-admin-ink">
                     PKR {product.isActiveSale ? product.salePrice : product.originalPrice} · {stock}
                   </p>

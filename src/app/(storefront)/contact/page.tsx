@@ -1,4 +1,5 @@
-import { ContactContent } from "@/components/storefront/managed-page";
+import { ContactExperiencePremium } from "@/contact-experience-premium";
+import { getPublicSiteSettings } from "@/data/cms";
 import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Contact", description: "Contact Men’s Hub for product and ordering assistance.", alternates: { canonical: "/contact" } };
-export default function ContactPage() { return <ContactContent />; }
+export default async function ContactPage() { return <ContactExperiencePremium settings={await getPublicSiteSettings()} />; }

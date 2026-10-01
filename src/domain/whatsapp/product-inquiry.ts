@@ -3,6 +3,7 @@ import type { CartLine } from "@/domain/commerce/storage";
 export const WHATSAPP_NUMBER = "923081000025";
 export type ProductInquiry = {
   name: string;
+  sku?: string;
   size?: string;
   color?: string;
   quantity: number;
@@ -58,6 +59,7 @@ function formatOrderMessage(lines: OrderLine[]) {
   const brand = "*MEN\u2019S HUB*";
   const orderDetails = lines.flatMap((line, index) => {
     const options = [
+      line.sku ? `Tag: ${line.sku}` : null,
       line.size?.trim() ? `Size: ${line.size.trim().toUpperCase()}` : null,
       line.color?.trim() ? `Color: ${formatColour(line.color)}` : null,
     ].filter(Boolean).join(" | ");
@@ -95,6 +97,7 @@ export function createProductInquiryMessage(input: ProductInquiry) {
 export function createCartInquiryMessage(input: { lines: CartLine[] }) {
   return formatOrderMessage(input.lines.map((line) => ({
     name: line.name,
+    sku: line.sku,
     size: line.selectedSize,
     color: line.selectedColor,
     quantity: line.quantity,
