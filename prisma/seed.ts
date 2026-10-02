@@ -26,15 +26,17 @@ type SeedCategory = {
 const categories: readonly SeedCategory[] = [
   { name: "Shirts", slug: "shirts", directory: "01-Shirts", subcategories: ["Dress Shirts", "Polo Shirts", "Casual Shirts", "T-Shirts", "Down Shoulder Shirts"] },
   { name: "Pants", slug: "pants", directory: "02-Pants", subcategories: ["Jeans", "Cotton Pants", "Dress Pants"] },
-  { name: "Shalwar Qameez", slug: "shalwar-qameez", directory: "03-Shalwar-Qameez", subcategories: ["Casual", "Cotton", "Wash & Wear"] },
   { name: "Trousers", slug: "trousers", directory: "04-Trousers", subcategories: [] },
+  { name: "Tracksuits", slug: "tracksuits", directory: "11-Tracksuits", subcategories: [] },
+  { name: "Jackets", slug: "jackets", directory: "12-Jackets", subcategories: [] },
+  { name: "Sweaters", slug: "sweaters", directory: "13-Sweaters", subcategories: [] },
+  { name: "Shalwar Qameez", slug: "shalwar-qameez", directory: "03-Shalwar-Qameez", subcategories: ["Casual", "Cotton", "Wash & Wear"] },
+  { name: "Perfumes", slug: "perfumes", directory: "07-Perfumes", subcategories: [] },
   { name: "Shoes", slug: "shoes", directory: "05-Shoes", subcategories: ["Sneakers", "Formal Shoes", "Loafers", "Sandals"] },
   { name: "Watches", slug: "watches", directory: "06-Watches", subcategories: [] },
-  { name: "Perfumes", slug: "perfumes", directory: "07-Perfumes", subcategories: [] },
   { name: "Glasses", slug: "glasses", directory: "08-Glasses", subcategories: [] },
   { name: "Belts", slug: "belts", directory: "09-Belts", subcategories: [] },
-  { name: "Accessories", slug: "accessories", directory: "10-Accessories", subcategories: ["Rings", "Bracelets", "Chains", "Wallets"] },
-  { name: "Tracksuits", slug: "tracksuits", directory: "11-Tracksuits", subcategories: [] },
+  { name: "Accessories", slug: "accessories", directory: "10-Accessories", subcategories: ["Rings", "Bracelets", "Chains", "Wallets", "Studs", "Watches", "Glasses", "Belts"] },
 ];
 
 const imageExtension = /\.(?:jpe?g|png|webp)$/i;

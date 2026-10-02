@@ -1,12 +1,17 @@
 export const storefrontCategoryOrder = [
   "shirts",
   "pants",
-  "shalwar-qameez",
   "trousers",
   "tracksuits",
+  "jackets",
+  "sweaters",
+  "shalwar-qameez",
   "perfumes",
-  "accessories",
   "shoes",
+  "watches",
+  "glasses",
+  "belts",
+  "accessories",
 ] as const;
 
 export const accessoryCategorySlugs = ["watches", "glasses", "belts"] as const;

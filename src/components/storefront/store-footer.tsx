@@ -40,11 +40,11 @@ export function StoreFooter({
 }) {
   const brandName = settings.brandName || "Men's Hub";
   const cleanWhatsapp = settings.whatsapp?.replace(/\D/g, "") || "";
+  const tiktokHref = settings.tiktokUrl || "https://www.tiktok.com/@mens.hub919";
 
   const socials = [
     { label: "Instagram", href: settings.instagramUrl, icon: FaInstagram },
     { label: "Facebook", href: settings.facebookUrl, icon: FaFacebookF },
-    { label: "TikTok", href: settings.tiktokUrl, icon: FaTiktok },
   ].filter((item): item is typeof item & { href: string } => Boolean(item.href));
 
   const marqueeItems = [
@@ -101,6 +101,18 @@ export function StoreFooter({
             <p>
               Menswear, footwear, and finishing details curated for confident everyday style.
             </p>
+            <a
+              href={tiktokHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mh-footer-tiktok"
+              aria-label="Follow Men's Hub on TikTok"
+            >
+              <FaTiktok size={14} />
+              <span>TikTok</span>
+              <strong>@mens.hub919</strong>
+              <ArrowUpRight size={12} strokeWidth={1.8} />
+            </a>
             {settings.proprietors ? (
               <div className="mh-footer-leadership-card">
                 <span className="mh-leadership-title">Proprietors</span>
@@ -196,33 +208,34 @@ export function StoreFooter({
         {/* ── Bottom bar ── */}
         <div className="mh-footer-bottom">
           <p>© {new Date().getFullYear()} {brandName}. All rights reserved.</p>
-          <a
-            href="https://mnoumanrasheed.netlify.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mh-footer-dev-btn"
-            aria-label="Developer Portfolio"
-          >
-            <span className="mh-footer-dev-kicker">Crafted by</span>
-            <strong>Developer Portfolio</strong>
-            <ArrowUpRight size={13} strokeWidth={1.8} />
-          </a>
-          {socials.length ? (
-            <div className="mh-footer-socials">
-              {socials.map(({ label, href, icon: Icon }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  title={label}
-                >
-                  <Icon size={13} />
-                </a>
-              ))}
-            </div>
-          ) : null}
+          <div className="mh-footer-bottom-actions">
+            {socials.length ? (
+              <div className="mh-footer-socials">
+                {socials.map(({ label, href, icon: Icon }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    title={label}
+                  >
+                    <Icon size={13} />
+                  </a>
+                ))}
+              </div>
+            ) : null}
+            <a
+              href="https://mnoumanrasheed.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mh-footer-dev-btn"
+              aria-label="Developer Portfolio"
+            >
+              <strong>Developer Portfolio</strong>
+              <ArrowUpRight size={13} strokeWidth={1.8} />
+            </a>
+          </div>
         </div>
       </div>
     </footer>

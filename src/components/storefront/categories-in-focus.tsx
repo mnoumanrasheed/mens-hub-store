@@ -28,22 +28,26 @@ type CategoryCollectionSectionProps = {
   index: number;
 };
 
+const categoryImageVersion = "20261002";
+
 const categoryImageFallbacks: Record<string, string> = {
-  shirts: "/seed-media/01-Shirts/shirt-02.jpg",
-  pants: "/seed-media/02-Pants/pants-02.jpg",
-  "shalwar-qameez": "/seed-media/03-Shalwar-Qameez/shalwar-qameez-02.jpg",
-  trousers: "/seed-media/04-Trousers/trousers-02.jpg",
-  shoes: "/seed-media/05-Shoes/shoes-02.jpg",
-  watches: "/seed-media/06-Watches/watch-02.jpg",
-  perfumes: "/seed-media/07-Perfumes/perfume-02.jpg",
-  glasses: "/seed-media/08-Glasses/glasses-02.jpg",
-  belts: "/seed-media/09-Belts/belt-02.jpg",
-  accessories: "/seed-media/10-Accessories/accessories-02.jpg",
-  tracksuits: "/seed-media/11-Tracksuits/tracksuit-02.jpg",
+  shirts: `/category-heroes/shirts.jpg?v=${categoryImageVersion}`,
+  pants: `/category-heroes/pants-premium.png?v=${categoryImageVersion}`,
+  trousers: `/category-heroes/trousers-premium.jpg?v=${categoryImageVersion}`,
+  tracksuits: `/category-heroes/tracksuits-premium.jpg?v=${categoryImageVersion}`,
+  jackets: `/category-heroes/jackets-internet.jpg?v=${categoryImageVersion}`,
+  sweaters: `/category-heroes/sweaters-internet.jpg?v=${categoryImageVersion}`,
+  "shalwar-qameez": `/category-heroes/shalwar-qameez-premium.png?v=${categoryImageVersion}`,
+  perfumes: `/category-heroes/perfumes-premium.png?v=${categoryImageVersion}`,
+  shoes: `/category-heroes/shoes.jpg?v=${categoryImageVersion}`,
+  watches: `/category-heroes/watches.jpg?v=${categoryImageVersion}`,
+  glasses: `/category-heroes/glasses.jpg?v=${categoryImageVersion}`,
+  belts: `/category-heroes/belts.jpg?v=${categoryImageVersion}`,
+  accessories: `/category-heroes/accessories.png?v=${categoryImageVersion}`,
 };
 
 function resolveCategoryImage(category: StorefrontCategoryShelf) {
-  return category.bannerImageUrl || category.imageUrl || categoryImageFallbacks[category.slug] || "/images/atelier-campaign.webp";
+  return categoryImageFallbacks[category.slug] || category.bannerImageUrl || category.imageUrl || "/images/atelier-campaign.webp";
 }
 
 export function CategoriesInFocus({ shelves, heading = "Shop by category", description }: CategoriesInFocusProps) {
@@ -113,6 +117,7 @@ function CategoryCollectionSection({ category, products, featureImage, imagePosi
             src={featureImage}
             alt={`${category.name} collection`}
             fill
+            unoptimized
             sizes="(max-width: 820px) 100vw, 34vw"
             className="mh-category-feature-image-source"
           />
