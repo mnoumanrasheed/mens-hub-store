@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Truck,
@@ -10,7 +9,6 @@ import {
   Clock,
   CheckCircle2,
   XCircle,
-  HelpCircle,
   ChevronDown,
   ArrowRight,
   MessageCircle,
@@ -228,7 +226,7 @@ export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
                   className={styles.tabPanel}
                 >
                   <div className={styles.panelGrid}>
-                    <div className={styles.panelMain}>
+                    <div>
                       <span className={styles.panelTag}>LOGISTICS & DISPATCH</span>
                       <h3 className={styles.panelTitle}>Nationwide Express Shipping</h3>
                       <p className={styles.panelDesc}>
@@ -293,7 +291,7 @@ export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
                   className={styles.tabPanel}
                 >
                   <div className={styles.panelGrid}>
-                    <div className={styles.panelMain}>
+                    <div>
                       <span className={styles.panelTag}>EXCHANGE GUARANTEE</span>
                       <h3 className={styles.panelTitle}>7-Day Bespoke Return Window</h3>
                       <p className={styles.panelDesc}>
@@ -361,7 +359,7 @@ export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
                   className={styles.tabPanel}
                 >
                   <div className={styles.panelGrid}>
-                    <div className={styles.panelMain}>
+                    <div>
                       <span className={styles.panelTag}>RESOLUTION STANDARD</span>
                       <h3 className={styles.panelTitle}>Store Credit &amp; Exchanges</h3>
                       <p className={styles.panelDesc}>
@@ -417,7 +415,7 @@ export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
                   className={styles.tabPanel}
                 >
                   <div className={styles.panelGrid}>
-                    <div className={styles.panelMain}>
+                    <div>
                       <span className={styles.panelTag}>PRIORITY CONCIERGE</span>
                       <h3 className={styles.panelTitle}>Damaged or Incorrect Dispatches</h3>
                       <p className={styles.panelDesc}>
@@ -724,7 +722,7 @@ export function ShippingReturnsContent({ whatsapp }: { whatsapp: string }) {
       <section className={styles.conciergeSection}>
         <div className={styles.container}>
           <div className={styles.conciergeCard}>
-            <div className={styles.conciergeCopy}>
+            <div>
               <span className={styles.conciergeEyebrow}>VIP SUPPORT</span>
               <h2 className={styles.conciergeTitle}>Need Personal Assistance?</h2>
               <p className={styles.conciergeDesc}>

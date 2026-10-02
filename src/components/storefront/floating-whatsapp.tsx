@@ -1,5 +1,3 @@
-"use client";
-
 import { MessageCircle } from "lucide-react";
 import { createWhatsAppUrl, WHATSAPP_NUMBER } from "@/domain/whatsapp/product-inquiry";
 

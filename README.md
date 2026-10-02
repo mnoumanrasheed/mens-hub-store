@@ -2,7 +2,7 @@
 
 Production-oriented Next.js catalogue and private administration application for Men’s Hub — Style Made for Men. Orders are prepared as WhatsApp inquiries; the website has no payment gateway and no customer accounts.
 
-Authoritative contacts: Taha Soni / Shahzaib Soni, `03081000025`, WhatsApp `923081000025`, and `mens.hub919@gmail.com`. No address, map, store timing, or social account is published until an administrator supplies verified information.
+Authoritative contacts and storefront details are managed through the seeded site settings and the private admin area. Review those values for each environment before deployment.
 
 ## Local setup
 
@@ -61,6 +61,7 @@ npm run typecheck
 npm run lint
 npm run test
 npm run build
+npm run test:e2e
 ```
 
-Run the production build locally with `npm run build`, then preview it with `npm run start`. Full Vercel release instructions are in `docs/DEPLOYMENT.md`; administrator operating guidance is in `docs/ADMIN_GUIDE.md`.
+Run the production build locally with `npm run build`, then preview it with `npm run start`. The committed GitHub Actions workflow runs the release checks automatically for pushes and pull requests.

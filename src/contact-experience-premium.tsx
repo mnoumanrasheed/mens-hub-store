@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import {
   MessageCircle,
@@ -10,14 +9,12 @@ import {
   Mail,
   MapPin,
   Clock,
-  Send,
   CheckCircle2,
   ChevronDown,
   ArrowUpRight,
   ArrowRight,
   ShieldCheck,
   Sparkles,
-  HelpCircle,
   User,
   AtSign,
   FileText,
@@ -520,7 +517,7 @@ export function ContactExperiencePremium({ settings }: { settings: Settings }) {
       <section className={styles.bottomCtaSection}>
         <div className={styles.container}>
           <div className={styles.bottomCtaCard}>
-            <div className={styles.bottomCtaContent}>
+            <div>
               <span className={styles.eyebrow}>INSTANT ACCESS</span>
               <h2 className={styles.bottomCtaTitle}>Still Need Assistance?</h2>
               <p className={styles.bottomCtaSub}>

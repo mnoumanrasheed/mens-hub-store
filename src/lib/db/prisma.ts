@@ -37,6 +37,9 @@ function withVerifiedSsl(connectionString: string) {
   try {
     const url = new URL(connectionString);
     if (url.protocol === "postgresql:" || url.protocol === "postgres:") {
+      if (["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)) {
+        return connectionString;
+      }
       url.searchParams.set("sslmode", "verify-full");
       return url.toString();
     }

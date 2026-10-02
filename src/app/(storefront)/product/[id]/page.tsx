@@ -8,6 +8,7 @@ import { ProductDetailReveal, ProductGallery } from "@/components/storefront/pro
 import { ProductPurchasePanel } from "@/components/storefront/product-purchase-panel";
 import { RecentlyViewed } from "@/components/storefront/recently-viewed";
 import { getStorefrontProduct } from "@/data/storefront";
+import { formatDeliveryMessage } from "@/domain/commerce/delivery";
 import { createProductMetadata } from "@/domain/seo/product";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -158,12 +159,4 @@ export default async function ProductPage({ params }: Props) {
       </Container>
     </main>
   );
-}
-
-function formatDeliveryMessage(value: string) {
-  if (!value || /calculated\s*\/?\s*confirmed\s*on\s*whatsapp/i.test(value)) {
-    return "Delivery charges are not included and will be confirmed separately on WhatsApp.";
-  }
-
-  return value;
 }

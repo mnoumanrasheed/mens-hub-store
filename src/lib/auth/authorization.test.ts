@@ -6,17 +6,23 @@ import { sessionMatchesAdmin } from "./authorization";
 describe("admin authorization", () => {
   const session = { sub: "admin_1", tokenVersion: 2 };
 
-  it("accepts only the matching current token version", () => {
+  it("allows an authenticated active administrator", () => {
     expect(
       sessionMatchesAdmin(session, { id: "admin_1", tokenVersion: 2 }),
     ).toBe(true);
+  });
+
+  it("rejects a revoked token version", () => {
     expect(
       sessionMatchesAdmin(session, { id: "admin_1", tokenVersion: 3 }),
     ).toBe(false);
   });
 
-  it("rejects a missing or different administrator", () => {
+  it("rejects an inactive or deleted administrator", () => {
     expect(sessionMatchesAdmin(session, null)).toBe(false);
+  });
+
+  it("rejects a session for a different administrator", () => {
     expect(
       sessionMatchesAdmin(session, { id: "admin_2", tokenVersion: 2 }),
     ).toBe(false);

@@ -1,5 +1,3 @@
-"use client";
-
 import type { ReactNode } from "react";
 
 import { InternalCinematicHero, type InternalHeroBreadcrumb, type InternalHeroVisual } from "@/components/storefront/internal-cinematic-hero";

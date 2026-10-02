@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+/playwright-report/
+/test-results/
+
+# generated local review output
+/artifacts/
 
 # next.js
 /.next/

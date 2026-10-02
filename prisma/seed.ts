@@ -6,6 +6,7 @@ import { hash } from "bcryptjs";
 import { z } from "zod";
 
 import { PrismaClient } from "../src/generated/prisma/client";
+import { STANDARD_DELIVERY_MESSAGE } from "../src/domain/commerce/delivery";
 
 const seedEnvSchema = z.object({
   DATABASE_URL: z.string().trim().refine(
@@ -104,7 +105,7 @@ async function main() {
         phone: "03081000025",
         whatsapp: "923081000025",
         email: "mens.hub919@gmail.com",
-        deliveryChargesMessage: "Calculated / Confirmed on WhatsApp",
+        deliveryChargesMessage: STANDARD_DELIVERY_MESSAGE,
         currency: "PKR",
         websiteTitle: "Men’s Hub",
       },

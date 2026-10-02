@@ -2,11 +2,12 @@ import "server-only";
 
 import type { Prisma } from "@/generated/prisma/client";
 import { AdminAuditAction } from "@/generated/prisma/enums";
+import { STANDARD_DELIVERY_MESSAGE } from "@/domain/commerce/delivery";
 import { getPrismaClient } from "@/lib/db/prisma";
 import type { CmsBlockValue } from "@/types/cms";
 import type { ContentBlockInput, SettingsInput } from "@/validation/cms";
 
-export const initialSettings = { brandName: "Men’s Hub", tagline: "Style Made for Men", proprietors: "Taha Soni / Shahzaib Soni", phone: "03081000025", whatsapp: "923081000025", email: "mens.hub919@gmail.com", deliveryChargesMessage: "Calculated / Confirmed on WhatsApp", whatsappGreeting: null, whatsappOrderStatement: null, currency: "PKR" as const, lowStockThreshold: 3, websiteTitle: "Men’s Hub", instagramUrl: null, facebookUrl: null, tiktokUrl: "https://www.tiktok.com/@mens.hub919", address: "Men's Hub, Liaqat Shaheed Rd, Chak No. 8 NB, Bhalwal, Punjab, Pakistan", googleMapsUrl: "https://maps.app.goo.gl/4TY7B5eArRLybFUZA", storeTiming: "Mon – Sat: 10:00 AM – 9:00 PM", metaDescription: null, ogImageUrl: null, ogImagePublicId: null };
+export const initialSettings = { brandName: "Men’s Hub", tagline: "Style Made for Men", proprietors: "Taha Soni / Shahzaib Soni", phone: "03081000025", whatsapp: "923081000025", email: "mens.hub919@gmail.com", deliveryChargesMessage: STANDARD_DELIVERY_MESSAGE, whatsappGreeting: null, whatsappOrderStatement: null, currency: "PKR" as const, lowStockThreshold: 3, websiteTitle: "Men’s Hub", instagramUrl: null, facebookUrl: null, tiktokUrl: "https://www.tiktok.com/@mens.hub919", address: "Men's Hub, Liaqat Shaheed Rd, Chak No. 8 NB, Bhalwal, Punjab, Pakistan", googleMapsUrl: "https://maps.app.goo.gl/4TY7B5eArRLybFUZA", storeTiming: "Mon – Sat: 10:00 AM – 9:00 PM", metaDescription: null, ogImageUrl: null, ogImagePublicId: null };
 
 export async function getSettingsForAdmin() { return (await getPrismaClient().siteSettings.findUnique({ where: { id: "site" } })) ?? initialSettings; }
 export async function saveSettings(adminId: string, input: SettingsInput, image?: { ogImageUrl: string; ogImagePublicId: string }) {

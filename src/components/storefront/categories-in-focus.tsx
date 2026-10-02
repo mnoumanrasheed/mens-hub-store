@@ -28,22 +28,20 @@ type CategoryCollectionSectionProps = {
   index: number;
 };
 
-const categoryImageVersion = "20261002";
-
 const categoryImageFallbacks: Record<string, string> = {
-  shirts: `/category-heroes/shirts.jpg?v=${categoryImageVersion}`,
-  pants: `/category-heroes/pants-premium.png?v=${categoryImageVersion}`,
-  trousers: `/category-heroes/trousers-premium.jpg?v=${categoryImageVersion}`,
-  tracksuits: `/category-heroes/tracksuits-premium.jpg?v=${categoryImageVersion}`,
-  jackets: `/category-heroes/jackets-internet.jpg?v=${categoryImageVersion}`,
-  sweaters: `/category-heroes/sweaters-internet.jpg?v=${categoryImageVersion}`,
-  "shalwar-qameez": `/category-heroes/shalwar-qameez-premium.png?v=${categoryImageVersion}`,
-  perfumes: `/category-heroes/perfumes-premium.png?v=${categoryImageVersion}`,
-  shoes: `/category-heroes/shoes.jpg?v=${categoryImageVersion}`,
-  watches: `/category-heroes/watches.jpg?v=${categoryImageVersion}`,
-  glasses: `/category-heroes/glasses.jpg?v=${categoryImageVersion}`,
-  belts: `/category-heroes/belts.jpg?v=${categoryImageVersion}`,
-  accessories: `/category-heroes/accessories.png?v=${categoryImageVersion}`,
+  shirts: "/category-heroes/shirts.jpg",
+  pants: "/category-heroes/pants.png",
+  trousers: "/category-heroes/trousers.jpg",
+  tracksuits: "/category-heroes/tracksuits.jpg",
+  jackets: "/category-heroes/jackets.jpg",
+  sweaters: "/category-heroes/sweaters.jpg",
+  "shalwar-qameez": "/category-heroes/shalwar-qameez.png",
+  perfumes: "/category-heroes/perfumes.png",
+  shoes: "/category-heroes/shoes.jpg",
+  watches: "/category-heroes/watches.jpg",
+  glasses: "/category-heroes/glasses.jpg",
+  belts: "/category-heroes/belts.jpg",
+  accessories: "/category-heroes/accessories.png",
 };
 
 function resolveCategoryImage(category: StorefrontCategoryShelf) {
@@ -117,7 +115,6 @@ function CategoryCollectionSection({ category, products, featureImage, imagePosi
             src={featureImage}
             alt={`${category.name} collection`}
             fill
-            unoptimized
             sizes="(max-width: 820px) 100vw, 34vw"
             className="mh-category-feature-image-source"
           />

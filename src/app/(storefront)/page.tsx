@@ -12,6 +12,7 @@ import {
   getHomepageData,
   type StorefrontProduct,
 } from "@/data/storefront";
+import { formatDeliveryMessage } from "@/domain/commerce/delivery";
 import type { CmsBlockValue } from "@/types/cms";
 
 export const metadata: Metadata = {
@@ -86,7 +87,7 @@ function TrustStrip({ deliveryMessage }: { deliveryMessage: string }) {
         </div>
         <div>
           <span>03</span>
-          <p>{deliveryMessage || "Order by WhatsApp"}</p>
+          <p>{formatDeliveryMessage(deliveryMessage)}</p>
         </div>
       </Container>
     </section>
