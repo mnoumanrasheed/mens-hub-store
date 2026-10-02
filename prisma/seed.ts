@@ -80,12 +80,19 @@ async function main() {
   const prisma = new PrismaClient({ adapter });
 
   try {
-    const passwordHash = await hash(env.ADMIN_SEED_PASSWORD, 12);
-    await prisma.adminUser.upsert({
+    const existingAdmin = await prisma.adminUser.findUnique({
       where: { email: env.ADMIN_SEED_EMAIL },
-      create: { email: env.ADMIN_SEED_EMAIL, passwordHash },
-      update: { passwordHash },
+      select: { id: true },
     });
+    if (!existingAdmin) {
+      const passwordHash = await hash(env.ADMIN_SEED_PASSWORD, 12);
+      await prisma.adminUser.create({
+        data: { email: env.ADMIN_SEED_EMAIL, passwordHash },
+      });
+      console.info("[seed] Initial administrator created.");
+    } else {
+      console.info("[seed] Existing administrator preserved.");
+    }
 
     await prisma.siteSettings.upsert({
       where: { id: "site" },

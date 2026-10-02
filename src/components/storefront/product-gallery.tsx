@@ -32,8 +32,8 @@ export function ProductGallery({ imageUrl, name }: { imageUrl: string; name: str
     <>
       <motion.figure
         className="mh-pdp-gallery"
-        initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-        animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+        initial={reduceMotion ? false : { y: 18 }}
+        animate={reduceMotion ? undefined : { y: 0 }}
         transition={{ duration: 0.65, ease }}
       >
         <div className="mh-pdp-gallery-visual">

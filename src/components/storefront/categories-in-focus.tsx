@@ -89,8 +89,8 @@ function CategoryCollectionSection({ category, products, featureImage, imagePosi
     <motion.article
       className={`mh-category-collection ${imagePosition === "right" ? "is-reversed" : ""}`}
       aria-labelledby={headingId}
-      initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+      initial={reduceMotion ? false : { y: 24 }}
+      whileInView={reduceMotion ? undefined : { y: 0 }}
       viewport={{ once: true, amount: 0.08 }}
       transition={{ duration: reduceMotion ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
@@ -108,8 +108,8 @@ function CategoryCollectionSection({ category, products, featureImage, imagePosi
       <div className={`mh-category-collection-body ${products.length ? "" : "is-empty"}`}>
         <motion.div
           className="mh-category-feature-image"
-          initial={reduceMotion ? false : { opacity: 0, scale: 1.025 }}
-          whileInView={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
+          initial={reduceMotion ? false : { scale: 1.025 }}
+          whileInView={reduceMotion ? undefined : { scale: 1 }}
           viewport={{ once: true, amount: 0.12 }}
           transition={{ duration: reduceMotion ? 0 : 0.8, ease: [0.22, 1, 0.36, 1] }}
         >

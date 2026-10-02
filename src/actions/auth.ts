@@ -107,11 +107,15 @@ export async function loginAction(
 
 export async function logoutAction(): Promise<never> {
   const admin = await requireAdmin();
+  const revoked = await revokeAdminSessions(admin.id, admin.tokenVersion);
+  if (!revoked) {
+    // Failing closed prevents another device from keeping a usable session.
+    throw new Error("Unable to end the admin session securely.");
+  }
   try {
-    await revokeAdminSessions(admin.id, admin.tokenVersion);
     await recordAdminAudit(AdminAuditAction.LOGOUT, admin.id);
   } catch {
-    // Cookie deletion still completes even if database revocation is unavailable.
+    // The token is already revoked; audit availability must not keep this cookie alive.
   }
   await deleteAdminSession();
   redirect("/admin/login");

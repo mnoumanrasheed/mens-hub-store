@@ -18,6 +18,8 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const total = lines.reduce((sum, line) => sum + Number(line.price) * line.quantity, 0);
+  const deliveryCharge = total < 10000 ? 250 : 0;
+  const grandTotal = total + deliveryCharge;
 
   async function continueOnWhatsApp() {
     setPending(true);
@@ -91,10 +93,10 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
           <p className="store-eyebrow">Order summary</p>
           <dl className="grid gap-4 text-sm">
             <div className="flex items-center justify-between gap-4"><dt className="text-muted">Products Total</dt><dd className="font-bold text-ivory">{currency.format(total)}</dd></div>
-            <div className="border-t border-line pt-4"><dt className="text-muted">Delivery Charges</dt><dd className="mt-1 text-sm font-semibold leading-6 text-gold">Calculated / Confirmed on WhatsApp</dd></div>
-            <div className="flex items-center justify-between gap-4 border-t border-line pt-4"><dt className="font-bold text-ivory">Grand Subtotal</dt><dd className="text-lg font-bold text-ivory">{currency.format(total)}</dd></div>
+            <div className="border-t border-line pt-4"><dt className="text-muted">Delivery Charges</dt><dd className="mt-1 text-sm font-semibold leading-6 text-gold">{deliveryCharge ? currency.format(deliveryCharge) : "FREE"}</dd></div>
+            <div className="flex items-center justify-between gap-4 border-t border-line pt-4"><dt className="font-bold text-ivory">Grand Subtotal</dt><dd className="text-lg font-bold text-ivory">{currency.format(grandTotal)}</dd></div>
           </dl>
-          <p className="mt-3 text-xs leading-5 text-subtle">Only products are included. Delivery is discussed separately on WhatsApp.</p>
+          <p className="mt-3 text-xs leading-5 text-subtle">Delivery is PKR 250. Orders of PKR 10,000 or more qualify for free delivery.</p>
           {error ? <p className="mt-4 text-sm leading-6 text-critical" role="alert">{error}</p> : null}
           <button type="button" className="store-cta-primary mt-6 w-full" onClick={continueOnWhatsApp} disabled={pending}>{pending ? "Preparing…" : "Continue order on WhatsApp"}<MessageCircle size={17} /></button>
           <div className="mt-6 grid gap-3 border-t border-line pt-5 text-xs leading-5 text-muted">

@@ -2,14 +2,28 @@
 
 import { ImageIcon } from "lucide-react";
 import Image, { type ImageProps } from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-type StoreImageProps = Omit<ImageProps, "onError"> & {
+type StoreImageProps = Omit<ImageProps, "onError" | "onLoad"> & {
   fallbackLabel?: string;
+  onError?: ImageProps["onError"];
+  onLoad?: ImageProps["onLoad"];
 };
 
-export function StoreImage({ alt, fallbackLabel, ...props }: StoreImageProps) {
-  const [failed, setFailed] = useState(false);
+export function StoreImage({ alt, fallbackLabel, onError, onLoad, ...props }: StoreImageProps) {
+  const sourceKey = typeof props.src === "string" ? props.src : "src" in props.src ? props.src.src : props.src.default.src;
+
+  const [failedSource, setFailedSource] = useState<string | null>(null);
+  const failed = failedSource === sourceKey;
+  const imageRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    // Visibility is not gated on this state; it only selects an error fallback.
+
+    // A browser cache can settle before React attaches image event handlers.
+    const image = imageRef.current;
+    if (image?.complete && image.naturalWidth === 0) setFailedSource(sourceKey);
+  }, [sourceKey]);
 
   if (failed) {
     return (
@@ -22,5 +36,13 @@ export function StoreImage({ alt, fallbackLabel, ...props }: StoreImageProps) {
     );
   }
 
-  return <Image {...props} alt={alt} onError={() => setFailed(true)} />;
+  return (
+    <Image
+      {...props}
+      ref={imageRef}
+      alt={alt}
+      onLoad={(event) => { setFailedSource(null); onLoad?.(event); }}
+      onError={(event) => { setFailedSource(sourceKey); onError?.(event); }}
+    />
+  );
 }

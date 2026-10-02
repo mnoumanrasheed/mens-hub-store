@@ -17,7 +17,7 @@ Requirements: Node.js 20.9 or newer, npm, and PostgreSQL.
 7. Start development: `npm run dev`.
 8. Open `http://localhost:3000`; admin sign-in is at `/admin/login`.
 
-The seed is idempotent and creates no products, prices, or SKUs. `ADMIN_SEED_PASSWORD` must be at least 12 characters. Running the seed again deliberately resets the seeded administrator’s password to that environment value.
+The seed is idempotent and creates no products, prices, or SKUs. `ADMIN_SEED_PASSWORD` must be at least 12 characters and is used only when creating the initial administrator. Running the seed again preserves an existing administrator password.
 
 ## Database and Prisma
 
@@ -33,7 +33,7 @@ Never use `prisma migrate dev`, `prisma db push`, or a database reset against pr
 
 ## Admin creation
 
-There is no registration route. Set `ADMIN_SEED_EMAIL` and a strong private `ADMIN_SEED_PASSWORD`, then run `npm run prisma:seed`. The seed creates or updates that administrator. Rotate or remove the seed password from deployment configuration after controlled provisioning if your operational process does not need repeat seeds.
+There is no registration route. Set `ADMIN_SEED_EMAIL` and a strong private `ADMIN_SEED_PASSWORD`, then run `npm run prisma:seed`. The seed creates the administrator only if that email does not already exist; password resets are a separate, explicit administrative operation. Rotate or remove the seed password from deployment configuration after controlled provisioning if your operational process does not need repeat seeds.
 
 Admin routes are guarded by the Next.js proxy and independently authorized by the protected layout and every mutation. Sessions are signed with `SESSION_SECRET` and stored in an HttpOnly cookie.
 

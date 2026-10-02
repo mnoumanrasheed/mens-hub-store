@@ -22,7 +22,7 @@ afterEach(() => {
 });
 
 describe("admin proxy", () => {
-  it.each(["/admin", "/admin/products"])(
+  it.each(["/admin", "/admin/products", "/admin/categories", "/admin/settings"])(
     "redirects an anonymous request for %s to login",
     async (pathname) => {
       const response = await proxy(
@@ -62,6 +62,38 @@ describe("admin proxy", () => {
     expect(response.status).toBe(307);
     expect(response.headers.get("location")).toBe(
       "https://mens-hub.example/admin",
+    );
+  });
+
+  it("rejects malformed or tampered session cookies", async () => {
+    for (const token of ["not.a.jwt", "eyJhbGciOiJIUzI1NiJ9.invalid.signature"]) {
+      const response = await proxy(
+        new NextRequest("https://mens-hub.example/admin", {
+          headers: { cookie: `${ADMIN_SESSION_COOKIE}=${token}` },
+        }),
+      );
+      expect(response.status).toBe(307);
+      expect(response.headers.get("location")).toBe(
+        "https://mens-hub.example/admin/login",
+      );
+    }
+  });
+
+  it("rejects expired sessions", async () => {
+    const token = await signAdminSessionToken(
+      { adminId: "admin_1", tokenVersion: 0 },
+      encodedSecret,
+      new Date("2020-01-01T00:00:00.000Z"),
+    );
+    const response = await proxy(
+      new NextRequest("https://mens-hub.example/admin", {
+        headers: { cookie: `${ADMIN_SESSION_COOKIE}=${token}` },
+      }),
+    );
+
+    expect(response.status).toBe(307);
+    expect(response.headers.get("location")).toBe(
+      "https://mens-hub.example/admin/login",
     );
   });
 });

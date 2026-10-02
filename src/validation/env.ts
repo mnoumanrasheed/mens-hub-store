@@ -33,8 +33,7 @@ export const serverEnvSchema = z.object({
     )
     .optional(),
   SESSION_SECRET: sessionEnvSchema.shape.SESSION_SECRET,
-  ADMIN_SEED_EMAIL: z.email(),
-  ADMIN_SEED_PASSWORD: z.string().min(12),
+  // Seed-only credentials are deliberately validated in prisma/seed.ts.
   CLOUDINARY_CLOUD_NAME: cloudinaryEnvSchema.shape.CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_API_KEY: cloudinaryEnvSchema.shape.CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: cloudinaryEnvSchema.shape.CLOUDINARY_API_SECRET,
