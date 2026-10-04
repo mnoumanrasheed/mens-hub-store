@@ -29,7 +29,7 @@ export function StorefrontShell({ brandName, categories, children, footerContent
       <div id="main-content" className="flex-1">
         {children}
       </div>
-      <FloatingWhatsApp brandName={brandName} />
+      <FloatingWhatsApp brandName={brandName} whatsapp={settings.whatsapp} />
       <StoreFooter settings={settings} categories={categories} content={footerContent} />
     </div>
   );

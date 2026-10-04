@@ -3,7 +3,7 @@ import { z } from "zod";
 const id = z.string().trim().min(1).max(64);
 const money = z.string().trim().regex(/^\d{1,10}(?:\.\d{1,2})?$/, "Enter a valid amount with up to two decimals.");
 const optionLabel = z.string().trim().min(1).max(50);
-const sizeSchema = z.object({ label: optionLabel });
+const sizeSchema = z.object({ label: optionLabel, stock: z.number().int().nonnegative() });
 const colorSchema = z.object({ name: optionLabel, hexCode: z.string().trim().regex(/^#[0-9a-fA-F]{6}$/).nullable() });
 
 function uniqueBy<T>(items: T[], key: (item: T) => string): boolean {
@@ -12,7 +12,7 @@ function uniqueBy<T>(items: T[], key: (item: T) => string): boolean {
 
 export const productFormSchema = z.object({
   name: z.string().trim().min(2).max(150),
-  sku: z.string().trim().max(100).nullable(),
+  sku: z.string().trim().min(1, "SKU / Tag Number is required.").max(100),
   categoryId: id,
   subcategoryId: id.nullable(),
   originalPrice: money,

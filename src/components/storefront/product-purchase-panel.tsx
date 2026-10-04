@@ -18,7 +18,7 @@ type Props = {
     imageUrl: string;
     effectivePrice: string;
     stock: number;
-    sizes: { label: string }[];
+    sizes: { label: string; stock: number }[];
     colors: { name: string; hexCode: string | null }[];
   };
   ordering: {
@@ -59,8 +59,9 @@ function formatColourName(value: string) {
 }
 
 export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
-  const sizeOptions = normalizeProductSizeOptions(product.sizes.map((item) => item.label));
-  const defaultSize = sizeOptions[0] ?? "";
+  const sizeOptions = product.sizes.map((item) => ({ label: normalizeProductSizeOptions(item.label)[0] ?? item.label, stock: item.stock }));
+  const availableSizeOptions = sizeOptions.filter((item) => item.stock > 0).map((item) => item.label);
+  const defaultSize = availableSizeOptions[0] ?? "";
   const defaultColor = product.colors[0]?.name ?? "";
   const [size, setSize] = useState(defaultSize);
   const [color, setColor] = useState(defaultColor);
@@ -68,7 +69,8 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
   const [notice, setNotice] = useState("");
   const [inquiryPending, setInquiryPending] = useState(false);
 
-  const soldOut = product.stock === 0;
+  const selectedSizeStock = sizeOptions.find((item) => item.label === size)?.stock ?? 0;
+  const soldOut = product.stock === 0 || (sizeOptions.length > 0 && selectedSizeStock === 0);
   const selectionReady = (!sizeOptions.length || size) && (!product.colors.length || color);
   const disabled = soldOut || !selectionReady;
   const commerceProduct: CommerceProduct = {
@@ -78,7 +80,7 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
     imageUrl: product.imageUrl,
     price: product.effectivePrice,
     availableStock: product.stock,
-    sizes: sizeOptions,
+    sizes: sizeOptions.map((item) => item.label),
     colors: product.colors.map((item) => item.name),
     productUrl,
   };
@@ -167,15 +169,16 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
           </legend>
           <div className="mh-pdp-size-options">
             {sizeOptions.map((option) => (
-              <label key={option}>
+              <label key={option.label} className={option.stock === 0 ? "opacity-50" : undefined}>
                 <input
                   type="radio"
                   name="size"
-                  value={option}
-                  checked={size === option}
-                  onChange={() => setSize(option)}
+                  value={option.label}
+                  checked={size === option.label}
+                  disabled={option.stock === 0}
+                  onChange={() => setSize(option.label)}
                 />
-                <span>{option}</span>
+                <span>{option.label}{option.stock === 0 ? " (Out of stock)" : ""}</span>
               </label>
             ))}
           </div>
@@ -222,8 +225,8 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
           <button
             type="button"
             aria-label="Increase quantity"
-            disabled={quantity >= product.stock}
-            onClick={() => setQuantity((value) => Math.min(product.stock, value + 1))}
+            disabled={quantity >= (sizeOptions.length ? selectedSizeStock : product.stock)}
+            onClick={() => setQuantity((value) => Math.min(sizeOptions.length ? selectedSizeStock : product.stock, value + 1))}
           >
             <Plus size={16} />
           </button>

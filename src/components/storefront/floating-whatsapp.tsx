@@ -1,9 +1,15 @@
 import { MessageCircle } from "lucide-react";
-import { createWhatsAppUrl, WHATSAPP_NUMBER } from "@/domain/whatsapp/product-inquiry";
+import { createWhatsAppUrl } from "@/domain/whatsapp/product-inquiry";
 
-export function FloatingWhatsApp({ brandName }: { brandName: string }) {
+export function FloatingWhatsApp({
+  brandName,
+  whatsapp,
+}: {
+  brandName: string;
+  whatsapp: string;
+}) {
   const href = createWhatsAppUrl(
-    WHATSAPP_NUMBER,
+    whatsapp,
     `Greetings from ${brandName}\n\nI would like help placing an order.`
   );
 

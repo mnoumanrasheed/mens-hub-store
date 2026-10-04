@@ -21,14 +21,14 @@ export async function getProductForEdit(id: string): Promise<ProductEditorDto | 
     name: product.name,
     categoryId: product.categoryId,
     subcategoryId: product.subcategoryId,
-    sku: product.sku,
+    sku: product.sku ?? "",
     originalPrice: product.originalPrice.toFixed(2),
     salePrice: product.salePrice?.toFixed(2) ?? null,
     stock: product.stock,
     isPublished: product.isPublished,
     isFeatured: product.isFeatured,
     isNewArrival: product.isNewArrival,
-    sizes: product.sizes.map(({ label }) => ({ label })),
+    sizes: product.sizes.map(({ label, stock }) => ({ label, stock })),
     colors: product.colors.map(({ name, hexCode }) => ({ name, hexCode })),
     imageUrl: product.imageUrl,
   };
@@ -51,7 +51,7 @@ export async function getProductsForAdmin(requestedPage = 1) {
 
 function productData(input: ProductFormInput) {
   const { sizes, colors, ...product } = input;
-  return { product, sizes, colors };
+  return { product: { ...product, stock: sizes.length ? sizes.reduce(function(total,size){return total + size.stock},0) : product.stock }, sizes, colors };
 }
 
 export async function createProduct(adminId: string, input: ProductFormInput, imageUrl: string, imagePublicId: string) {

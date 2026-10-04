@@ -10,7 +10,7 @@ import { RecentlyViewed } from "@/components/storefront/recently-viewed";
 import { getStorefrontProduct } from "@/data/storefront";
 import { formatDeliveryMessage } from "@/domain/commerce/delivery";
 import { createProductMetadata } from "@/domain/seo/product";
-import { getSiteUrl } from "@/lib/site-url";
+import { getProductUrl } from "@/lib/product-url";
 
 const currency = new Intl.NumberFormat("en-PK", {
   style: "currency",
@@ -35,7 +35,7 @@ export default async function ProductPage({ params }: Props) {
   const product = await getStorefrontProduct(id);
   if (!product) notFound();
 
-  const productUrl = new URL(`/product/${product.id}`, getSiteUrl()).toString();
+  const productUrl = getProductUrl(product);
   const deliveryMessage = formatDeliveryMessage(product.ordering.deliveryMessage);
   const whatsappHref = product.ordering.whatsapp
     ? `https://wa.me/${product.ordering.whatsapp.replace(/\D/g, "")}`
