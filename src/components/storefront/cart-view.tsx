@@ -6,6 +6,8 @@ import { useState } from "react";
 
 import { removeCartLine, replaceCartLines, setCartQuantity, useCart } from "@/components/storefront/commerce-store";
 import { StoreImage } from "@/components/storefront/store-image";
+import { WhatsAppCheckoutDialog } from "@/components/checkout/whatsapp-checkout-dialog";
+import type { WhatsAppCustomer } from "@/validation/whatsapp-checkout";
 import { prepareWhatsAppInquiry } from "@/lib/whatsapp-inquiry";
 
 const currency = new Intl.NumberFormat("en-PK", { style: "currency", currency: "PKR", minimumFractionDigits: 0, maximumFractionDigits: 2 });
@@ -16,18 +18,20 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
   void statement;
   const lines = useCart();
   const [pending, setPending] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [error, setError] = useState("");
   const total = lines.reduce((sum, line) => sum + Number(line.price) * line.quantity, 0);
   const deliveryCharge = total < 10000 ? 250 : 0;
   const grandTotal = total + deliveryCharge;
 
-  async function continueOnWhatsApp() {
+  async function continueCheckout(customer: WhatsAppCustomer) {
     setPending(true);
     setError("");
     try {
-      const result = await prepareWhatsAppInquiry(lines);
+      const result = await prepareWhatsAppInquiry(lines, customer);
       replaceCartLines(result.lines);
       window.open(result.url, "_blank", "noopener,noreferrer");
+      setCheckoutOpen(false);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "The inquiry could not be prepared.");
     } finally {
@@ -98,13 +102,14 @@ export function CartView({ brandName, greeting, statement }: { brandName: string
           </dl>
           <p className="mt-3 text-xs leading-5 text-subtle">Delivery is PKR 250. Orders of PKR 10,000 or more qualify for free delivery.</p>
           {error ? <p className="mt-4 text-sm leading-6 text-critical" role="alert">{error}</p> : null}
-          <button type="button" className="store-cta-primary mt-6 w-full" onClick={continueOnWhatsApp} disabled={pending}>{pending ? "Preparing…" : "Continue order on WhatsApp"}<MessageCircle size={17} /></button>
+          <button type="button" className="store-cta-primary mt-6 w-full" onClick={() => setCheckoutOpen(true)} disabled={pending}>{pending ? "Preparing…" : "Continue order on WhatsApp"}<MessageCircle size={17} /></button>
           <div className="mt-6 grid gap-3 border-t border-line pt-5 text-xs leading-5 text-muted">
             <p className="flex items-start gap-2"><ShieldCheck className="mt-0.5 shrink-0 text-gold" size={15} /> Your selections are rechecked before the order is confirmed.</p>
             <p className="flex items-start gap-2"><Check className="mt-0.5 shrink-0 text-gold" size={15} /> No payment is collected on this website.</p>
           </div>
         </aside>
       </div>
+      <WhatsAppCheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onContinue={continueCheckout} />
     </>
   );
 }

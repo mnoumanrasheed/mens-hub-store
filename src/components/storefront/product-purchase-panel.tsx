@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { addCartLine } from "@/components/storefront/commerce-store";
 import { WishlistButton } from "@/components/storefront/wishlist-button";
+import { WhatsAppCheckoutDialog } from "@/components/checkout/whatsapp-checkout-dialog";
+import type { WhatsAppCustomer } from "@/validation/whatsapp-checkout";
 import { normalizeProductSizeOptions } from "@/domain/product/size-options";
 import type { CommerceProduct } from "@/domain/commerce/storage";
 import { createProductStructuredData } from "@/domain/seo/product";
@@ -68,6 +70,7 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [notice, setNotice] = useState("");
   const [inquiryPending, setInquiryPending] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const selectedSizeStock = sizeOptions.find((item) => item.label === size)?.stock ?? 0;
   const soldOut = product.stock === 0 || (sizeOptions.length > 0 && selectedSizeStock === 0);
@@ -108,30 +111,19 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
     setNotice("Added to bag.");
   }
 
-  async function inquiry() {
-    if (!requireSelection()) return;
-    const inquiryWindow = window.open("about:blank", "_blank");
-    if (inquiryWindow) inquiryWindow.opener = null;
+  async function continueCheckout(customer: WhatsAppCustomer) {
     setInquiryPending(true);
     setNotice("");
-
     try {
-      const result = await prepareWhatsAppInquiry([
-        { id: product.id, selectedSize: size, selectedColor: color, quantity },
-      ]);
-      if (inquiryWindow && !inquiryWindow.closed) {
-        inquiryWindow.location.replace(result.url);
-      } else {
-        window.location.assign(result.url);
-      }
+      const result = await prepareWhatsAppInquiry([{ id: product.id, selectedSize: size, selectedColor: color, quantity }], customer);
+      window.open(result.url, "_blank", "noopener,noreferrer");
+      setCheckoutOpen(false);
     } catch (cause) {
-      inquiryWindow?.close();
       setNotice(cause instanceof Error ? cause.message : "The inquiry could not be prepared.");
     } finally {
       setInquiryPending(false);
     }
   }
-
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(productUrl);
@@ -156,6 +148,7 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
   }
 
   return (
+    <>
     <section className="mh-pdp-purchase" aria-label="Product options">
       <script
         type="application/ld+json"
@@ -241,7 +234,7 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
           type="button"
           className="mh-pdp-whatsapp"
           disabled={disabled || inquiryPending}
-          onClick={inquiry}
+          onClick={() => { if (requireSelection()) setCheckoutOpen(true); }}
         >
           {inquiryPending ? "Preparing…" : "Order on WhatsApp"}
         </button>
@@ -268,5 +261,7 @@ export function ProductPurchasePanel({ product, ordering, productUrl }: Props) {
         </button>
       </div>
     </section>
+    <WhatsAppCheckoutDialog open={checkoutOpen} onClose={() => setCheckoutOpen(false)} onContinue={continueCheckout} />
+    </>
   );
 }

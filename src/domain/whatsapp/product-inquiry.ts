@@ -1,109 +1,28 @@
 import type { CartLine } from "@/domain/commerce/storage";
-
-export type ProductInquiry = {
-  name: string;
-  sku?: string;
-  size?: string;
-  color?: string;
-  quantity: number;
-  unitPrice: string;
-  productUrl: string;
-};
-
+import type { WhatsAppCustomer } from "@/validation/whatsapp-checkout";
+export type ProductInquiry = { name: string; sku?: string; size?: string; color?: string; quantity: number; unitPrice: string; productUrl: string };
 type OrderLine = ProductInquiry;
-
-const currency = new Intl.NumberFormat("en-PK", {
-  maximumFractionDigits: 2,
-});
-
-const singleWordColours = new Set([
-  "black",
-  "white",
-  "grey",
-  "gray",
-  "brown",
-  "beige",
-  "red",
-  "green",
-  "blue",
-  "yellow",
-  "orange",
-  "pink",
-  "purple",
-]);
-
-function formatPrice(value: string | number) {
-  const amount = Number(value);
-  return currency.format(Number.isFinite(amount) ? amount : 0);
-}
-
-function formatColour(value: string) {
-  const trimmed = value.trim();
-  const parts = trimmed.toLowerCase().split(/\s+/).filter(Boolean);
-  const displayParts = parts.length > 1 && parts.every((part) => singleWordColours.has(part))
-    ? parts
-    : [trimmed.toLowerCase()];
-
-  return displayParts
-    .map((part) => part.replace(/\b\w/g, (character) => character.toUpperCase()))
-    .join(" / ");
-}
-
-function formatOrderMessage(lines: OrderLine[]) {
+const currency = new Intl.NumberFormat("en-PK", { maximumFractionDigits: 2 });
+function formatPrice(value: string | number) { const amount = Number(value); return currency.format(Number.isFinite(amount) ? amount : 0); }
+function formatColour(value: string) { return value.trim().replace(/\b\w/g, (character) => character.toUpperCase()); }
+function formatOrderMessage(lines: OrderLine[], customer: WhatsAppCustomer) {
   const subtotal = lines.reduce((total, line) => total + Number(line.unitPrice) * line.quantity, 0);
   const deliveryCharge = subtotal < 10000 ? 250 : 0;
-  const delivery = deliveryCharge ? `PKR ${formatPrice(deliveryCharge)}` : "FREE";
   const grandTotal = subtotal + deliveryCharge;
-  const divider = "\u2501".repeat(18);
-  const brand = "*MEN\u2019S HUB*";
-  const orderDetails = lines.flatMap((line, index) => {
-    const options = [
-      line.sku ? `Tag No: ${line.sku}` : null,
-      line.size?.trim() ? `Size: ${line.size.trim().toUpperCase()}` : null,
-      line.color?.trim() ? `Color: ${formatColour(line.color)}` : null,
-    ].filter((option): option is string => Boolean(option));
-
-    return [
-      `*ITEM ${String(index + 1).padStart(2, "0")}*`,
-      `Product: ${line.name}`,
-      ...options,
-      `Quantity: ${line.quantity}`,
-      `Price: PKR ${formatPrice(line.unitPrice)}`,
-      `Product Link: ${line.productUrl}`,
-      ...(index < lines.length - 1 ? [divider] : []),
-    ];
-  });
-
+  const orderDetails = lines.flatMap((line, index) => [
+    ...(index ? [""] : []), `Product: ${line.name}`, `Tag No: ${line.sku}`,
+    ...(line.size?.trim() ? [`Size: ${line.size.trim().toUpperCase()}`] : []),
+    ...(line.color?.trim() ? [`Color: ${formatColour(line.color)}`] : []),
+    `Quantity: ${line.quantity}`, `Price: PKR ${formatPrice(line.unitPrice)}`, `Product Link: ${line.productUrl}`,
+  ]);
   return [
-    `${brand} | _Premium Menswear_`,
-    "*ORDER REQUEST*",
-    divider,
-    ...orderDetails,
-    divider,
-    "*ORDER SUMMARY*",
-    `Subtotal: *PKR ${formatPrice(subtotal)}*`,
-    `Delivery: *${delivery}*`,
-    `*TOTAL: PKR ${formatPrice(grandTotal)}*`,
-    divider,
-    "Please confirm availability to proceed.",
-    brand,
+    "*MEN'S HUB ORDER*", "", "*Customer Details*", `Name: ${customer.fullName}`, `Contact: ${customer.phone}`,
+    ...(customer.email ? [`Email: ${customer.email}`] : []), `City: ${customer.city}`, `Address: ${customer.address}`, "",
+    "*Order Details*", ...orderDetails, "", `Products Total: PKR ${formatPrice(subtotal)}`,
+    `Delivery: ${deliveryCharge ? "PKR " + formatPrice(deliveryCharge) : "FREE"}`, `Total: PKR ${formatPrice(grandTotal)}`,
+    ...(customer.notes ? ["", `Order Notes: ${customer.notes}`] : []), "", "Thank you for shopping with Men's Hub.",
   ].join("\n");
 }
-
-export function createProductInquiryMessage(input: ProductInquiry) {
-  return formatOrderMessage([input]);
-}
-
-export function createCartInquiryMessage(input: { lines: CartLine[] }) {
-  return formatOrderMessage(input.lines.map((line) => ({
-    name: line.name,
-    sku: line.sku,
-    size: line.selectedSize,
-    color: line.selectedColor,
-    quantity: line.quantity,
-    unitPrice: line.price,
-    productUrl: line.productUrl,
-  })));
-}
-
-export function createWhatsAppUrl(number: string, message: string) { return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`; }
+export function createProductInquiryMessage(input: ProductInquiry, customer: WhatsAppCustomer) { return formatOrderMessage([input], customer); }
+export function createCartInquiryMessage(input: { lines: CartLine[]; customer: WhatsAppCustomer }) { return formatOrderMessage(input.lines.map((line) => ({ name: line.name, sku: line.sku, size: line.selectedSize, color: line.selectedColor, quantity: line.quantity, unitPrice: line.price, productUrl: line.productUrl })), input.customer); }
+export function createWhatsAppUrl(number: string, message: string) { return "https://wa.me/" + number.replace(/\D/g, "") + "?text=" + encodeURIComponent(message); }
