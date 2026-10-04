@@ -7,6 +7,7 @@ import { createCartInquiryMessage, createWhatsAppUrl } from "@/domain/whatsapp/p
 import { getPrismaClient } from "@/lib/db/prisma";
 import { acceptPublicRequest } from "@/lib/public-rate-limit";
 import { getProductUrl } from "@/lib/product-url";
+import { whatsappCustomerSchema } from "@/validation/whatsapp-checkout";
 
 const lineSchema = z.object({
   productId: z.string().trim().min(1).max(150),
@@ -14,7 +15,7 @@ const lineSchema = z.object({
   selectedColor: z.string().trim().max(100).default(""),
   quantity: z.number().int().min(1).max(100_000),
 }).strict();
-const requestSchema = z.object({ lines: z.array(lineSchema).min(1).max(50) }).strict();
+const requestSchema = z.object({ lines: z.array(lineSchema).min(1).max(50), customer: whatsappCustomerSchema }).strict();
 
 export async function POST(request: Request) {
   if (!(await acceptPublicRequest(request, "whatsapp", 20))) {
@@ -56,6 +57,6 @@ export async function POST(request: Request) {
   }
 
   const publicSettings = settings ?? initialSettings;
-  const message = createCartInquiryMessage({ lines: reconciled });
+  const message = createCartInquiryMessage({ lines: reconciled, customer: parsed.data.customer });
   return NextResponse.json({ url: createWhatsAppUrl(publicSettings.whatsapp, message), lines: reconciled }, { headers: { "Cache-Control": "private, no-store" } });
 }
