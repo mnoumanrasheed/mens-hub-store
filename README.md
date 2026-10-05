@@ -15,7 +15,6 @@ Requirements: Node.js 20.9 or newer, npm, and PostgreSQL.
 5. Apply the existing migrations: `npm run prisma:deploy`.
 6. Seed settings, taxonomy, content scaffolding, and the initial administrator: `npm run prisma:seed`.
 7. Start development: `npm run dev`.
-8. Open `http://localhost:3000`; admin sign-in is at `/admin/login`.
 
 The seed is idempotent and creates no products, prices, or SKUs. `ADMIN_SEED_PASSWORD` must be at least 12 characters and is used only when creating the initial administrator. Running the seed again preserves an existing administrator password.
 
