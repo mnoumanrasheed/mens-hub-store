@@ -35,7 +35,7 @@ Never use `prisma migrate dev`, `prisma db push`, or a database reset against pr
 
 There is no registration route. Set `ADMIN_SEED_EMAIL` and a strong private `ADMIN_SEED_PASSWORD`, then run `npm run prisma:seed`. The seed creates the administrator only if that email does not already exist; password resets are a separate, explicit administrative operation. Rotate or remove the seed password from deployment configuration after controlled provisioning if your operational process does not need repeat seeds.
 
-Admin routes are guarded by the Next.js proxy and independently authorized by the protected layout and every mutation. Sessions are signed with `SESSION_SECRET` and stored in an HttpOnly cookie.
+Admin routes are guarded by the Next.js proxy and independently authorized by the protected layout and every mutation. Sessions are signed with `SESSION_SECRET` and stored in an HttpOnly cookiee.
 
 ## Cloudinary
 
